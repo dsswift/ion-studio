@@ -19,6 +19,10 @@ vi.mock('../store/host-api-misc', async (importOriginal) => {
 })
 
 const hostInfoMock = vi.hoisted(() => ({ cached: false }))
+vi.mock('../state', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('../state')>()
+  return { ...actual, engineBridge: { ...actual.engineBridge, connected: true, connect: async () => undefined, once: () => undefined } }
+})
 vi.mock('../engine/engine-bridge-fs', async (importOriginal) => {
   const actual = await importOriginal<typeof import('../engine/engine-bridge-fs')>()
   return {

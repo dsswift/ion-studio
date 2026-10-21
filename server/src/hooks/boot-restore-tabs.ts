@@ -58,6 +58,7 @@ import { registerInitialRestoredTab } from './useTabRestoration-initial-tab'
 import { backfillLastActivity } from './useTabRestoration-activity'
 import { reportStartup } from '../store/host-api'
 import { getEngineHostInfo } from '../engine/engine-bridge-fs'
+import { engineBridge } from '../state'
 import { currentServerConfig } from '../config/current'
 import { log as _log, error as _error } from '../logger'
 import type { FileEditorTab, FileEditorDirState } from '../store/session-store-types'
@@ -165,12 +166,41 @@ function startWithoutTabs(): void {
 }
 
 /**
+ * Block until the engine bridge has a live connection. The desktop starts
+ * this server before it starts (or replaces and restarts) the engine, so the
+ * first engine call of a boot can land on a socket that does not exist yet.
+ * Restoration that fails there never reaches the ready report, and the
+ * splash waits forever on a server that is otherwise fine. The bridge's own
+ * reconnect loop keeps dialing after a failed first connect and announces
+ * recovery with 'reconnected'; this waits for that instead of racing it.
+ */
+async function waitForEngine(): Promise<void> {
+  if (engineBridge.connected) return
+  try {
+    await engineBridge.connect()
+    return
+  } catch (err) {
+    log('engine not reachable yet; restoration waits for the bridge to reconnect', { error: String(err) })
+  }
+  reportStartup('Waiting for the Ion engine…')
+  await new Promise<void>((resolve) => {
+    if (engineBridge.connected) {
+      resolve()
+      return
+    }
+    engineBridge.once('reconnected', () => resolve())
+  })
+  log('engine reachable; restoration continues')
+}
+
+/**
  * Restore every persisted tab, in order, then run the post-restore steps
  * (eager session start, history load, active-tab hydration, editor/geometry
  * state). Falls back to registering a single blank tab when nothing was
  * persisted (or the load failed).
  */
 export async function bootRestoreTabs(): Promise<void> {
+  await waitForEngine()
   await useSessionStore.getState().initStaticInfo()
   useSessionStore.setState({ initProgress: 'Loading saved tabs…' })
   reportStartup('Loading saved tabs…')

@@ -32,6 +32,7 @@ import { authGitCallbackRoute } from './http/auth-git-callback'
 import { browserSessionStore, startSessionPruning } from './auth/browser-session-store'
 import { SESSION_IDLE_TTL_SECONDS } from './auth/session-cookie'
 import { logIngestRoute } from './http/log-ingest'
+import { reportStartup } from './store/host-api'
 import { versionzRoute } from './http/versionz'
 import { setCompatContext } from './compat/runtime'
 import { staticRoute } from './http/static'
@@ -418,7 +419,12 @@ export async function main(): Promise<ServerHandle> {
   // hold up readiness for every other consumer). Failures are logged inside
   // bootRestoreTabs itself; a rejection here would only ever be a bug in the
   // orchestration, not a per-tab failure.
-  void bootRestoreTabs().catch((err: unknown) => error('boot tab restoration failed', { error: String(err) }))
+  void bootRestoreTabs().catch((err: unknown) => {
+    error('boot tab restoration failed', { error: String(err) })
+    // The splash reveals only on a ready report; a failure that stayed in
+    // the log left it on "Ion Studio is ready" with nothing behind it.
+    reportStartup('Ion could not restore your workspace', false, String(err))
+  })
 
   // The announcement carries this host's machine id, which is how a phone
   // recognises the server it is already paired with. `getMachineIdentity()`

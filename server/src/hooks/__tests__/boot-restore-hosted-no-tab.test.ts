@@ -10,6 +10,7 @@ const setState = vi.fn()
 const createTab = vi.fn(() => ({ tabId: 'boot-tab' }))
 let homeProject: unknown = null
 
+vi.mock('../../state', () => ({ engineBridge: { connected: true, connect: async () => undefined, once: () => undefined } }))
 vi.mock('../../logger', () => ({ log: vi.fn(), warn: vi.fn(), error: vi.fn(), debug: vi.fn() }))
 vi.mock('../../config/current', () => ({ currentServerConfig: () => ({ homeProject }) }))
 vi.mock('../../store/sessionStore', () => ({
