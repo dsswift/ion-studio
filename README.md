@@ -1,3 +1,5 @@
+> **Archived.** This repository is the frozen history of Ion Studio: the desktop app, the headless Studio server, the iOS app, the relay, and the shared TypeScript packages, as they stood in the Ion monorepo when the engine became its own repository. It last built against engine **1.103.1**. Nothing here is maintained; the engine lives on at [dsswift/ion](https://github.com/dsswift/ion).
+
 <img src="assets/images/ion-engine-hero-web.jpg" width="100%">
 
 A headless agent runtime. One binary. Zero opinions. Seventy-three hooks to make it yours.
