@@ -1,6 +1,4 @@
-> **Archived.** This repository is the frozen history of Ion Studio: the desktop app, the headless Studio server, the iOS app, the relay, and the shared TypeScript packages, as they stood in the Ion monorepo when the engine became its own repository. It last built against engine **1.103.1**. Nothing here is maintained; the engine lives on at [dsswift/ion](https://github.com/dsswift/ion).
->
-> **Building Studio against a newer engine.** Clone [dsswift/ion](https://github.com/dsswift/ion) next to this checkout as `ion`, check out the engine tag you want (`git checkout engine-v2.0.0`), then run `make desktop` here. `scripts/stage-engine-resources.sh` builds the engine and copies the SDKs from that checkout (`ION_ENGINE_SOURCE` points it elsewhere). The engine wire is unchanged since the split, so Studio keeps working on newer engines until a release says otherwise.
+> **Maintenance only.** This repository holds Ion Studio: the desktop app, the headless Studio server, the iOS app, the relay, and the shared TypeScript packages, split out of the Ion monorepo when the engine became its own repository. It receives fixes needed to keep running against current engines and no new features. The engine lives at [dsswift/ion](https://github.com/dsswift/ion).
 
 <img src="assets/images/ion-engine-hero-web.jpg" width="100%">
 
