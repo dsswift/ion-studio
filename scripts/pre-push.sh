@@ -98,13 +98,21 @@ run() {
 # whole file's whitespace).
 run "file-size cap" bash scripts/check-file-sizes.sh
 run "no tracked binaries" bash scripts/check-no-binaries.sh
-run "Go toolchain alignment" bash scripts/check-go-toolchains.sh
-run "Go toolchain regression checks" bash scripts/check-go-toolchains.test.sh
+# The engine lives in dsswift/ion; this archive carries only the Studio-side
+# engine files, so the toolchain and vocabulary gates have nothing to read
+# here and run only when a full engine tree is present.
+if [ -f engine/go.mod ]; then
+  run "Go toolchain alignment" bash scripts/check-go-toolchains.sh
+  run "Go toolchain regression checks" bash scripts/check-go-toolchains.test.sh
+fi
 run "Linux parity gate receipt semantics" bash scripts/gate-cache.test.sh
 run "main-moved check" bash scripts/check-main-current.test.sh
 
-# Vocabulary uses Node built-ins with zero install and always runs because registry path and symbol references can be invalidated by any tree change.
-run "vocabulary registry + drift" make check-vocabulary
+# Vocabulary uses Node built-ins with zero install; its registry cites engine
+# files, so it runs only beside a full engine tree.
+if [ -f engine/go.mod ]; then
+  run "vocabulary registry + drift" make check-vocabulary
+fi
 
 # Dashboards-as-code drift + overcount audit. Runs when the query module,
 # recipes, or the committed dashboard JSONs are touched. Cheap (Node native
