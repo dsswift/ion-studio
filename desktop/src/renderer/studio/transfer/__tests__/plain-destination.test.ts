@@ -53,7 +53,7 @@ describe('homeRelativeParent', () => {
   })
 
   it('keeps an absolute parent outside any home', () => {
-    expect(homeRelativeParent('/Users/Shared/source/personal/ion')).toBe('/Users/Shared/source/personal')
+    expect(homeRelativeParent('/Users/josh/source/personal/ion')).toBe('/Users/josh/source/personal')
     expect(homeRelativeParent('/opt/work/ion')).toBe('/opt/work')
   })
 })
@@ -86,7 +86,7 @@ describe('plainChecks against a source too old to describe the conversation', ()
 
 describe('destinationChoices', () => {
   it('preselects the one matching checkout', () => {
-    expect(destinationChoices(preflight({ projectDirs: ['/Users/Shared/source/personal/ion'] })).auto).toBe('/Users/Shared/source/personal/ion')
+    expect(destinationChoices(preflight({ projectDirs: ['/Users/josh/source/personal/ion'] })).auto).toBe('/Users/josh/source/personal/ion')
   })
 
   it('preselects nothing when there are two, or none to match', () => {
@@ -104,8 +104,8 @@ describe('destinationChoices', () => {
 
 describe('projectNameFor', () => {
   it('names a directory by its project on that machine, else by its last segment', () => {
-    const projects = [project('/Users/Shared/source/personal/ion', 'r', 'Ion')]
-    expect(projectNameFor('/Users/Shared/source/personal/ion', projects)).toBe('Ion')
+    const projects = [project('/Users/josh/source/personal/ion', 'r', 'Ion')]
+    expect(projectNameFor('/Users/josh/source/personal/ion', projects)).toBe('Ion')
     expect(projectNameFor('/Users/josh/atlas', projects)).toBe('atlas')
   })
 })

@@ -238,7 +238,7 @@ describe('useTransferPreflight', () => {
       if (name === 'transfer.describe') return { status: 'idle', worktree: null }
       if (name === 'transfer.preflight') {
         asked.push(args[0] as Record<string, unknown>)
-        return { projectDir: '/Users/Shared/source/personal/ion', projectDirs: ['/Users/Shared/source/personal/ion'], allProjectDirs: ['/Users/Shared/source/personal/ion', '/Users/josh/atlas'], sourceDirectoryExists: false, hasSourceBranch: false, knownTips: [], worktreeCopy: null }
+        return { projectDir: '/Users/josh/source/personal/ion', projectDirs: ['/Users/josh/source/personal/ion'], allProjectDirs: ['/Users/josh/source/personal/ion', '/Users/josh/atlas'], sourceDirectoryExists: false, hasSourceBranch: false, knownTips: [], worktreeCopy: null }
       }
       throw new Error(`unexpected ${name}`)
     })
@@ -246,11 +246,11 @@ describe('useTransferPreflight', () => {
     await mount({ workingDirectory: '/Users/them/source/personal/ion', repoRemote: 'github.com/o/ion', originUrl: 'git@github.com:o/ion.git', suggestedParentDir: '~/source/personal' })
 
     expect(asked[0]?.repoRemote).toBe('github.com/o/ion')
-    expect(result.destinationDirectory).toBe('/Users/Shared/source/personal/ion')
+    expect(result.destinationDirectory).toBe('/Users/josh/source/personal/ion')
     expect(result.ready).toBe(true)
     // The match is preselected, never the only choice: every other project
     // is still offered, after it.
-    expect(result.destinationMatches).toEqual(['/Users/Shared/source/personal/ion'])
+    expect(result.destinationMatches).toEqual(['/Users/josh/source/personal/ion'])
     expect(result.destinationOthers).toEqual(['/Users/josh/atlas'])
   })
 

@@ -30,7 +30,7 @@ const LABELS_PATH = path.join(SETTINGS_DIR, 'session-labels-api.json')
 const CHAINS_PATH = path.join(SETTINGS_DIR, 'session-chains-api.json')
 const BACKUP_PATH = path.join(SETTINGS_DIR, 'tabs-api.json.pre-recovery')
 
-const DEFAULT_WORKING_DIR = '/Users/Shared/source/personal/ion'
+const DEFAULT_WORKING_DIR = '/Users/josh/source/personal/ion'
 
 // ─── Types (minimal, matching types-persistence.ts) ───
 

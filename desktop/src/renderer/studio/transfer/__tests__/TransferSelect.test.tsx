@@ -23,7 +23,7 @@ beforeEach(() => { host = document.createElement('div'); document.body.appendChi
 afterEach(() => { act(() => root.unmount()); host.remove() })
 
 const options = [
-  { value: '/Users/Shared/source/personal/ion', label: 'ion', detail: '/Users/Shared/source/personal/ion' },
+  { value: '/Users/josh/source/personal/ion', label: 'ion', detail: '/Users/josh/source/personal/ion' },
   { value: '/Users/josh/atlas', label: 'atlas', detail: '/Users/josh/atlas' },
 ]
 
@@ -35,10 +35,10 @@ function render(props: Partial<React.ComponentProps<typeof TransferSelect>> = {}
 
 describe('TransferSelect', () => {
   it('shows the chosen project by name, with its path underneath', () => {
-    render({ value: '/Users/Shared/source/personal/ion' })
+    render({ value: '/Users/josh/source/personal/ion' })
     const trigger = host.querySelector('button[aria-label="Lands in"]')!
     expect(trigger.textContent).toContain('ion')
-    expect(trigger.textContent).toContain('/Users/Shared/source/personal/ion')
+    expect(trigger.textContent).toContain('/Users/josh/source/personal/ion')
   })
 
   it('opens the picker menu with every option, and picking one reports it', () => {
@@ -46,7 +46,7 @@ describe('TransferSelect', () => {
     act(() => { (host.querySelector('button[aria-label="Lands in"]') as HTMLButtonElement).click() })
 
     const items = Array.from(host.querySelectorAll('[role="menuitemradio"]'))
-    expect(items.map((i) => i.textContent)).toEqual(['ion/Users/Shared/source/personal/ion', 'atlas/Users/josh/atlas'])
+    expect(items.map((i) => i.textContent)).toEqual(['ion/Users/josh/source/personal/ion', 'atlas/Users/josh/atlas'])
 
     act(() => { (items[1] as HTMLButtonElement).click() })
     expect(onChange).toHaveBeenCalledWith('/Users/josh/atlas')
