@@ -4,7 +4,7 @@ import { join, relative } from 'node:path'
 
 /**
  * Structural gate for the "never hardcode color values" renderer rule
- * (CLAUDE.md): every color literal in component code must come from the
+ * (AGENTS.md): every color literal in component code must come from the
  * theme palette via useColors() / --ion-* CSS vars.
  *
  * A literal that is genuinely theme-neutral (pure-black scrim, provider

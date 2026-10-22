@@ -16,7 +16,7 @@ export default defineConfig({
   },
   test: {
     // Matches both legacy `__tests__/` directories and co-located
-    // `Foo.test.ts(x)` files (the convention in CLAUDE.md; `__tests__/`
+    // `Foo.test.ts(x)` files (the convention in AGENTS.md; `__tests__/`
     // migrates per phase).
     include: ['src/**/*.test.{ts,tsx}'],
     environment: 'node',

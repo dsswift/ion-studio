@@ -1,9 +1,9 @@
 #!/usr/bin/env node
-// postinstall.js — cross-platform postinstall steps, replacing the three
-// bash scripts electron-builder install-app-deps used to chain
-// (patch-dev-icon.sh, patch-zustand.sh, setup-claude-symlinks.sh). Node
-// runs identically on macOS and Windows; bash does not exist by default on
-// Windows, which is what forced this port (manifest contract C6).
+// postinstall.js — cross-platform postinstall steps, replacing the bash
+// scripts electron-builder install-app-deps used to chain
+// (patch-dev-icon.sh, patch-zustand.sh). Node runs identically on macOS
+// and Windows; bash does not exist by default on Windows, which is what
+// forced this port (manifest contract C6).
 const { execFileSync } = require('child_process')
 const { copyFileSync, existsSync, utimesSync } = require('fs')
 const path = require('path')
@@ -86,14 +86,6 @@ function main() {
   patchZustand(packagePath('zustand', 'esm', 'react.mjs'))
   patchNsisArm64(packagePath('app-builder-lib', 'templates', 'nsis', 'multiUser.nsh'))
   patchDevIcon()
-
-  if (process.platform !== 'win32') {
-    // The Claude Code symlink helper is bash; Windows has no bash by default,
-    // and the symlink itself (CLAUDE.md -> AGENTS.md) is a convenience for
-    // Claude Code CLI users, not something the packaged Ion app depends on.
-    const symlinkScript = path.join(DESKTOP_DIR, '..', 'scripts', 'setup-claude-symlinks.sh')
-    execFileSync('bash', [symlinkScript], { stdio: 'inherit' })
-  }
 
   console.log('postinstall: done')
 }

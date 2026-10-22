@@ -2,7 +2,7 @@
  * Connection phase types shared by the main-process broker/transports and
  * the renderer's `StudioHost` (spec 12). Lives in `shared/` — not
  * `main/connections/phases.ts` — because the renderer needs these types too,
- * and renderer code must not import from `main/` (desktop CLAUDE.md
+ * and renderer code must not import from `main/` (desktop AGENTS.md
  * "Renderer must not import IPC/Electron-bound code from `main/`").
  * `main/connections/phases.ts` re-exports this module so existing main-side
  * imports (`./phases`) keep working unchanged.
