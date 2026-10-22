@@ -10,6 +10,12 @@ Demonstrates the engine's daemon architecture and multi-client broadcast.
 
 Subsequent versions will be auto-generated from conventional commit messages.
 
+## [2.20.4](https://github.com/dsswift/ion-studio/compare/desktop-v2.20.3...desktop-v2.20.4) (2026-10-22)
+
+### Bug Fixes
+
+* **desktop:** stage the engine from the ion checkout ([93b95c8](https://github.com/dsswift/ion-studio/commit/93b95c8b3de75af12521d69110d75b09f79b3bc6))
+
 ## [2.20.3](https://github.com/dsswift/ion-studio/compare/desktop-v2.20.2...desktop-v2.20.3) (2026-10-22)
 
 ### Bug Fixes

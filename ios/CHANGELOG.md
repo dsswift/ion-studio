@@ -10,6 +10,12 @@ through the relay to access remote engine instances.
 
 Subsequent versions will be auto-generated from conventional commit messages.
 
+## [2.18.3](https://github.com/dsswift/ion-studio/compare/ios-v2.18.2...ios-v2.18.3) (2026-10-22)
+
+### Bug Fixes
+
+* **ios:** read the vendored engine contract ([39cc4e7](https://github.com/dsswift/ion-studio/commit/39cc4e7d7f7139e66057d93acc886617f78ad314))
+
 ## [2.18.2](https://github.com/dsswift/ion/compare/ios-v2.18.1...ios-v2.18.2) (2026-10-21)
 
 ### Bug Fixes

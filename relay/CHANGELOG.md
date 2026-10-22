@@ -10,6 +10,12 @@ clients to Ion Engine instances.
 
 Subsequent versions will be auto-generated from conventional commit messages.
 
+## [1.11.2](https://github.com/dsswift/ion-studio/compare/relay-v1.11.1...relay-v1.11.2) (2026-10-22)
+
+### Bug Fixes
+
+* **relay:** bump go toolchain to 1.27.3 ([2c5e18f](https://github.com/dsswift/ion-studio/commit/2c5e18f26c42f5199bfad01577248f0a34afce47))
+
 ## [1.11.1](https://github.com/dsswift/ion/compare/relay-v1.11.0...relay-v1.11.1) (2026-10-10)
 
 ## [1.11.0](https://github.com/dsswift/ion/compare/relay-v1.10.0...relay-v1.11.0) (2026-10-09)
