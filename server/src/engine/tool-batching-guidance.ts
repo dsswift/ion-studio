@@ -19,7 +19,7 @@
  *
  * Layer
  * ─────
- * Harness, per `CLAUDE.md` → "Engine executes, harness decides." How to
+ * Harness, per `AGENTS.md` → "Engine executes, harness decides." How to
  * write code is an opinion, and opinions are not the engine's to hold. The
  * engine knows nothing about this string; it rides the generic wire field
  * `ClientCommand.AppendSystemPrompt`, which exists for exactly this kind of

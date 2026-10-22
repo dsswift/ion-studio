@@ -18,7 +18,7 @@
  *
  * Layer
  * ─────
- * Harness, per `CLAUDE.md` → "Engine executes, harness decides." The
+ * Harness, per `AGENTS.md` → "Engine executes, harness decides." The
  * engine knows nothing about this string; it arrives via the wire
  * field `ClientCommand.AppendSystemPrompt` and is appended to the
  * system block of each LLM call. No engine change is needed for this

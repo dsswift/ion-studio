@@ -183,7 +183,7 @@ export interface State extends WorktreeBenchActions, EngineSubmitActions {
    * The engine event is workflow, not state — it fires once at the
    * swap site and is not retained in any snapshot. Persisting the
    * fact in renderer state turns it into a sticky-until-cleared UI
-   * indicator. See CLAUDE.md § "The typed-event corollary".
+   * indicator. See AGENTS.md § "The typed-event corollary".
    */
   engineModelFallbacks: Map<
     string,
