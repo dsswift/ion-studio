@@ -5,7 +5,7 @@ import SwiftUI
 // The three helpers the view's `.task` modifiers call on appear: attachment
 // diagnostics, slash-command discovery, and the history load. Extracted from
 // ConversationView.swift to keep that file under the 600-line Swift cap
-// (CLAUDE.md → "When a file exceeds the cap": split at a natural seam, never
+// (AGENTS.md → "When a file exceeds the cap": split at a natural seam, never
 // strip the comments that explain why these paths are shaped the way they are).
 
 extension ConversationView {

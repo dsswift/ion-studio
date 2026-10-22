@@ -6,7 +6,7 @@ import Foundation
 // Swift 600-line cap after the #256 follow-up collapsed the engine-vs-plain
 // submit / setModel forks into single branch-free paths (the unified bodies
 // grew the optimistic-insert + documentation that pushed Commands.swift over
-// the cap). See CLAUDE.md → "When a file exceeds the cap": split along natural
+// the cap). See AGENTS.md → "When a file exceeds the cap": split along natural
 // seams rather than collapsing comments. Submit + model override is a cohesive,
 // self-contained group, so it splits cleanly here.
 //

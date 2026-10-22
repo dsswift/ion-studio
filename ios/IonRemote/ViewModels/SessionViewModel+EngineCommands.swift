@@ -3,7 +3,7 @@ import Foundation
 // MARK: - Engine Commands
 //
 // Extracted from SessionViewModel+Commands.swift to keep that file under the
-// Swift 600-line cap. See CLAUDE.md → "When a file exceeds the cap": split
+// Swift 600-line cap. See AGENTS.md → "When a file exceeds the cap": split
 // along natural seams rather than collapsing comments. These methods are a
 // cohesive group of engine dialog / abort commands.
 //

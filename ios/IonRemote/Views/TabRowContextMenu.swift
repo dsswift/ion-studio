@@ -3,7 +3,7 @@ import SwiftUI
 /// Context menu for tab rows in the tab list.
 ///
 /// Extracted from `TabListView` to keep that file under the Swift 600-line
-/// cap. See CLAUDE.md → "When a file exceeds the cap".
+/// cap. See AGENTS.md → "When a file exceeds the cap".
 struct TabRowContextMenu: ViewModifier {
     let tab: RemoteTabState
     @Binding var renamingTabId: String?

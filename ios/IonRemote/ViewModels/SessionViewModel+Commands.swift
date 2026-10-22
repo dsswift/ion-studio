@@ -17,7 +17,7 @@ extension SessionViewModel {
     // override (`setModel`) live in SessionViewModel+Submit.swift. They were
     // moved there when the #256 follow-up collapsed the engine-vs-plain submit /
     // setModel forks into single branch-free paths and the unified bodies pushed
-    // this file over the Swift 600-line cap. See CLAUDE.md → "When a file
+    // this file over the Swift 600-line cap. See AGENTS.md → "When a file
     // exceeds the cap".
 
     /// Stop a tab's work. `scope` nil means full teardown (the historical
@@ -213,7 +213,7 @@ extension SessionViewModel {
 
     // The plan→implement flow (`implementPlan`) lives in
     // SessionViewModel+ImplementPlan.swift to keep this file under the
-    // Swift size cap. See CLAUDE.md → "When a file exceeds the cap".
+    // Swift size cap. See AGENTS.md → "When a file exceeds the cap".
 
 
     // MARK: - Terminal Commands
@@ -230,7 +230,7 @@ extension SessionViewModel {
 
     // Engine Commands live in SessionViewModel+EngineCommands.swift to keep
     // this file under the Swift 600-line cap after submitEnginePrompt grew
-    // an optimistic-insert block. See CLAUDE.md → "When a file exceeds the
+    // an optimistic-insert block. See AGENTS.md → "When a file exceeds the
     // cap".
 
     // Engine instance management commands (addEngineInstance, removeEngineInstance,
