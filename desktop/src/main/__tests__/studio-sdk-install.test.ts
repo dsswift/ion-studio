@@ -31,8 +31,8 @@ describe('studio sdk install', () => {
     installStudioSdkFiles(sourceDir, dir)
     const goMod = readFileSync(join(dir, 'studio-sdk-go/go.mod'), 'utf8')
     expect(goMod).toContain('replace github.com/dsswift/ion/sdk/go => ../sdk-go')
-    expect(goMod).not.toContain('../../../sdk/go')
-    expect(goMod).not.toContain('Inside the Ion repository')
+    expect(goMod).not.toContain('../../../../ion/sdk/go')
+    expect(goMod).not.toContain('Inside this repository')
     expect(rewriteGoModReplace('module x\n')).toBe('module x\n')
   })
 

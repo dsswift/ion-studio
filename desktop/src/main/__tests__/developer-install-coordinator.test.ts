@@ -156,7 +156,7 @@ describe.runIf(posix)('developer install coordinator', () => {
 
     const stager = readFileSync(stageEngineResources, 'utf8')
     expect(stager).toContain('rm -rf "$RES/extensions/sdk" "$RES/extensions/sdk-go"')
-    expect(stager).toContain('cp -R "$REPO_ROOT/engine/extensions/sdk" "$RES/extensions/sdk"')
-    expect(stager).toContain('cp -R "$REPO_ROOT/sdk/go" "$RES/extensions/sdk-go"')
+    expect(stager).toContain('cp -R "$ENGINE_SOURCE/engine/extensions/sdk" "$RES/extensions/sdk"')
+    expect(stager).toContain('cp -R "$ENGINE_SOURCE/sdk/go" "$RES/extensions/sdk-go"')
   })
 })

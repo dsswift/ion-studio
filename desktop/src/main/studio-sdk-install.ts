@@ -33,8 +33,8 @@ export interface StudioSdkFile {
 }
 
 /**
- * Inside the repository the Go module reaches the engine SDK at
- * `../../../sdk/go`. Installed, the engine SDK is its sibling `../sdk-go`.
+ * Inside the repository the Go module reaches the engine SDK in the engine
+ * checkout beside it. Installed, the engine SDK is its sibling `../sdk-go`.
  */
 export function rewriteGoModReplace(goMod: string): string {
   const rewritten = goMod.replace(
@@ -42,7 +42,7 @@ export function rewriteGoModReplace(goMod: string): string {
     'replace github.com/dsswift/ion/sdk/go => ../sdk-go',
   )
   // Drop the comment that explains the in-repository path; it is false here.
-  return rewritten.replace(/^\/\/ Inside the Ion repository[\s\S]*?(?=^replace )/m, '')
+  return rewritten.replace(/^\/\/ Inside this repository[\s\S]*?(?=^replace )/m, '')
 }
 
 export const STUDIO_SDK_FILES: readonly StudioSdkFile[] = [

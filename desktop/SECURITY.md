@@ -20,7 +20,7 @@ Key security properties:
 | `raw.githubusercontent.com` | Outbound | Marketplace catalog fetch (optional) |
 | `api.github.com` | Outbound | Skill tarball download (optional, pinned SHA) |
 
-No other network connections are made by Ion Desktop. The engine may make outbound connections to LLM providers as part of normal operation. See the [engine documentation](../engine/README.md) for details.
+No other network connections are made by Ion Desktop. The engine may make outbound connections to LLM providers as part of normal operation. See the [engine documentation](https://github.com/dsswift/ion/blob/main/engine/README.md) for details.
 
 ## Reporting Vulnerabilities
 
