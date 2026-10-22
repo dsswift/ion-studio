@@ -6,7 +6,7 @@ sidebar_position: 4
 
 # Ion Studio Server
 
-The Studio Server is the headless extraction of the desktop's main process (`server/`, the `@ion/server` npm workspace): the Studio wire protocol, auth, worktree/bench orchestration, and every store slice the desktop overlay used to run in Electron's main process, now runnable without Electron at all. It speaks the [Studio wire protocol](../protocol/studio-wire.md) over TCP and a local Unix socket, and connects to an Ion Engine over the engine's own NDJSON socket -- see [Engine standalone](engine-standalone.md) and [Engine containers](engine-container.md) for the engine side.
+The Studio Server is the headless extraction of the desktop's main process (`server/`, the `@ion/server` npm workspace): the Studio wire protocol, auth, worktree/bench orchestration, and every store slice the desktop overlay used to run in Electron's main process, now runnable without Electron at all. It speaks the [Studio wire protocol](../protocol/studio-wire.md) over TCP and a local Unix socket, and connects to an Ion Engine over the engine's own NDJSON socket -- see [Engine standalone](https://github.com/dsswift/ion/blob/main/docs/deployment/engine-standalone.md) and [Engine containers](https://github.com/dsswift/ion/blob/main/docs/deployment/engine-container.md) for the engine side.
 
 Two processes, one data directory: the server owns no engine of its own. It resolves the engine's address exactly as the desktop does (`<ION_DATA_DIR>/engine.sock` on macOS/Linux), so the engine and server must share `ION_DATA_DIR` whenever they run as separate processes or containers.
 
@@ -58,7 +58,7 @@ Everything after the install is one command on the host:
 
 | Command | Does |
 |---|---|
-| `ion studio status [--json] [--no-latest]` | The whole host: the installed Studio Server bundle and Ion desktop, the engine running against the one installed, CPU and memory, conversations with an agent running now, relays, the owner's paired devices and which are connected now (read from the running server), every [Format Version](../architecture/format-versions.md) installed and running, service states and PIDs, `/readyz`, log paths, and the latest release (`--no-latest` skips that lookup) |
+| `ion studio status [--json] [--no-latest]` | The whole host: the installed Studio Server bundle and Ion desktop, the engine running against the one installed, CPU and memory, conversations with an agent running now, relays, the owner's paired devices and which are connected now (read from the running server), every [Format Version](https://github.com/dsswift/ion/blob/main/docs/architecture/format-versions.md) installed and running, service states and PIDs, `/readyz`, log paths, and the latest release (`--no-latest` skips that lookup) |
 | `ion studio pair [--label L] [--as PERSON] [--scopes a,b] [--relay] [--code] [--json]` | Mints a one-time pairing link (`--relay` also opens a relay pairing channel for a client off the LAN; `--as` names the person the joining device belongs to on an `isolated` host; `--code` mints the short code for a desktop that found this server under Nearby) |
 | `ion studio relay list \| set wss://URL (--oidc \| --key-stdin \| --key-file PATH) \| remove wss://URL` | Adds, changes, or removes a relay on an install that already exists, then restarts the services (`--no-restart` to skip). `install --relay` only names one on a first install. A pre-shared key is read from standard input or a file, never the command line |
 | `ion studio restart` | Restarts both services and waits on `/readyz` |
@@ -192,7 +192,7 @@ broken deploy names its own cause.
 
 `ion fleet` wraps both deploy scripts for many hosts at once: it reads each
 host's status (installs, engine, load, running conversations, relays, and
-[Format Versions](../architecture/format-versions.md)), shows which hosts can
+[Format Versions](https://github.com/dsswift/ion/blob/main/docs/architecture/format-versions.md)), shows which hosts can
 transfer conversations to which, and redeploys a selection with one build per
 platform. See [Fleet](fleet.md).
 

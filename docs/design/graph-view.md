@@ -50,7 +50,7 @@ Graph View is **enabled by default, for every conversation**. Unlike almost ever
 Roots are configured as an array. The full `desktop.graphView` block also
 carries identity/label/group/edge/hover field bindings, curated field
 metadata, saved views, section-node and neighborhood-depth settings — see
-[settings.json § Graph View](../configuration/settings-json.md#graph-view) for
+[settings.json § Graph View](https://github.com/dsswift/ion/blob/main/docs/configuration/settings-json.md#graph-view) for
 the complete field reference. A project that wants to override the automatic
 primary root — to point at a subdirectory, or at an entirely different
 corpus — sets its own `corpusRoots`:
@@ -274,4 +274,4 @@ A position or pin is written only for a node with a **durable identity**. A docu
 
 A corpus names one of them in `defaultView` to choose what an operator opens on, which is applied once when the corpus first loads, before the opening scope is chosen — a view carries the filters and pinned positions that the scope decision reads. A name matching no saved view is logged and skipped rather than failing the load, because a corpus can ship a default whose view a later edit renamed, and a graph that refuses to open is worse than one that opens unstyled. Loading a view later, by hand, is the same code path.
 
-See [settings.json § Graph View](../configuration/settings-json.md#graph-view) for the full saved-view field shape and a worked example.
+See [settings.json § Graph View](https://github.com/dsswift/ion/blob/main/docs/configuration/settings-json.md#graph-view) for the full saved-view field shape and a worked example.

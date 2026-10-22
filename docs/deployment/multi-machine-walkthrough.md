@@ -30,7 +30,7 @@ host's, and Laptop B's, in one Inbox. From Laptop B you see only Laptop B.
 The arrows do not run backwards, and the rest of this page shows why and how
 to check it.
 
-Each machine is an [Environment](../getting-started/concepts.md): a Studio
+Each machine is an [Environment](https://github.com/dsswift/ion/blob/main/docs/getting-started/concepts.md): a Studio
 Server paired with one engine. A desktop install carries its own server, so
 Laptop A and Laptop B are Environments too. The reference for everything
 below is [Ion Studio Server](studio-server.md).

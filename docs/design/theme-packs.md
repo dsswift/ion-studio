@@ -30,7 +30,7 @@ Theme selection is **per device**: the desktop's theme is the `selectedTheme` se
 
 On Windows the system root is `%PROGRAMDATA%\Ion\themes`; on Linux, `/etc/ion/themes`. The account root sits beside it on each platform: `%PROGRAMDATA%\Ion\accounts\<scope>\themes` and `/etc/ion/accounts/<scope>/themes`.
 
-A pack in an account root is offered only to accounts whose enterprise policy resolves that scope. An administrator names the scope with `assetScope` on an [account policy](../enterprise/sealed-config.md#account-policies), so two people signed in to one host can each get their own branded pack, even under the same pack id. When several scopes apply, a later one wins an id collision.
+A pack in an account root is offered only to accounts whose enterprise policy resolves that scope. An administrator names the scope with `assetScope` on an [account policy](https://github.com/dsswift/ion/blob/main/docs/enterprise/sealed-config.md#account-policies), so two people signed in to one host can each get their own branded pack, even under the same pack id. When several scopes apply, a later one wins an id collision.
 
  The directory name must equal the manifest `id` and match `^[a-z0-9][a-z0-9-]{0,63}$`. Packs are discovered at app start, re-scanned on every iOS sync, and watched live (a pack dropped while the app runs applies without a restart).
 
@@ -174,7 +174,7 @@ Enterprise theme policy rides the engine's MDM-sealed enterprise config under th
 }
 ```
 
-- `themeId` alone (`locked` absent/false): **managed default**. The theme is applied once per published value, on the desktop **and** on every paired iOS device, and it replaces whatever theme was selected. The user may change it afterwards, and that choice stays until an administrator publishes a different `themeId`. See [Managed defaults](../enterprise/sealed-config.md#managed-defaults-seed-then-the-person-owns-it).
+- `themeId` alone (`locked` absent/false): **managed default**. The theme is applied once per published value, on the desktop **and** on every paired iOS device, and it replaces whatever theme was selected. The user may change it afterwards, and that choice stays until an administrator publishes a different `themeId`. See [Managed defaults](https://github.com/dsswift/ion/blob/main/docs/enterprise/sealed-config.md#managed-defaults-seed-then-the-person-owns-it).
 - `locked: true`: **enforced** — the theme always renders and the picker is disabled, on the desktop **and** on every paired iOS device (projected via `desktop_settings_snapshot.themePolicy`). The user's own saved selection is preserved and resumes when the policy lifts. Enforcement persists on iOS across offline relaunches.
 
 A typical enterprise deployment pairs the two mechanisms: the MDM installs the branded pack into the machine-scope themes root and sets `themePolicy` in the managed enterprise config. See [docs/enterprise/mdm.md](../enterprise/mdm.md) for the managed-config delivery paths. The engine passes `customFields['ion-desktop']` through opaquely — no engine configuration is involved beyond the sealed config file itself.

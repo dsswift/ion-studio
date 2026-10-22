@@ -33,7 +33,7 @@ Start a new engine session.
 | `workingDirectory` | string   | yes      | Working directory for the session    |
 | `sessionId`        | string   | no       | Resume an existing session           |
 | `maxTokens`        | number   | no       | Max output tokens per response       |
-| `thinking`         | object   | no       | Extended thinking config (`enabled`, `effort`, `budgetTokens`, `streamDeltas`, `persist`). A per-session default that overrides the engine-wide [`thinking` block in `engine.json`](../configuration/engine-json.md#thinking) and is itself overridden by a per-prompt `thinkingEffort`. |
+| `thinking`         | object   | no       | Extended thinking config (`enabled`, `effort`, `budgetTokens`, `streamDeltas`, `persist`). A per-session default that overrides the engine-wide [`thinking` block in `engine.json`](https://github.com/dsswift/ion/blob/main/docs/configuration/engine-json.md#thinking) and is itself overridden by a per-prompt `thinkingEffort`. |
 | `systemHint`       | string   | no       | Additional system prompt content     |
 | `workspaceWatchIgnore` | string[] | no   | Replace the engine's default watcher ignore globs |
 | `claudeCompat`     | boolean  | no       | Enable Claude Code compatibility (e.g. `~/.claude/skills/`) |
@@ -56,7 +56,7 @@ Start a new engine session.
 
 ### resolve_new_conversation_defaults
 
-Resolve global, project, and enterprise new-conversation defaults without creating a session. Send `path` for one directory or `paths` for an ordered batch. An empty request resolves only global defaults. See [engine.json](../configuration/engine-json.md#newconversationdefaults).
+Resolve global, project, and enterprise new-conversation defaults without creating a session. Send `path` for one directory or `paths` for an ordered batch. An empty request resolves only global defaults. See [engine.json](https://github.com/dsswift/ion/blob/main/docs/configuration/engine-json.md#newconversationdefaults).
 
 ```json
 {"cmd":"resolve_new_conversation_defaults","path":"/work/repository","requestId":"r-defaults"}
@@ -65,7 +65,7 @@ Resolve global, project, and enterprise new-conversation defaults without creati
 
 The single result data is one resolved record. The batch result data is `{ "defaults": [...] }` in request order.
 
-An optional `principal` (a SessionPrincipal) resolves the defaults for that account, with every matching [account policy](../enterprise/sealed-config.md#account-policies) applied.
+An optional `principal` (a SessionPrincipal) resolves the defaults for that account, with every matching [account policy](https://github.com/dsswift/ion/blob/main/docs/enterprise/sealed-config.md#account-policies) applied.
 
 ---
 
@@ -87,16 +87,16 @@ Send a user message to an active session.
 | `deliveryId`                | string   | no       | Stable client idempotency key. The engine accepts one prompt per session/conversation delivery ID, persists it with the user turn, and returns an already-accepted result for duplicate retries without starting another run. |
 | `displayText`               | string   | no       | Optional user-facing transcript text when it differs from `text`. The model receives `text`; history consumers receive `displayText`. The engine persists both so later context reconstruction still uses the full model prompt. Empty or absent means both views use `text`. |
 | `injectionKind`             | string   | no       | How this turn was authored, as an `InjectionKind` wire value. Lets a client state that the turn it delivers arrived through something other than the prompt box — a questions wizard, a form, a scheduler. The engine records it on the persisted turn and publishes the derived `machineAuthored` flag; what a consumer does with either is its own policy (ADR-017). Note that a kind is not automatically machine-authored: `structured_answer` (a form submission) is USER-authored, because a person chose every value — the kind tells a consumer to *label* the turn, not to hide it. **Validated, not trusted:** an unrecognized value is dropped and the turn is treated as user-authored, so a client cannot hide content by inventing a kind. Absent (the default) means an ordinary user turn. Known values: `agent_completion`, `slash_command`, `background_task_completion`, `checkin`, `revive`, `run_recovery`, `structured_answer`, `system_steer`, `steer`. |
-| `traceparent`               | string   | no       | The caller's W3C trace context, `00-<trace-id>-<parent-span-id>-<flags>`. When valid, the run joins the caller's trace: its `run.execute` span is a child of the caller's span, and every log line and span in the run carries the caller's `trace_id`. Absent or invalid: the engine starts a new trace for the run (an invalid value is logged). See [log schema § Spans](../observability/log-schema.md#spans). |
-| `planMode`                  | boolean  | no       | Start this run in plan mode. See [Plan Mode](../sessions/lifecycle.md#plan-mode). |
-| `planModeTools`             | string[] | no       | Override the read-only tool set for this plan-mode run. Defaults to `["Read","Grep","Glob","Agent","AgentStatus","WebFetch","WebSearch","Skill"]`. The set is enforced when a tool is called: every tool stays in the list the model sees, and a call to one outside the set is refused while the run is planning. See [ADR-038](../architecture/adr/038-mode-invariant-prompt-prefix.md). |
+| `traceparent`               | string   | no       | The caller's W3C trace context, `00-<trace-id>-<parent-span-id>-<flags>`. When valid, the run joins the caller's trace: its `run.execute` span is a child of the caller's span, and every log line and span in the run carries the caller's `trace_id`. Absent or invalid: the engine starts a new trace for the run (an invalid value is logged). See [log schema § Spans](https://github.com/dsswift/ion/blob/main/docs/observability/log-schema.md#spans). |
+| `planMode`                  | boolean  | no       | Start this run in plan mode. See [Plan Mode](https://github.com/dsswift/ion/blob/main/docs/sessions/lifecycle.md#plan-mode). |
+| `planModeTools`             | string[] | no       | Override the read-only tool set for this plan-mode run. Defaults to `["Read","Grep","Glob","Agent","AgentStatus","WebFetch","WebSearch","Skill"]`. The set is enforced when a tool is called: every tool stays in the list the model sees, and a call to one outside the set is refused while the run is planning. See [ADR-038](https://github.com/dsswift/ion/blob/main/docs/architecture/adr/038-mode-invariant-prompt-prefix.md). |
 | `planFilePath`              | string   | no       | Path of the plan file for this plan-mode run. The engine enforces write-only access to this file while plan mode is active. |
-| `planModePrompt`            | string   | no       | Custom plan-mode instructions. When non-empty, the engine uses this string verbatim instead of its default. The instructions are delivered as a `plan_mode_enter` notice in the conversation, not through the system prompt. On the codex backend it is sent as the plan collaboration mode's `developer_instructions` (a generic engine default applies when empty). See [Plan mode prose overrides](../sessions/lifecycle.md#plan-mode-prose-overrides) and [Plan mode on delegated-CLI backends](../sessions/lifecycle.md#plan-mode-on-delegated-cli-backends). |
+| `planModePrompt`            | string   | no       | Custom plan-mode instructions. When non-empty, the engine uses this string verbatim instead of its default. The instructions are delivered as a `plan_mode_enter` notice in the conversation, not through the system prompt. On the codex backend it is sent as the plan collaboration mode's `developer_instructions` (a generic engine default applies when empty). See [Plan mode prose overrides](https://github.com/dsswift/ion/blob/main/docs/sessions/lifecycle.md#plan-mode-prose-overrides) and [Plan mode on delegated-CLI backends](https://github.com/dsswift/ion/blob/main/docs/sessions/lifecycle.md#plan-mode-on-delegated-cli-backends). |
 | `planModeReentry`           | boolean  | no       | When `true`, the enter notice is prefixed with re-entry guidance (read the existing plan before making changes). Set by the session manager when plan mode is re-enabled on a session that has a prior plan file. The engine also adds the guidance on its own when the conversation shows the model left this plan before. |
 | `implementationPhase`       | boolean  | no       | Marks the "implement" half of a plan-then-implement flow. The `EnterPlanMode` tool stays in the list, and a call to it on this run is refused, so the model cannot re-propose plan-mode entry. See ADR-004 and ADR-038. |
-| `thinkingEffort`            | string   | no       | Per-prompt extended-thinking effort for this run: `"low"`, `"medium"`, `"high"`, `"xhigh"`, or `"max"` (ascending), or `"adaptive"` to request reasoning while letting a self-regulating model choose its own depth. A live per-conversation control — a client changes the level and it takes effect on the very next prompt with no session restart (mirrors `implementationPhase`). **Three distinct states.** A level sets thinking for the run. The literal `"off"` **clears** it, beating both the session default and the engine-wide [`engine.json` default](../configuration/engine-json.md#thinking). An **absent** field means "no opinion" and inherits whichever default is configured — so a client that wants thinking off must send `"off"` rather than omitting the field, or it will inherit the default. The engine maps a level onto `RunOptions.Thinking`; the provider then resolves the per-model mechanism (Anthropic adaptive `effort`, OpenAI `reasoning_effort`, Gemini `thinkingConfig`). A model that declares no thinking mechanism receives no directive. See the [model capability fields](../configuration/models.md#providersidmodelsname) (`thinkingMode` / `thinkingEfforts`) a client uses to decide whether to offer this control. |
-| `enterPlanModeDescription`  | string   | no       | Harness-supplied description prose for the `EnterPlanMode` sentinel tool. When non-empty, the engine forwards it verbatim as the tool description. Empty falls back to the engine's one-line neutral default. Per [ADR-004](../architecture/adr/004-enter-plan-mode-prose-in-harness.md). |
-| `planModeSparseReminder`    | string   | no       | Harness-supplied text for the per-turn plan-mode sparse reminder. When non-empty, the engine injects this verbatim instead of building the reminder from the plan file. Empty inherits the engine default (`buildPlanModeSparseReminder`). See [Plan mode prose overrides](../sessions/lifecycle.md#plan-mode-prose-overrides). |
+| `thinkingEffort`            | string   | no       | Per-prompt extended-thinking effort for this run: `"low"`, `"medium"`, `"high"`, `"xhigh"`, or `"max"` (ascending), or `"adaptive"` to request reasoning while letting a self-regulating model choose its own depth. A live per-conversation control — a client changes the level and it takes effect on the very next prompt with no session restart (mirrors `implementationPhase`). **Three distinct states.** A level sets thinking for the run. The literal `"off"` **clears** it, beating both the session default and the engine-wide [`engine.json` default](https://github.com/dsswift/ion/blob/main/docs/configuration/engine-json.md#thinking). An **absent** field means "no opinion" and inherits whichever default is configured — so a client that wants thinking off must send `"off"` rather than omitting the field, or it will inherit the default. The engine maps a level onto `RunOptions.Thinking`; the provider then resolves the per-model mechanism (Anthropic adaptive `effort`, OpenAI `reasoning_effort`, Gemini `thinkingConfig`). A model that declares no thinking mechanism receives no directive. See the [model capability fields](https://github.com/dsswift/ion/blob/main/docs/configuration/models.md#providersidmodelsname) (`thinkingMode` / `thinkingEfforts`) a client uses to decide whether to offer this control. |
+| `enterPlanModeDescription`  | string   | no       | Harness-supplied description prose for the `EnterPlanMode` sentinel tool. When non-empty, the engine forwards it verbatim as the tool description. Empty falls back to the engine's one-line neutral default. Per [ADR-004](https://github.com/dsswift/ion/blob/main/docs/architecture/adr/004-enter-plan-mode-prose-in-harness.md). |
+| `planModeSparseReminder`    | string   | no       | Harness-supplied text for the per-turn plan-mode sparse reminder. When non-empty, the engine injects this verbatim instead of building the reminder from the plan file. Empty inherits the engine default (`buildPlanModeSparseReminder`). See [Plan mode prose overrides](https://github.com/dsswift/ion/blob/main/docs/sessions/lifecycle.md#plan-mode-prose-overrides). |
 | `bashAllowlistAdditionsForThisPrompt` | string[] | no | Per-prompt additions to the plan-mode Bash command allowlist. The engine unions these with the session-scoped allowlist (`set_plan_mode.planModeAllowedBashCommands`) when building the run-time tool list, then drops them at run end — the session allowlist is never mutated. Intended carrier: slash commands whose YAML frontmatter declares additional bash permissions for one turn (e.g. `/ion--review-changes` needing `gh pr diff`). See § [`set_plan_mode` → Configuration layers](#set_plan_mode) for the three-layer composition model. |
 | `compactTargetPercent`      | number   | no       | Post-compact target. Auto/reactive passes apply it to the context window; explicit `/compact` applies it to the currently truncatable message estimate. Overrides `engine.json` `compaction.targetPercent` for this prompt. |
 | `compactMicroKeepTurns`     | number   | no       | Number of recent turns protected from micro-compaction. Overrides `compaction.microCompactKeep`. |
@@ -142,7 +142,7 @@ safe reading of "stop" — and is logged.
 
 `all_work` stops every session-owned background Bash task but retains the session object. The next prompt rearms its cancellation root and starts normally.
 
-When the session had no run and no other work when the abort arrived, scopes `all` and `all_work` release the session instead, with the same teardown as `stop_session` (an `engine_dead` follows). The next `send_prompt` for the key fails with `session_not_found` until the client starts the session again. `workspace.releaseIdleSessionOnAbort: false` turns this off, and the `session_before_release` hook can keep any one session. See [Idle release](../sessions/lifecycle.md#idle-release).
+When the session had no run and no other work when the abort arrived, scopes `all` and `all_work` release the session instead, with the same teardown as `stop_session` (an `engine_dead` follows). The next `send_prompt` for the key fails with `session_not_found` until the client starts the session again. `workspace.releaseIdleSessionOnAbort: false` turns this off, and the `session_before_release` hook can keep any one session. See [Idle release](https://github.com/dsswift/ion/blob/main/docs/sessions/lifecycle.md#idle-release).
 
 Under `orchestrator`, foreground dispatches (the orchestrator's `Agent` tool)
 stop with the run, because they *are* the run rather than peers of it. In-flight
@@ -366,7 +366,7 @@ This separation lets harnesses (a) install the allowlist as engine policy via `e
 
 The clamp deliberately covers layers 2 and 3, not just the config layer. Those two are client-supplied and therefore the easier paths to abuse: a ceiling that bound only `engine.json` would leave a `set_plan_mode` override or a slash command's `allowed_bash_commands` frontmatter free to grant commands the organisation forbids. Absent an enterprise policy the clamp is a pass-through.
 
-Note that layer 1 merges the user and project `engine.json` files **additively** (union, de-duplicated) rather than by replacement, so a project can contribute commands its workflow needs on top of the developer's global list. See [Sealed Configuration → Plan-mode Bash allowlist](../enterprise/sealed-config.md#plan-mode-bash-allowlist) for the full model, including the prefix-matching direction rule.
+Note that layer 1 merges the user and project `engine.json` files **additively** (union, de-duplicated) rather than by replacement, so a project can contribute commands its workflow needs on top of the developer's global list. See [Sealed Configuration → Plan-mode Bash allowlist](https://github.com/dsswift/ion/blob/main/docs/enterprise/sealed-config.md#plan-mode-bash-allowlist) for the full model, including the prefix-matching direction rule.
 
 **Response:** `ServerResult` with `ok: true`.
 
@@ -741,7 +741,7 @@ While any connection watches, the engine samples at the smallest interval any wa
 
 ### scan_wiki_links
 
-Run the read-only [link integrity scan](../architecture/wiki-links.md#link-integrity-scan) over a session's working directory. The engine reads every document, resolves each wiki link, and reports the ones that name no single file. Nothing is written. The scan honors the session's workspace ignore patterns.
+Run the read-only link integrity scan over a session's working directory. The engine reads every document, resolves each wiki link, and reports the ones that name no single file. Nothing is written. The scan honors the session's workspace ignore patterns.
 
 | Field       | Type                | Required | Description                  |
 |-------------|---------------------|----------|------------------------------|
@@ -794,7 +794,7 @@ Daemon liveness, answered on a lane that never queues behind a busy session. Sta
 | `socketPath` | string | The socket this engine listens on |
 | `telemetryHealth` | object | Current delivery health of each telemetry collector's network targets, keyed `telemetry` and `conversationEvents`. Each value is a list of `{target, queuedBatches, queuedEvents, queuedBytes, oldestAgeMs, maxAttempts, stuck, stuckAfterMs, quarantinedEvents, quarantinedBytes, softWarnBytes, percentOfSoftWarn, crossedThreshold, healthy, lastError, critical}`, the same figures [`engine_telemetry_health`](server-events.md#engine_telemetry_health) reports on each transition. Empty when no network target is configured. |
 | `systemMetrics` | object | The latest `SystemMetricsSample`. Absent when sampling is disabled or no sample exists yet; `health` never takes a sample itself. |
-| `compat` | array | This engine's [Format Versions](../architecture/format-versions.md): one `{id, owner, version, rule, meaning}` per versioned format or protocol the engine reads or writes. `ion version --json` prints the same list from the binary alone. |
+| `compat` | array | This engine's [Format Versions](https://github.com/dsswift/ion/blob/main/docs/architecture/format-versions.md): one `{id, owner, version, rule, meaning}` per versioned format or protocol the engine reads or writes. `ion version --json` prints the same list from the binary alone. |
 
 `ion health` prints this object.
 
@@ -808,7 +808,7 @@ Read the enterprise policy the engine resolved. Stateless -- no session key is r
 |-------------|----------------------------|----------|------------------------------|
 | `cmd`       | `"get_enterprise_policy"`  | yes      | Command discriminator        |
 | `requestId` | string                     | no       | Correlates with ServerResult |
-| `principal` | SessionPrincipal           | no       | The account to resolve the policy for. Every [account policy](../enterprise/sealed-config.md#account-policies) that matches this principal is composed into the reply. Omitted: the reply is the policy the engine process runs under. |
+| `principal` | SessionPrincipal           | no       | The account to resolve the policy for. Every [account policy](https://github.com/dsswift/ion/blob/main/docs/enterprise/sealed-config.md#account-policies) that matches this principal is composed into the reply. Omitted: the reply is the policy the engine process runs under. |
 
 ```json
 {"cmd":"get_enterprise_policy","requestId":"r41"}
@@ -819,7 +819,7 @@ Read the enterprise policy the engine resolved. Stateless -- no session key is r
 | Field                     | Type         | Description                                                                                                   |
 |---------------------------|--------------|---------------------------------------------------------------------------------------------------------------|
 | `newConversationDefaults` | object\|null | The enterprise `NewConversationDefaults` policy object, or `null` when no enterprise config is loaded or no `NewConversationDefaults` section is present. |
-| `policy`                  | object|null | The full merged `EnterpriseConfig` (D-004 passthrough), or `null` when none is loaded. On a managed installation it is never `null` and carries `managedMode` (`managed`, `policyAbsent`, `overrideRefused`); see [Managed mode](../enterprise/mdm.md#managed-mode). `overrides` lists the user and project config values enforcement displaced; see [Policy override notices](../enterprise/sealed-config.md#policy-override-notices). When policy declares managed files it also carries `managedConfigStatus`; see [Managed configuration files](../enterprise/managed-config.md). |
+| `policy`                  | object|null | The full merged `EnterpriseConfig` (D-004 passthrough), or `null` when none is loaded. On a managed installation it is never `null` and carries `managedMode` (`managed`, `policyAbsent`, `overrideRefused`); see [Managed mode](../enterprise/mdm.md#managed-mode). `overrides` lists the user and project config values enforcement displaced; see [Policy override notices](https://github.com/dsswift/ion/blob/main/docs/enterprise/sealed-config.md#policy-override-notices). When policy declares managed files it also carries `managedConfigStatus`; see [Managed configuration files](https://github.com/dsswift/ion/blob/main/docs/enterprise/managed-config.md). |
 | `policyHash`              | string       | SHA-256 hex digest of `policy`'s canonical JSON. Stable across two calls with an unchanged policy; changes whenever the policy does. Lets a consumer detect a policy change without deep-comparing the whole blob. |
 
 ```json
@@ -830,7 +830,7 @@ Read the enterprise policy the engine resolved. Stateless -- no session key is r
 
 ### get_managed_config_status
 
-Read which [managed configuration files](../enterprise/managed-config.md) are in force. Stateless: no session key is required. The response never carries configuration content.
+Read which [managed configuration files](https://github.com/dsswift/ion/blob/main/docs/enterprise/managed-config.md) are in force. Stateless: no session key is required. The response never carries configuration content.
 
 | Field       | Type                           | Required | Description                  |
 |-------------|--------------------------------|----------|------------------------------|
@@ -1036,7 +1036,7 @@ Publish a resource operation from the client. Set `resourceGlobal: true` for a w
 
 ### resource_export, resource_import, resource_forget
 
-Move the resources producers hold for a conversation to another machine. Each runs against the broker of the session named by `key`; its extensions are the producers. See [Resource Subsystem](../architecture/resource-subsystem.md#moving-a-conversations-resources).
+Move the resources producers hold for a conversation to another machine. Each runs against the broker of the session named by `key`; its extensions are the producers. See [Resource Subsystem](https://github.com/dsswift/ion/blob/main/docs/architecture/resource-subsystem.md#moving-a-conversations-resources).
 
 | Command | Fields | Result `data` |
 |---------|--------|---------------|
@@ -1296,7 +1296,7 @@ After an issuer-side revocation, request one cache-bypassing refresh:
 
 Read the account each delegated provider CLI is signed in to, and the usage limits that CLI reports for it. The engine asks the CLIs themselves (the Claude Code CLI's usage request, the Codex app-server's `account/rateLimits/read`); it never handles an account's credential. The CLIs that report usage are re-probed first, so the account named is the one signed in now.
 
-A Claude Code login by long-lived token (`authMethod: "oauth_token"`) names no email, organization, or plan. For it the engine has the CLI run one small model turn with its HTTP debug log on, and reports the organization the CLI logged as `orgId`. The CLI alone sends the credential. The answer is held for a day; a failed read is retried after an hour. [`providers.<id>.accountOrgRead`](../configuration/engine-json.md) turns the read off or names its model.
+A Claude Code login by long-lived token (`authMethod: "oauth_token"`) names no email, organization, or plan. For it the engine has the CLI run one small model turn with its HTTP debug log on, and reports the organization the CLI logged as `orgId`. The CLI alone sends the credential. The answer is held for a day; a failed read is retried after an hour. [`providers.<id>.accountOrgRead`](https://github.com/dsswift/ion/blob/main/docs/configuration/engine-json.md) turns the read off or names its model.
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
@@ -1323,7 +1323,7 @@ A sign-in that changed since the last probe also triggers `engine_providers_upda
 
 ### provider_subscription_status
 
-Read the Provider Subscription state: the provider key the engine resolved from `subscriptionLookup` for the signed-in identity. See [Subscription Lookup](../configuration/subscription-lookup.md).
+Read the Provider Subscription state: the provider key the engine resolved from `subscriptionLookup` for the signed-in identity. See [Subscription Lookup](https://github.com/dsswift/ion/blob/main/docs/configuration/subscription-lookup.md).
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
@@ -1556,7 +1556,7 @@ A provider is `skipped` when it was not a discovery target: its models come from
 
 ### resolve_model_tier
 
-Resolve a tier name from [`~/.ion/models.json`](../configuration/models.md#tiers) to the model it is configured for, plus that tier's fallback chain.
+Resolve a tier name from [`~/.ion/models.json`](https://github.com/dsswift/ion/blob/main/docs/configuration/models.md#tiers) to the model it is configured for, plus that tier's fallback chain.
 
 The engine owns that file's semantics, so consumers ask rather than parsing it themselves. This matters most for a consumer that *gates a feature* on a tier existing: resolution is a pass-through for an unrecognised name. When no provider resolves that name, a run falls back to its configured default model and emits `engine_model_fallback`; the resolved value alone still cannot distinguish "configured" from "unknown". The `configured` flag is that distinction.
 

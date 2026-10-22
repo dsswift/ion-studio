@@ -9,22 +9,7 @@
       "kind": "runtime-mechanic",
       "status": "canonical",
       "contract": "internal",
-      "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "EntryAborted",
-          "path": "engine/internal/conversation/conversation.go"
-        },
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "func AppendAbortMarker",
-          "path": "engine/internal/conversation/abort_marker.go"
-        }
-      ]
+      "implementations": []
     },
     {
       "id": "account-policy",
@@ -34,15 +19,7 @@
       "kind": "public-contract",
       "status": "canonical",
       "contract": "public-wire",
-      "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "type AccountPolicy struct",
-          "path": "engine/internal/types/config_account_policy.go"
-        }
-      ]
+      "implementations": []
     },
     {
       "id": "account-setting",
@@ -73,22 +50,7 @@
         "active branch"
       ],
       "contract": "public-wire",
-      "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "func SwitchBranch",
-          "path": "engine/internal/conversation/branches.go"
-        },
-        {
-          "platform": "engine",
-          "presentation": "wire",
-          "language": "go",
-          "symbol": "EventActivePathChanged",
-          "path": "engine/internal/types/normalized_event_types.go"
-        }
-      ]
+      "implementations": []
     },
     {
       "id": "agent",
@@ -107,27 +69,6 @@
       ],
       "contract": "public-sdk",
       "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "type AgentInfo struct",
-          "path": "engine/internal/extension/sdk_hook_types.go"
-        },
-        {
-          "platform": "engine",
-          "presentation": "wire",
-          "language": "go",
-          "symbol": "type AgentStateUpdate struct",
-          "path": "engine/internal/types/types.go"
-        },
-        {
-          "platform": "sdk",
-          "presentation": "code",
-          "language": "typescript",
-          "symbol": "export interface AgentSpec",
-          "path": "engine/extensions/sdk/ion-sdk/types.ts"
-        },
         {
           "platform": "ios",
           "presentation": "ui",
@@ -210,29 +151,7 @@
       "kind": "public-contract",
       "status": "canonical",
       "contract": "public-sdk",
-      "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "type Snapshot struct",
-          "path": "engine/internal/appconfig/snapshot.go"
-        },
-        {
-          "platform": "sdk",
-          "presentation": "code",
-          "language": "typescript",
-          "symbol": "export interface ApplicationConfigSnapshot",
-          "path": "engine/extensions/sdk/ion-sdk/types.ts"
-        },
-        {
-          "platform": "sdk",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "type ApplicationConfigSnapshot struct",
-          "path": "sdk/go/application_config.go"
-        }
-      ]
+      "implementations": []
     },
     {
       "id": "async-delivery",
@@ -245,22 +164,7 @@
         "async trigger delivery"
       ],
       "contract": "public-sdk",
-      "implementations": [
-        {
-          "platform": "sdk",
-          "presentation": "code",
-          "language": "typescript",
-          "symbol": "export async function dispatchFireAsync",
-          "path": "engine/extensions/sdk/ion-sdk/runtime-async.ts"
-        },
-        {
-          "platform": "engine",
-          "presentation": "wire",
-          "language": "go",
-          "symbol": "DeliveryId",
-          "path": "engine/internal/protocol/protocol.go"
-        }
-      ]
+      "implementations": []
     },
     {
       "id": "attachment",
@@ -274,13 +178,6 @@
       ],
       "contract": "public-wire",
       "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "wire",
-          "language": "go",
-          "symbol": "Attachments []types.ImageAttachment",
-          "path": "engine/internal/protocol/protocol.go"
-        },
         {
           "platform": "desktop",
           "presentation": "ui",
@@ -347,15 +244,7 @@
         "run backend"
       ],
       "contract": "internal",
-      "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "type RunBackend interface",
-          "path": "engine/internal/backend/backend.go"
-        }
-      ]
+      "implementations": []
     },
     {
       "id": "branch",
@@ -368,22 +257,7 @@
         "conversation branch"
       ],
       "contract": "public-wire",
-      "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "type TreeNode struct",
-          "path": "engine/internal/conversation/conversation.go"
-        },
-        {
-          "platform": "engine",
-          "presentation": "wire",
-          "language": "go",
-          "symbol": "branch_before",
-          "path": "engine/internal/protocol/protocol.go"
-        }
-      ]
+      "implementations": []
     },
     {
       "id": "build-notice",
@@ -588,15 +462,7 @@
         "command envelope"
       ],
       "contract": "public-wire",
-      "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "wire",
-          "language": "go",
-          "symbol": "type ClientCommand struct",
-          "path": "engine/internal/protocol/protocol.go"
-        }
-      ],
+      "implementations": [],
       "notes": "Published wire contract. Field and command names are additive only."
     },
     {
@@ -615,27 +481,6 @@
       ],
       "contract": "public-sdk",
       "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "func ExtractFacts",
-          "path": "engine/internal/compaction/compaction.go"
-        },
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "type CompactionInfo struct",
-          "path": "engine/internal/extension/sdk_hook_types.go"
-        },
-        {
-          "platform": "sdk",
-          "presentation": "code",
-          "language": "typescript",
-          "symbol": "export interface CompactionInfo",
-          "path": "engine/extensions/sdk/ion-sdk/types.ts"
-        },
         {
           "platform": "ios",
           "presentation": "ui",
@@ -730,15 +575,7 @@
         "engine configuration"
       ],
       "contract": "public-wire",
-      "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "wire",
-          "language": "go",
-          "symbol": "type EngineConfig struct",
-          "path": "engine/internal/types/types.go"
-        }
-      ]
+      "implementations": []
     },
     {
       "id": "connection",
@@ -786,20 +623,6 @@
       "contract": "public-sdk",
       "implementations": [
         {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "func WalkContextFiles",
-          "path": "engine/internal/context/context.go"
-        },
-        {
-          "platform": "sdk",
-          "presentation": "code",
-          "language": "typescript",
-          "symbol": "export interface ContextUsage",
-          "path": "engine/extensions/sdk/ion-sdk/types.ts"
-        },
-        {
           "platform": "desktop",
           "presentation": "ui",
           "language": "typescript",
@@ -823,29 +646,7 @@
       "kind": "public-contract",
       "status": "canonical",
       "contract": "public-sdk",
-      "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "type ContextIdentity struct",
-          "path": "engine/internal/auth/identity_context.go"
-        },
-        {
-          "platform": "sdk",
-          "presentation": "code",
-          "language": "typescript",
-          "symbol": "export interface ContextIdentity",
-          "path": "engine/extensions/sdk/ion-sdk/types.ts"
-        },
-        {
-          "platform": "sdk",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "type ContextIdentity struct",
-          "path": "sdk/go/context.go"
-        }
-      ]
+      "implementations": []
     },
     {
       "id": "conversation",
@@ -859,13 +660,6 @@
       ],
       "contract": "public-wire",
       "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "type Conversation struct",
-          "path": "engine/internal/conversation/conversation.go"
-        },
         {
           "platform": "desktop",
           "presentation": "wire",
@@ -883,22 +677,7 @@
       "kind": "runtime-mechanic",
       "status": "canonical",
       "contract": "internal",
-      "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "type ConversationEmitter struct",
-          "path": "engine/internal/telemetry/conversation_emitter.go"
-        },
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "type ConversationEventsConfig struct",
-          "path": "engine/internal/types/config.go"
-        }
-      ]
+      "implementations": []
     },
     {
       "id": "conversation-instance",
@@ -939,22 +718,7 @@
         "conversation storage"
       ],
       "contract": "internal",
-      "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "type SessionEntry struct",
-          "path": "engine/internal/conversation/conversation.go"
-        },
-        {
-          "platform": "engine",
-          "presentation": "doc",
-          "language": "markdown",
-          "symbol": ".tree.jsonl",
-          "path": "docs/architecture/conversation-storage.md"
-        }
-      ]
+      "implementations": []
     },
     {
       "id": "conversation-record-read",
@@ -965,29 +729,7 @@
       "status": "canonical",
       "aliases": [],
       "contract": "public-sdk",
-      "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "func (h *Host) rpcReadConversation",
-          "path": "engine/internal/extension/host_rpc_conversation.go"
-        },
-        {
-          "platform": "sdk",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "func (a *ConversationsAPI) Read",
-          "path": "sdk/go/conversations.go"
-        },
-        {
-          "platform": "sdk",
-          "presentation": "code",
-          "language": "typescript",
-          "symbol": "conversations",
-          "path": "engine/extensions/sdk/ion-sdk/types.ts"
-        }
-      ]
+      "implementations": []
     },
     {
       "id": "conversation-status",
@@ -1001,13 +743,6 @@
       ],
       "contract": "internal",
       "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "wire",
-          "language": "go",
-          "symbol": "type StatusFields struct",
-          "path": "engine/internal/types/types.go"
-        },
         {
           "platform": "desktop",
           "presentation": "ui",
@@ -1075,13 +810,6 @@
           "language": "typescript",
           "symbol": "selectConversations",
           "path": "server/src/telemetry/conversation-telemetry-select.ts"
-        },
-        {
-          "platform": "desktop",
-          "presentation": "doc",
-          "language": "markdown",
-          "symbol": "ConversationTelemetry",
-          "path": "docs/tools/reference.md"
         }
       ]
     },
@@ -1223,13 +951,6 @@
       "contract": "internal",
       "implementations": [
         {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "func TurnCost",
-          "path": "engine/internal/cost/cost.go"
-        },
-        {
           "platform": "ios",
           "presentation": "ui",
           "language": "swift",
@@ -1247,13 +968,6 @@
       "status": "canonical",
       "contract": "public-wire",
       "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "func (s *Server) dispatchProviderRemove",
-          "path": "engine/internal/server/dispatch_provider_remove.go"
-        },
         {
           "platform": "studio",
           "presentation": "ui",
@@ -1468,22 +1182,7 @@
         "agent dispatch"
       ],
       "contract": "public-sdk",
-      "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "type DispatchStateEntry struct",
-          "path": "engine/internal/extension/sdk_types.go"
-        },
-        {
-          "platform": "sdk",
-          "presentation": "code",
-          "language": "typescript",
-          "symbol": "export interface DispatchEntry",
-          "path": "engine/extensions/sdk/ion-sdk/types.ts"
-        }
-      ]
+      "implementations": []
     },
     {
       "id": "dispatch-alias",
@@ -1496,22 +1195,7 @@
         "client dispatch id"
       ],
       "contract": "public-sdk",
-      "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "func (r *DispatchRegistry) RegisterAlias",
-          "path": "engine/internal/session/extcontext/dispatch_registry_alias.go"
-        },
-        {
-          "platform": "sdk",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "ClientDispatchID string",
-          "path": "sdk/go/context_dispatch.go"
-        }
-      ]
+      "implementations": []
     },
     {
       "id": "dispatch-conversation-read",
@@ -1524,22 +1208,7 @@
         "parent-scoped conversation read"
       ],
       "contract": "public-sdk",
-      "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "func (r *DispatchRegistry) ResolveOwnedConversation",
-          "path": "engine/internal/session/extcontext/dispatch_registry_conversation.go"
-        },
-        {
-          "platform": "sdk",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "func (c *Context) ReadDispatchConversation",
-          "path": "sdk/go/context_dispatch_conversation.go"
-        }
-      ]
+      "implementations": []
     },
     {
       "id": "dispatch-history",
@@ -1552,22 +1221,7 @@
         "terminal dispatch history"
       ],
       "contract": "public-sdk",
-      "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "func (r *DispatchRegistry) OwnedHistory",
-          "path": "engine/internal/session/extcontext/dispatch_registry_history.go"
-        },
-        {
-          "platform": "sdk",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "func (c *Context) ListDispatchHistory",
-          "path": "sdk/go/context_dispatch_methods.go"
-        }
-      ]
+      "implementations": []
     },
     {
       "id": "dispatch-split-pane",
@@ -1650,13 +1304,6 @@
       "contract": "public-wire",
       "implementations": [
         {
-          "platform": "engine",
-          "presentation": "wire",
-          "language": "go",
-          "symbol": "type EngineEvent struct",
-          "path": "engine/internal/types/engine_event.go"
-        },
-        {
           "platform": "desktop",
           "presentation": "wire",
           "language": "typescript",
@@ -1685,22 +1332,7 @@
         "engine-scoped host"
       ],
       "contract": "public-sdk",
-      "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "func (m *Manager) StartEngineHosts",
-          "path": "engine/internal/session/engine_hosts.go"
-        },
-        {
-          "platform": "engine",
-          "presentation": "doc",
-          "language": "markdown",
-          "symbol": "extensionHosts",
-          "path": "docs/configuration/extension-hosts.md"
-        }
-      ]
+      "implementations": []
     },
     {
       "id": "engine-host-launcher",
@@ -1711,13 +1343,6 @@
       "status": "canonical",
       "contract": "internal",
       "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "runHost",
-          "path": "engine/cmd/ion-engine-host/host_windows.go"
-        },
         {
           "platform": "desktop",
           "presentation": "code",
@@ -1747,13 +1372,6 @@
       "contract": "public-wire",
       "implementations": [
         {
-          "platform": "engine",
-          "presentation": "wire",
-          "language": "go",
-          "symbol": "type EngineProfile struct",
-          "path": "engine/internal/types/types.go"
-        },
-        {
           "platform": "desktop",
           "presentation": "code",
           "language": "typescript",
@@ -1781,15 +1399,7 @@
         "ion serve"
       ],
       "contract": "public-wire",
-      "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "type Server struct",
-          "path": "engine/internal/server/server.go"
-        }
-      ]
+      "implementations": []
     },
     {
       "id": "engine-supervisor",
@@ -1933,13 +1543,6 @@
       "contract": "public-wire",
       "implementations": [
         {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "type EnterpriseConfig struct",
-          "path": "engine/internal/types/config.go"
-        },
-        {
           "platform": "desktop",
           "presentation": "code",
           "language": "typescript",
@@ -2031,22 +1634,7 @@
       "kind": "runtime-mechanic",
       "status": "canonical",
       "contract": "public-wire",
-      "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "func segmentEvent",
-          "path": "engine/internal/telemetry/telemetry_oversize.go"
-        },
-        {
-          "platform": "engine",
-          "presentation": "doc",
-          "language": "json",
-          "symbol": "payload.segment",
-          "path": "docs/observability/conversation-events.schema.json"
-        }
-      ]
+      "implementations": []
     },
     {
       "id": "explorer-tree-state",
@@ -2091,29 +1679,7 @@
         "extension subprocess"
       ],
       "contract": "public-sdk",
-      "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "type Host struct",
-          "path": "engine/internal/extension/host.go"
-        },
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "type ExtensionConfig struct",
-          "path": "engine/internal/extension/sdk_types.go"
-        },
-        {
-          "platform": "sdk",
-          "presentation": "code",
-          "language": "typescript",
-          "symbol": "export interface ExtensionConfig",
-          "path": "engine/extensions/sdk/ion-sdk/types.ts"
-        }
-      ]
+      "implementations": []
     },
     {
       "id": "extension-context",
@@ -2126,22 +1692,7 @@
         "ion context"
       ],
       "contract": "public-sdk",
-      "implementations": [
-        {
-          "platform": "sdk",
-          "presentation": "code",
-          "language": "typescript",
-          "symbol": "export interface IonContext",
-          "path": "engine/extensions/sdk/ion-sdk/types.ts"
-        },
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "type Context struct",
-          "path": "engine/internal/extension/sdk_types.go"
-        }
-      ]
+      "implementations": []
     },
     {
       "id": "extension-sdk",
@@ -2155,15 +1706,7 @@
         "Ion SDK"
       ],
       "contract": "public-sdk",
-      "implementations": [
-        {
-          "platform": "sdk",
-          "presentation": "code",
-          "language": "typescript",
-          "symbol": "export function createIon",
-          "path": "engine/extensions/sdk/ion-sdk/runtime.ts"
-        }
-      ],
+      "implementations": [],
       "notes": "Source of truth is engine/extensions/sdk/ion-sdk/. The installed copy is overwritten at build time."
     },
     {
@@ -2389,13 +1932,6 @@
       "contract": "public-wire",
       "implementations": [
         {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "type Format",
-          "path": "engine/internal/compat/compat.go"
-        },
-        {
           "platform": "server",
           "presentation": "code",
           "language": "typescript",
@@ -2500,13 +2036,6 @@
           "language": "typescript",
           "symbol": "export async function resolveGitCredential",
           "path": "server/src/git/identity/resolver.ts"
-        },
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "func stampToolEnv",
-          "path": "engine/internal/backend/runloop_git_identity.go"
         },
         {
           "platform": "desktop",
@@ -2650,13 +2179,6 @@
           "language": "typescript",
           "symbol": "export type RemoteQuestionsEvent",
           "path": "server/src/remote/protocol-questions.ts"
-        },
-        {
-          "platform": "engine",
-          "presentation": "wire",
-          "language": "go",
-          "symbol": "type ClientToolCallState struct",
-          "path": "engine/internal/types/tool_gate.go"
         }
       ]
     },
@@ -2671,15 +2193,7 @@
         "harness layer"
       ],
       "contract": "none",
-      "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "doc",
-          "language": "markdown",
-          "symbol": "Harness",
-          "path": "docs/getting-started/concepts.md"
-        }
-      ]
+      "implementations": []
     },
     {
       "id": "headless-session",
@@ -2692,22 +2206,7 @@
         "headless run"
       ],
       "contract": "public-sdk",
-      "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "func (m *Manager) mintHeadlessSession",
-          "path": "engine/internal/session/headless_session.go"
-        },
-        {
-          "platform": "engine",
-          "presentation": "doc",
-          "language": "markdown",
-          "symbol": "What a fire looks like",
-          "path": "docs/configuration/extension-hosts.md"
-        }
-      ]
+      "implementations": []
     },
     {
       "id": "held-prompt",
@@ -2756,29 +2255,7 @@
         "lifecycle hook"
       ],
       "contract": "public-sdk",
-      "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "type HookHandler",
-          "path": "engine/internal/extension/sdk_types.go"
-        },
-        {
-          "platform": "sdk",
-          "presentation": "code",
-          "language": "typescript",
-          "symbol": "on(hook: string, handler: HookHandler<any>): void;",
-          "path": "engine/extensions/sdk/ion-sdk/types.ts"
-        },
-        {
-          "platform": "engine",
-          "presentation": "doc",
-          "language": "markdown",
-          "symbol": "before_prompt",
-          "path": "docs/hooks/reference.md"
-        }
-      ],
+      "implementations": [],
       "notes": "The engine owns the mechanism. The by-name reference is the authority; never pin a hook count in prose."
     },
     {
@@ -2833,20 +2310,6 @@
       ],
       "contract": "public-wire",
       "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "type InjectionKind string",
-          "path": "engine/internal/types/injection_kind.go"
-        },
-        {
-          "platform": "engine",
-          "presentation": "wire",
-          "language": "go",
-          "symbol": "InjectionKind string",
-          "path": "engine/internal/protocol/protocol.go"
-        },
         {
           "platform": "desktop",
           "presentation": "code",
@@ -3095,22 +2558,7 @@
       "kind": "runtime-mechanic",
       "status": "canonical",
       "contract": "public-wire",
-      "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "func Scan",
-          "path": "engine/internal/wikilinks/scan.go"
-        },
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "type WikiLinkIntegrityReport",
-          "path": "engine/internal/types/wiki_links.go"
-        }
-      ]
+      "implementations": []
     },
     {
       "id": "link-route",
@@ -3190,20 +2638,6 @@
       "contract": "public-wire",
       "implementations": [
         {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "func resolveManagedProjection",
-          "path": "engine/internal/config/managed_projection.go"
-        },
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "type ManagedConfigStatus",
-          "path": "engine/internal/types/config_managed.go"
-        },
-        {
           "platform": "server",
           "presentation": "code",
           "language": "typescript",
@@ -3252,22 +2686,7 @@
       "kind": "runtime-mechanic",
       "status": "canonical",
       "contract": "public-wire",
-      "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "func readManagedMarker",
-          "path": "engine/internal/config/managed.go"
-        },
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "type ManagedModeStatus",
-          "path": "engine/internal/types/config_managed.go"
-        }
-      ]
+      "implementations": []
     },
     {
       "id": "menu",
@@ -3315,13 +2734,6 @@
       ],
       "contract": "public-wire",
       "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "type MessageData struct",
-          "path": "engine/internal/conversation/conversation.go"
-        },
         {
           "platform": "ios",
           "presentation": "code",
@@ -3378,29 +2790,7 @@
         "slash model boundary"
       ],
       "contract": "public-sdk",
-      "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "evaluateSlashModelBoundary",
-          "path": "engine/internal/session/slash_model_boundary.go"
-        },
-        {
-          "platform": "sdk",
-          "presentation": "code",
-          "language": "typescript",
-          "symbol": "SlashModelBoundaryInfo",
-          "path": "engine/extensions/sdk/ion-sdk/types.ts"
-        },
-        {
-          "platform": "sdk",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "HookBeforeSlashModelBoundary",
-          "path": "sdk/go/hook_descriptors.go"
-        }
-      ],
+      "implementations": [],
       "notes": "The default retains the serving model after history exists. Consumers can override the policy per configuration, request, or hook."
     },
     {
@@ -3411,22 +2801,7 @@
       "kind": "runtime-mechanic",
       "status": "canonical",
       "contract": "internal",
-      "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "EntryModelChange",
-          "path": "engine/internal/conversation/conversation.go"
-        },
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "func SyncModel",
-          "path": "engine/internal/conversation/model_sync.go"
-        }
-      ]
+      "implementations": []
     },
     {
       "id": "mounted-folder",
@@ -3469,20 +2844,6 @@
       ],
       "contract": "public-wire",
       "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "type NativeCompactionEvent struct",
-          "path": "engine/internal/types/normalized_event.go"
-        },
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "EntryNativeCompaction",
-          "path": "engine/internal/conversation/conversation.go"
-        },
         {
           "platform": "desktop",
           "presentation": "code",
@@ -3532,13 +2893,6 @@
       ],
       "contract": "public-wire",
       "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "wire",
-          "language": "go",
-          "symbol": "type NormalizedEvent struct",
-          "path": "engine/internal/types/normalized_event.go"
-        },
         {
           "platform": "ios",
           "presentation": "wire",
@@ -3688,29 +3042,7 @@
         "dispatch check-in"
       ],
       "contract": "public-sdk",
-      "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "type DispatchParkCheckInInfo struct",
-          "path": "engine/internal/extension/sdk_types_dispatch.go"
-        },
-        {
-          "platform": "sdk",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "type DispatchParkCheckInInfo struct",
-          "path": "sdk/go/context_dispatch.go"
-        },
-        {
-          "platform": "sdk",
-          "presentation": "code",
-          "language": "typescript",
-          "symbol": "export interface DispatchParkCheckInInfo",
-          "path": "engine/extensions/sdk/ion-sdk/types.ts"
-        }
-      ]
+      "implementations": []
     },
     {
       "id": "peer",
@@ -3773,20 +3105,6 @@
       ],
       "contract": "public-wire",
       "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "type Engine struct",
-          "path": "engine/internal/permissions/engine.go"
-        },
-        {
-          "platform": "engine",
-          "presentation": "wire",
-          "language": "go",
-          "symbol": "type PermissionRequestEvent struct",
-          "path": "engine/internal/types/normalized_event.go"
-        },
         {
           "platform": "desktop",
           "presentation": "ui",
@@ -3917,22 +3235,7 @@
       "kind": "public-contract",
       "status": "canonical",
       "contract": "public-wire",
-      "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "type PlanModeChangeRejectedEvent",
-          "path": "engine/internal/types/normalized_event_plan_mode.go"
-        },
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "func (m *Manager) TransitionPlanMode",
-          "path": "engine/internal/session/plan_mode_transition.go"
-        }
-      ]
+      "implementations": []
     },
     {
       "id": "plan-mode-notice",
@@ -3942,22 +3245,7 @@
       "kind": "runtime-mechanic",
       "status": "canonical",
       "contract": "public-wire",
-      "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "InjectionKindPlanModeEnter",
-          "path": "engine/internal/types/injection_kind.go"
-        },
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "func ReconcilePlanMode",
-          "path": "engine/internal/conversation/plan_mode_ledger.go"
-        }
-      ]
+      "implementations": []
     },
     {
       "id": "plan-policy",
@@ -3967,15 +3255,7 @@
       "kind": "runtime-mechanic",
       "status": "canonical",
       "contract": "internal",
-      "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "PlanPolicy",
-          "path": "engine/internal/backend/plan_policy.go"
-        }
-      ]
+      "implementations": []
     },
     {
       "id": "policy-failure",
@@ -3990,20 +3270,6 @@
       ],
       "contract": "public-wire",
       "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "wire",
-          "language": "go",
-          "symbol": "var PolicyFailureIDs",
-          "path": "engine/internal/types/policy_failure.go"
-        },
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "func PolicyMessage",
-          "path": "engine/internal/config/policy_messages.go"
-        },
         {
           "platform": "server",
           "presentation": "code",
@@ -4030,13 +3296,6 @@
       "contract": "public-wire",
       "implementations": [
         {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "type PolicyOverride",
-          "path": "engine/internal/types/config_policy_override.go"
-        },
-        {
           "platform": "desktop",
           "presentation": "code",
           "language": "typescript",
@@ -4056,22 +3315,7 @@
         "intelligent poll"
       ],
       "contract": "public-wire",
-      "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "func PollTool",
-          "path": "engine/internal/tools/poll.go"
-        },
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "func (m *Manager) startPoll",
-          "path": "engine/internal/session/poll_driver.go"
-        }
-      ]
+      "implementations": []
     },
     {
       "id": "port-forward",
@@ -4149,22 +3393,7 @@
       "kind": "runtime-mechanic",
       "status": "canonical",
       "contract": "internal",
-      "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "func PartitionConversationsDir",
-          "path": "engine/internal/conversation/partition.go"
-        },
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "func PartitioningEnabled",
-          "path": "engine/internal/conversation/partition.go"
-        }
-      ],
+      "implementations": [],
       "notes": "StartSessionResult.StorageRoot and ContextIdentity.StorageRoot both carry the resolved partition path so a harness or SDK consumer can locate it without re-deriving the partitioning rule."
     },
     {
@@ -4331,13 +3560,6 @@
           "language": "swift",
           "symbol": "final class ActionTraceBook",
           "path": "ios/IonRemote/Utilities/ActionTraceBook.swift"
-        },
-        {
-          "platform": "engine",
-          "presentation": "wire",
-          "language": "go",
-          "symbol": "func ParseTraceparent",
-          "path": "engine/internal/utils/traceparent.go"
         }
       ],
       "notes": "Span record shapes and the hop chain: docs/observability/log-schema.md § Spans."
@@ -4350,22 +3572,7 @@
       "kind": "runtime-mechanic",
       "status": "canonical",
       "contract": "public-sdk",
-      "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "func DoProtectedOperation",
-          "path": "engine/internal/extension/protected_operation.go"
-        },
-        {
-          "platform": "sdk",
-          "presentation": "code",
-          "language": "typescript",
-          "symbol": "protectedOperation(",
-          "path": "engine/extensions/sdk/ion-sdk/types.ts"
-        }
-      ]
+      "implementations": []
     },
     {
       "id": "provider",
@@ -4378,15 +3585,7 @@
         "LLM provider"
       ],
       "contract": "internal",
-      "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "type LlmProvider interface",
-          "path": "engine/internal/providers/provider.go"
-        }
-      ],
+      "implementations": [],
       "notes": "Name providers by name. Never pin a provider count in prose."
     },
     {
@@ -4427,20 +3626,6 @@
       ],
       "contract": "public-wire",
       "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "wire",
-          "language": "go",
-          "symbol": "type ProviderSubscriptionStatus struct",
-          "path": "engine/internal/types/provider_subscription.go"
-        },
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "type Manager struct",
-          "path": "engine/internal/subscription/manager.go"
-        },
         {
           "platform": "server",
           "presentation": "code",
@@ -4745,13 +3930,6 @@
           "language": "typescript",
           "symbol": "principal: StudioPrincipalSummary | null",
           "path": "server/src/protocol/connection.ts"
-        },
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "type SessionPrincipal struct",
-          "path": "engine/internal/types/identity.go"
         }
       ]
     },
@@ -4771,20 +3949,6 @@
       ],
       "contract": "public-wire",
       "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "type Broker struct",
-          "path": "engine/internal/resource/broker.go"
-        },
-        {
-          "platform": "sdk",
-          "presentation": "code",
-          "language": "typescript",
-          "symbol": "export function buildResourcesAPI",
-          "path": "engine/extensions/sdk/ion-sdk/runtime-resources.ts"
-        },
         {
           "platform": "desktop",
           "presentation": "ui",
@@ -4813,22 +3977,7 @@
         "run-as identity"
       ],
       "contract": "public-sdk",
-      "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "func resolveRunAsPrincipal",
-          "path": "engine/internal/session/run_as_principal.go"
-        },
-        {
-          "platform": "engine",
-          "presentation": "doc",
-          "language": "markdown",
-          "symbol": "`runAs` (optional, object)",
-          "path": "docs/configuration/extension-hosts.md"
-        }
-      ]
+      "implementations": []
     },
     {
       "id": "schedule",
@@ -4841,22 +3990,7 @@
         "scheduled job"
       ],
       "contract": "public-sdk",
-      "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "type Scheduler struct",
-          "path": "engine/internal/scheduling/scheduler.go"
-        },
-        {
-          "platform": "sdk",
-          "presentation": "code",
-          "language": "typescript",
-          "symbol": "export const scheduleApi",
-          "path": "engine/extensions/sdk/ion-sdk/runtime-async.ts"
-        }
-      ]
+      "implementations": []
     },
     {
       "id": "schedule-catch-up-group",
@@ -4869,22 +4003,7 @@
         "grouped catch-up"
       ],
       "contract": "public-sdk",
-      "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "type ScheduleJob",
-          "path": "engine/internal/extension/sdk_schedules.go"
-        },
-        {
-          "platform": "sdk",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "type ScheduleOpts",
-          "path": "sdk/go/schedule.go"
-        }
-      ]
+      "implementations": []
     },
     {
       "id": "scratch-document",
@@ -4937,22 +4056,7 @@
         "server event envelope"
       ],
       "contract": "public-wire",
-      "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "wire",
-          "language": "go",
-          "symbol": "type ServerEvent struct",
-          "path": "engine/internal/protocol/protocol_server.go"
-        },
-        {
-          "platform": "engine",
-          "presentation": "wire",
-          "language": "go",
-          "symbol": "type ServerResult struct",
-          "path": "engine/internal/protocol/protocol_server.go"
-        }
-      ]
+      "implementations": []
     },
     {
       "id": "session",
@@ -4970,22 +4074,7 @@
         "engine session"
       ],
       "contract": "public-wire",
-      "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "type Manager struct",
-          "path": "engine/internal/session/manager.go"
-        },
-        {
-          "platform": "engine",
-          "presentation": "wire",
-          "language": "go",
-          "symbol": "type SessionInfo struct",
-          "path": "engine/internal/protocol/protocol_server.go"
-        }
-      ],
+      "implementations": [],
       "notes": "A session is the engine-side run container. A conversation is what a client renders. They are not interchangeable words."
     },
     {
@@ -4999,22 +4088,7 @@
         "quiescent session release"
       ],
       "contract": "public-sdk",
-      "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "func (m *Manager) evaluateIdleRelease",
-          "path": "engine/internal/session/idle_release.go"
-        },
-        {
-          "platform": "engine",
-          "presentation": "doc",
-          "language": "markdown",
-          "symbol": "Idle release",
-          "path": "docs/sessions/lifecycle.md"
-        }
-      ]
+      "implementations": []
     },
     {
       "id": "session-principal",
@@ -5024,15 +4098,7 @@
       "kind": "public-contract",
       "status": "canonical",
       "contract": "public-wire",
-      "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "type SessionPrincipal struct",
-          "path": "engine/internal/types/identity.go"
-        }
-      ]
+      "implementations": []
     },
     {
       "id": "settings-policy",
@@ -5113,22 +4179,7 @@
       "kind": "runtime-mechanic",
       "status": "canonical",
       "contract": "public-sdk",
-      "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "func MatchGrant",
-          "path": "engine/internal/permissions/engine.go"
-        },
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "func ParseAllowedTools",
-          "path": "engine/internal/skills/allowed_tools.go"
-        }
-      ]
+      "implementations": []
     },
     {
       "id": "skill-shell-injection",
@@ -5138,15 +4189,7 @@
       "kind": "runtime-mechanic",
       "status": "canonical",
       "contract": "public-sdk",
-      "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "func Render",
-          "path": "engine/internal/skills/render.go"
-        }
-      ]
+      "implementations": []
     },
     {
       "id": "slash-command",
@@ -5160,20 +4203,6 @@
       ],
       "contract": "public-wire",
       "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "type CommandDefinition struct",
-          "path": "engine/internal/extension/sdk_types.go"
-        },
-        {
-          "platform": "sdk",
-          "presentation": "code",
-          "language": "typescript",
-          "symbol": "export interface CommandDef",
-          "path": "engine/extensions/sdk/ion-sdk/types.ts"
-        },
         {
           "platform": "desktop",
           "presentation": "ui",
@@ -5252,29 +4281,7 @@
         "mid-turn steer"
       ],
       "contract": "public-wire",
-      "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "type steerMessage struct",
-          "path": "engine/internal/backend/runloop_steer.go"
-        },
-        {
-          "platform": "engine",
-          "presentation": "wire",
-          "language": "go",
-          "symbol": "type SteerInjectedEvent struct",
-          "path": "engine/internal/types/normalized_event_run_signals.go"
-        },
-        {
-          "platform": "sdk",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "func (c *Context) SteerDispatch",
-          "path": "sdk/go/context_dispatch_methods.go"
-        }
-      ]
+      "implementations": []
     },
     {
       "id": "steer-drain-checkpoint",
@@ -5287,15 +4294,7 @@
         "drain checkpoint"
       ],
       "contract": "internal",
-      "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "func (b *ApiBackend) drainSteer",
-          "path": "engine/internal/backend/runloop_steer.go"
-        }
-      ]
+      "implementations": []
     },
     {
       "id": "steer-stream-interrupt",
@@ -5308,22 +4307,7 @@
         "stream interrupt"
       ],
       "contract": "public-wire",
-      "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "wire",
-          "language": "go",
-          "symbol": "type SteerInterruptedStreamEvent struct",
-          "path": "engine/internal/types/normalized_event_run_signals.go"
-        },
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "type SteeringConfig struct",
-          "path": "engine/internal/types/config_steering.go"
-        }
-      ]
+      "implementations": []
     },
     {
       "id": "studio-browser-surface",
@@ -5628,20 +4612,6 @@
       "contract": "public-wire",
       "implementations": [
         {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "type SystemMetricsSample",
-          "path": "engine/internal/types/system_metrics.go"
-        },
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "type Sampler",
-          "path": "engine/internal/sysmetrics/sampler.go"
-        },
-        {
           "platform": "desktop",
           "presentation": "code",
           "language": "typescript",
@@ -5728,15 +4698,7 @@
         "span"
       ],
       "contract": "internal",
-      "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "type Event = telemetryformat.Event",
-          "path": "engine/internal/telemetry/telemetry.go"
-        }
-      ]
+      "implementations": []
     },
     {
       "id": "telemetry-health",
@@ -5747,13 +4709,6 @@
       "status": "canonical",
       "contract": "public-wire",
       "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "type TelemetryHealth",
-          "path": "engine/internal/telemetry/telemetry_health.go"
-        },
         {
           "platform": "desktop",
           "presentation": "code",
@@ -5922,29 +4877,7 @@
         "engine tool"
       ],
       "contract": "public-sdk",
-      "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "type ToolDef struct",
-          "path": "engine/internal/types/tools.go"
-        },
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "func RegisterTool",
-          "path": "engine/internal/tools/registry.go"
-        },
-        {
-          "platform": "sdk",
-          "presentation": "code",
-          "language": "typescript",
-          "symbol": "export interface ToolDef",
-          "path": "engine/extensions/sdk/ion-sdk/types.ts"
-        }
-      ],
+      "implementations": [],
       "notes": "Name tools by name. Never pin a tool count in prose."
     },
     {
@@ -5955,22 +4888,7 @@
       "kind": "runtime-mechanic",
       "status": "canonical",
       "contract": "internal",
-      "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "func New",
-          "path": "engine/internal/principalboundary/checker.go"
-        },
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "func IsToolAllowedFor",
-          "path": "engine/internal/config/policy_checks.go"
-        }
-      ]
+      "implementations": []
     },
     {
       "id": "transcript",
@@ -6135,15 +5053,7 @@
         "socket transport"
       ],
       "contract": "internal",
-      "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "type Transport interface",
-          "path": "engine/internal/transport/transport.go"
-        }
-      ]
+      "implementations": []
     },
     {
       "id": "turn",
@@ -6156,22 +5066,7 @@
         "user turn"
       ],
       "contract": "public-sdk",
-      "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "type TurnInfo struct",
-          "path": "engine/internal/extension/sdk_hook_types.go"
-        },
-        {
-          "platform": "sdk",
-          "presentation": "code",
-          "language": "typescript",
-          "symbol": "export interface TurnInfo",
-          "path": "engine/extensions/sdk/ion-sdk/types.ts"
-        }
-      ]
+      "implementations": []
     },
     {
       "id": "union-store",
@@ -6327,22 +5222,7 @@
         "inbound webhook"
       ],
       "contract": "public-sdk",
-      "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "type Server struct",
-          "path": "engine/internal/webhooks/server.go"
-        },
-        {
-          "platform": "sdk",
-          "presentation": "code",
-          "language": "typescript",
-          "symbol": "export const webhooksApi",
-          "path": "engine/extensions/sdk/ion-sdk/runtime-async.ts"
-        }
-      ]
+      "implementations": []
     },
     {
       "id": "wiki-link-propagation",
@@ -6352,22 +5232,7 @@
       "kind": "runtime-mechanic",
       "status": "canonical",
       "contract": "public-wire",
-      "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "func Propagate",
-          "path": "engine/internal/wikilinks/propagate.go"
-        },
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "type WikiLinkPropagationReport",
-          "path": "engine/internal/types/wiki_links.go"
-        }
-      ]
+      "implementations": []
     },
     {
       "id": "workspace",
@@ -6381,20 +5246,6 @@
       ],
       "contract": "public-wire",
       "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "type Registry struct",
-          "path": "engine/internal/workspaces/registry.go"
-        },
-        {
-          "platform": "engine",
-          "presentation": "wire",
-          "language": "go",
-          "symbol": "ClientWorkspaceContext",
-          "path": "engine/internal/protocol/protocol.go"
-        },
         {
           "platform": "desktop",
           "presentation": "ui",
@@ -6412,22 +5263,7 @@
       "kind": "runtime-mechanic",
       "status": "canonical",
       "contract": "public-sdk",
-      "implementations": [
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "type renameTracker",
-          "path": "engine/internal/watcher/rename.go"
-        },
-        {
-          "platform": "engine",
-          "presentation": "code",
-          "language": "go",
-          "symbol": "type WorkspaceFileRenamedInfo",
-          "path": "engine/internal/extension/sdk_hook_types_workspace.go"
-        }
-      ]
+      "implementations": []
     },
     {
       "id": "workspace-search",

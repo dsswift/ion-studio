@@ -106,7 +106,7 @@ On validation failure, the relay closes the WebSocket with 4401 (custom close co
 
 ### Headless engine
 
-A headless engine can authenticate relay reconnects using any configured machine **bearer** source: client credentials, certificate assertion, workload federation, Azure Managed Identity, or GCP metadata. `relay.useOidc`, `relay.oidcScope`, and `relay.oidcAudience` use the same broker as `ctx.http`; no human sign-in or stored refresh token is required. AWS SigV4 does not apply because relay accepts an OAuth bearer token. See [Machine identity](machine-identity.md).
+A headless engine can authenticate relay reconnects using any configured machine **bearer** source: client credentials, certificate assertion, workload federation, Azure Managed Identity, or GCP metadata. `relay.useOidc`, `relay.oidcScope`, and `relay.oidcAudience` use the same broker as `ctx.http`; no human sign-in or stored refresh token is required. AWS SigV4 does not apply because relay accepts an OAuth bearer token. See [Machine identity](https://github.com/dsswift/ion/blob/main/docs/deployment/machine-identity.md).
 
 ### Desktop
 

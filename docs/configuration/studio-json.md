@@ -79,7 +79,7 @@ Ion never looks above the repository root. Your home folder has an `.ion`
 directory of its own, and it must not answer for every project beneath it.
 
 The base repository is the authority for a worktree for the same reason it is
-for [`.ion/worktree.json`](worktree-json.md): a change to what a project may run
+for [`.ion/worktree.json`](https://github.com/dsswift/ion/blob/main/docs/configuration/worktree-json.md): a change to what a project may run
 should be a reviewed commit, not an uncommitted edit inside one worktree. One
 consequence is that a Project Quick Tool you add on a worktree branch does not
 appear in that worktree until the branch lands in the base repository.

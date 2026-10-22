@@ -70,7 +70,7 @@ reviewed commit rather than an uncommitted edit inside a sandbox. Git stays
 refused inside a shared path: the exemption exists because git cannot see the
 path, and a git invocation is what would make it seen. Unlike the rest of the
 package, this fails closed — a malformed manifest grants nothing. Reference:
-[`docs/configuration/worktree-json.md`](../configuration/worktree-json.md)
+[`docs/configuration/worktree-json.md`](https://github.com/dsswift/ion/blob/main/docs/configuration/worktree-json.md)
 § "Shared paths".
 
 Closing a conversation never removes an ordinary worktree. Removal is the
@@ -102,7 +102,7 @@ person's remembered answer for the project (`worktreeEphemeral` on its
 (`server/src/worktree/worktree-choice.ts`). A
 worktree cut with no conversation is never ephemeral, because nothing could
 close it. Reference:
-[`docs/configuration/worktree-json.md`](../configuration/worktree-json.md)
+[`docs/configuration/worktree-json.md`](https://github.com/dsswift/ion/blob/main/docs/configuration/worktree-json.md)
 § "Ephemeral worktrees". Retire also disenrolls the worktree from every bench. A
 worktree deleted outside Ion skips that step, so the bench disenrolls any member
 whose worktree directory is gone the next time it assembles or refreshes its
@@ -207,6 +207,6 @@ run, until the operator trusts it
 code until then. Trust can be given with the clone request itself, and then
 the setup runs as soon as the clone lands. Trusting a project provisions
 every worktree of it that was refused while it was untrusted. Reference:
-[`docs/configuration/worktree-json.md`](../configuration/worktree-json.md).
+[`docs/configuration/worktree-json.md`](https://github.com/dsswift/ion/blob/main/docs/configuration/worktree-json.md).
 
-See [ADR-024](adr/024-integration-workspace.md).
+See [ADR-024](https://github.com/dsswift/ion/blob/main/docs/architecture/adr/024-integration-workspace.md).

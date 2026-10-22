@@ -22,12 +22,12 @@ Otherwise the engine reads its platform-native source:
 
 Within a platform the listed sources are merged, not raced: a later source overlays the earlier ones field by field.
 
-A host that serves more than one person can scope further policy to specific accounts. That policy is still part of the machine source listed above: see [Account policies](sealed-config.md#account-policies).
+A host that serves more than one person can scope further policy to specific accounts. That policy is still part of the machine source listed above: see [Account policies](https://github.com/dsswift/ion/blob/main/docs/enterprise/sealed-config.md#account-policies).
 
 This page describes the **machine layer** -- the sole policy enforcer. A second,
 additive-only **per-user layer** lets IT provision which Ion Studio Servers a specific
 person should see, without giving a person-writable file any power to loosen policy. See
-[Enterprise Configuration](../configuration/enterprise.md) for the two-layer model.
+[Enterprise Configuration](https://github.com/dsswift/ion/blob/main/docs/configuration/enterprise.md) for the two-layer model.
 
 ## Managed mode
 
@@ -66,7 +66,7 @@ Ion Studio shows a notice above the composer for each condition. The engine stam
 
 The marker and the policy are read when the engine starts. After restoring policy on a locked device, restart the engine.
 
-The marker says the installation is managed. It does not make the user's configuration files managed. To own those, see [Managed configuration files](managed-config.md).
+The marker says the installation is managed. It does not make the user's configuration files managed. To own those, see [Managed configuration files](https://github.com/dsswift/ion/blob/main/docs/enterprise/managed-config.md).
 
 ### Placing the marker
 
@@ -302,7 +302,7 @@ EOF
 
 The `limits.planModeAllowedBashCommands` key is the ceiling for shell commands a planning session may run. It uses the same key path as `engine.json`, so administrators and developers write the concept in one place rather than two.
 
-Setting it caps every lower source — the developer's `~/.ion/engine.json`, any committed `.ion/engine.json` in a cloned repository, and the two client-supplied run-time paths. Omitting it entirely means no policy on this axis and lower layers compose freely; setting it to `[]` blocks Bash in plan mode outright. Because a narrower entry is retained against a broader ceiling, write the ceiling at the broadest level you are willing to permit. See [Sealed Configuration → Plan-mode Bash allowlist](sealed-config.md#plan-mode-bash-allowlist).
+Setting it caps every lower source — the developer's `~/.ion/engine.json`, any committed `.ion/engine.json` in a cloned repository, and the two client-supplied run-time paths. Omitting it entirely means no policy on this axis and lower layers compose freely; setting it to `[]` blocks Bash in plan mode outright. Because a narrower entry is retained against a broader ceiling, write the ceiling at the broadest level you are willing to permit. See [Sealed Configuration → Plan-mode Bash allowlist](https://github.com/dsswift/ion/blob/main/docs/enterprise/sealed-config.md#plan-mode-bash-allowlist).
 
 ### Drop-in files
 

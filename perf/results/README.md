@@ -20,7 +20,7 @@ gate and every release path ([docs/contributing/performance.md](../../docs/contr
 
 Percentiles are computed from the raw samples (linear interpolation, Hyndman-Fan type 7),
 never by averaging other percentiles. Span sources and shapes:
-[log-schema § Spans](../../docs/observability/log-schema.md#spans). The engine's spans come
+[log-schema § Spans](https://github.com/dsswift/ion/blob/main/docs/observability/log-schema.md#spans). The engine's spans come
 from its telemetry stream, the server's from `tag=span` log lines; both are read from the run's
 own data dir after the two processes exit, so every span is flushed.
 

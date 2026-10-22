@@ -15,7 +15,7 @@ You manage the fleet from three places:
 - `ion fleet` in a terminal: the dashboard with no command, and a plain command for every view, for scripts.
 - A [Fleet Hub](fleet-hub.md): an always-on page your servers report to, for watching and managing the fleet from any network with no laptop open.
 
-The fleet covers Studio Server hosts on macOS and Linux, and Macs and Windows PCs running the Ion desktop. It shows each host's installs, engine, load, running conversations, paired devices, relays, and [Format Versions](../architecture/format-versions.md), tells you which hosts can work with which, and redeploys a selection or one host, building each platform once.
+The fleet covers Studio Server hosts on macOS and Linux, and Macs and Windows PCs running the Ion desktop. It shows each host's installs, engine, load, running conversations, paired devices, relays, and [Format Versions](https://github.com/dsswift/ion/blob/main/docs/architecture/format-versions.md), tells you which hosts can work with which, and redeploys a selection or one host, building each platform once.
 
 ## Manage-only servers
 
@@ -29,7 +29,7 @@ The Quota tab of the Fleet page adds every server's ledger into one row per acco
 
 A server signed in by long-lived token (`CLAUDE_CODE_OAUTH_TOKEN`) is a special case, because the Claude Code CLI names no email, plan, or limits for that login. Two things fill the gap:
 
-- **Whose login it is.** The engine has the CLI run one small turn and reads the organization from the CLI's own log. The CLI alone sends the token. When exactly one account in the Fleet belongs to that organization, the server joins that account's row. Otherwise it keeps a row of its own, named by its plan label. `providers.anthropic.accountOrgRead` in the server's `engine.json` turns this off or picks the model ([reference](../configuration/engine-json.md)).
+- **Whose login it is.** The engine has the CLI run one small turn and reads the organization from the CLI's own log. The CLI alone sends the token. When exactly one account in the Fleet belongs to that organization, the server joins that account's row. Otherwise it keeps a row of its own, named by its plan label. `providers.anthropic.accountOrgRead` in the server's `engine.json` turns this off or picks the model ([reference](https://github.com/dsswift/ion/blob/main/docs/configuration/engine-json.md)).
 - **Its usage.** The 5-hour and 7-day numbers come from each conversation that runs there, and stay until their window resets.
 
 ```bash

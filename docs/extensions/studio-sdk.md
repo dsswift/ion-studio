@@ -35,7 +35,7 @@ belongs in the Studio SDK, never in the engine SDK.
 ## How a request reaches Studio
 
 The SDK uses one generic engine mechanism, the
-[resource subsystem](../architecture/resource-subsystem.md). A request to Studio is a
+[resource subsystem](https://github.com/dsswift/ion/blob/main/docs/architecture/resource-subsystem.md). A request to Studio is a
 resource whose kind starts with `ion-studio.`:
 
 1. The extension publishes the resource. The engine treats its content as an

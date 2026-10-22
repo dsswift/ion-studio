@@ -7,7 +7,7 @@ description: The phone becomes a thin client of the Studio wire; the `desktop_*`
 
 ## Status
 
-Accepted. Supersedes the client-wire half of [ADR-008](008-wire-event-naming-and-ownership.md), which described a `desktop_`-prefixed wire owned by the desktop and spoken only to iOS. That wire no longer exists. ADR-008's core rule — **events are prefixed by the owner of the contract** — is unchanged and still governs the engine wire.
+Accepted. Supersedes the client-wire half of [ADR-008](https://github.com/dsswift/ion/blob/main/docs/architecture/adr/008-wire-event-naming-and-ownership.md), which described a `desktop_`-prefixed wire owned by the desktop and spoken only to iOS. That wire no longer exists. ADR-008's core rule — **events are prefixed by the owner of the contract** — is unchanged and still governs the engine wire.
 
 ## Context
 
@@ -50,5 +50,5 @@ Two capabilities were removed rather than ported, deliberately:
 
 - [Studio wire protocol](../../protocol/studio-wire.md)
 - [ADR-033: Ion Studio Server and Environments](033-ion-studio-server-and-environments.md)
-- [ADR-008: Wire event naming and ownership](008-wire-event-naming-and-ownership.md)
+- [ADR-008: Wire event naming and ownership](https://github.com/dsswift/ion/blob/main/docs/architecture/adr/008-wire-event-naming-and-ownership.md)
 - [ADR-027: Contextual per-pairing authentication](027-contextual-per-pairing-authentication.md)

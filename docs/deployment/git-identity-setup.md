@@ -6,7 +6,7 @@ sidebar_position: 6
 
 # Git Identity Setup
 
-FR-04 (ADR-034) resolves a **per-principal git credential** — which SSH key or token a `git` operation authenticates with — independently of the **per-principal author identity** (name/email) a commit records. This guide is the operator-facing checklist for every external system the credential side depends on: exact portal steps, and the exact `server.json` / `engine.json` keys each step feeds. See [server.json's `git` section](../configuration/server-json.md#git) and [engine.json's `git` section](../configuration/engine-json.md#git) for the config shape reference this guide sets up.
+FR-04 (ADR-034) resolves a **per-principal git credential** — which SSH key or token a `git` operation authenticates with — independently of the **per-principal author identity** (name/email) a commit records. This guide is the operator-facing checklist for every external system the credential side depends on: exact portal steps, and the exact `server.json` / `engine.json` keys each step feeds. See [server.json's `git` section](../configuration/server-json.md#git) and [engine.json's `git` section](https://github.com/dsswift/ion/blob/main/docs/configuration/engine-json.md#git) for the config shape reference this guide sets up.
 
 None of these steps block implementation — the mechanism works with zero of them configured (every principal falls through to a user-supplied credential entered in Studio Settings, and then to the [host's own credentials](#host-credentials)). Each step below only blocks the specific credential source it configures from working end-to-end against your own tenant.
 
@@ -107,7 +107,7 @@ Every new repository starts with one commit holding a README, so a worktree can 
 
 ## Sandbox prerequisites
 
-Per-principal execution boundary enforcement (ADR-034) relies on the OS-level sandbox (`security.sandbox` in [engine.json](../configuration/engine-json.md#securitysandbox)) as the adversarial boundary for shell execution.
+Per-principal execution boundary enforcement (ADR-034) relies on the OS-level sandbox (`security.sandbox` in [engine.json](https://github.com/dsswift/ion/blob/main/docs/configuration/engine-json.md#securitysandbox)) as the adversarial boundary for shell execution.
 
 - **Linux:** `bwrap` (bubblewrap) needs either unprivileged user namespaces enabled on the node, or the container/pod must run with `CAP_SYS_ADMIN`. Neither is Ion-specific — this is what `bwrap` itself requires to construct its mount namespace.
 - **macOS:** Seatbelt (`sandbox-exec`) needs no special capability; it is a first-party macOS mechanism.
@@ -116,7 +116,7 @@ Per-principal execution boundary enforcement (ADR-034) relies on the OS-level sa
 
 ## Tenancy and partitioning matrix
 
-`server.json`'s `tenancy.mode` and `engine.json`'s `security.principalPartitioning.enabled` are independent settings that must agree. See [ADR-034](../architecture/adr/034-principal-isolation-and-tenancy.md) for the full rationale.
+`server.json`'s `tenancy.mode` and `engine.json`'s `security.principalPartitioning.enabled` are independent settings that must agree. See [ADR-034](https://github.com/dsswift/ion/blob/main/docs/architecture/adr/034-principal-isolation-and-tenancy.md) for the full rationale.
 
 | `tenancy.mode` | `principalPartitioning.enabled` | Result |
 | --- | --- | --- |
@@ -127,8 +127,8 @@ Per-principal execution boundary enforcement (ADR-034) relies on the OS-level sa
 
 ## See also
 
-* [ADR-034: Principal Isolation and Tenancy](../architecture/adr/034-principal-isolation-and-tenancy.md)
+* [ADR-034: Principal Isolation and Tenancy](https://github.com/dsswift/ion/blob/main/docs/architecture/adr/034-principal-isolation-and-tenancy.md)
 * [server.json Reference — `git`](../configuration/server-json.md#git) and [`Tenancy`](../configuration/server-json.md#tenancy)
-* [engine.json Reference — `security` and `git`](../configuration/engine-json.md#security)
-* [Sealed Configuration](../enterprise/sealed-config.md) for the enterprise-forced variants of these settings
+* [engine.json Reference — `security` and `git`](https://github.com/dsswift/ion/blob/main/docs/configuration/engine-json.md#security)
+* [Sealed Configuration](https://github.com/dsswift/ion/blob/main/docs/enterprise/sealed-config.md) for the enterprise-forced variants of these settings
 * [Ion Studio Server](studio-server.md) for the Entra two-tier registration this guide's app registration steps extend

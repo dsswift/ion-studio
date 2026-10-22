@@ -135,7 +135,7 @@ A curated subset of settings is projectable to iOS so the user can change them f
 
 ## Worktrees and integration benches
 
-Each conversation can run in its own git worktree. An **integration bench** layers several worktrees onto the source branch so combinations can be tested before anything lands. Design: [ADR-024](adr/024-integration-workspace.md). Operator guide: [docs/design/worktree-workflow.md](../design/worktree-workflow.md). Guards and lifecycle: [Worktrees and Benches](worktrees-and-benches.md).
+Each conversation can run in its own git worktree. An **integration bench** layers several worktrees onto the source branch so combinations can be tested before anything lands. Design: [ADR-024](https://github.com/dsswift/ion/blob/main/docs/architecture/adr/024-integration-workspace.md). Operator guide: [docs/design/worktree-workflow.md](../design/worktree-workflow.md). Guards and lifecycle: [Worktrees and Benches](worktrees-and-benches.md).
 
 ### Module map
 

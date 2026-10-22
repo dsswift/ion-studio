@@ -37,8 +37,8 @@ Sent to the requesting client in response to a command that included a `requestI
 | `requestId` | string  | Matches the client's `requestId`                 |
 | `ok`        | boolean | `true` if the command succeeded                  |
 | `error`     | string  | Error message (present when `ok` is `false`)     |
-| `policyFailure` | string | The [Policy Failure](../enterprise/policy-messages.md#identifiers) identifier, when the command failed because of enterprise policy (optional) |
-| `code`      | string  | Machine-readable reason for the failure, when it has one. `managed_config_write_refused` marks a write to a [managed configuration](../enterprise/managed-config.md) surface. Absent on most failures. |
+| `policyFailure` | string | The [Policy Failure](https://github.com/dsswift/ion/blob/main/docs/enterprise/policy-messages.md#identifiers) identifier, when the command failed because of enterprise policy (optional) |
+| `code`      | string  | Machine-readable reason for the failure, when it has one. `managed_config_write_refused` marks a write to a [managed configuration](https://github.com/dsswift/ion/blob/main/docs/enterprise/managed-config.md) surface. Absent on most failures. |
 | `data`      | any     | Response payload (command-specific)              |
 | `newKey`    | string  | New session key (only for `fork_session`)        |
 
@@ -263,7 +263,7 @@ Engine events are produced by the engine itself (not the LLM provider). They sha
 
 Complete snapshot of every agent the engine considers live at this instant. Consumers **must replace** their local agent view with this payload — do not merge, do not preserve entries not present here. An empty `agents: []` array means no agents are live and consumers must drop all entries. The engine guarantees a follow-up event with terminal status (or absence) for every agent that ends.
 
-See [Agent State Contract](../architecture/agent-state.md) for the normative semantics, including extension-death recovery and reconnect handling.
+See [Agent State Contract](https://github.com/dsswift/ion/blob/main/docs/architecture/agent-state.md) for the normative semantics, including extension-death recovery and reconnect handling.
 
 | Field    | Type               | Description               |
 |----------|--------------------|---------------------------|
@@ -365,7 +365,7 @@ An error signal from the engine. It carries structured classification when the s
 | `retryable`     | boolean | Whether the error is transient                 |
 | `retryAfterMs`  | number  | Suggested retry delay in milliseconds          |
 | `httpStatus`    | number  | HTTP status code from the provider             |
-| `policyFailure` | string  | The [Policy Failure](../enterprise/policy-messages.md#identifiers) identifier, when the error results from enterprise policy. `message` is then the policy's text when one is configured. `errorCode` is unaffected. |
+| `policyFailure` | string  | The [Policy Failure](https://github.com/dsswift/ion/blob/main/docs/enterprise/policy-messages.md#identifiers) identifier, when the error results from enterprise policy. `message` is then the policy's text when one is configured. `errorCode` is unaffected. |
 | `extensionName` | string  | The blocked extension's identifier, when `errorCode` is `extension_blocked`. Present whatever text `message` carries (optional) |
 | `providerSubscription` | object | The [Provider Subscription](#engine_provider_subscription) snapshot taken when a provider request failed. Present only when the request went to the `subscriptionLookup` provider while no looked-up key was applied (any state other than `applied`). It says why the request may have had no key; `message` is unchanged. |
 
@@ -388,7 +388,7 @@ An error signal from the engine. It carries structured classification when the s
 | `session_not_found` | `provider_error`  | no        | No session for the given key       |
 | `queue_full`        | `provider_error`  | yes       | Prompt queue at capacity           |
 | `managed_policy_absent` | `provider_error` | no     | The installation is managed and has no enterprise policy; every prompt is refused |
-| `managed_config_invalid` | `provider_error` | no    | A declared [managed configuration file](../enterprise/managed-config.md) could not be applied; every prompt is refused |
+| `managed_config_invalid` | `provider_error` | no    | A declared [managed configuration file](https://github.com/dsswift/ion/blob/main/docs/enterprise/managed-config.md) could not be applied; every prompt is refused |
 | `hook_failed`       | `hook_error`      | no        | Extension hook threw an error. Message includes the stack trace. |
 
 ```json
@@ -482,7 +482,7 @@ Signals the completion of a tool execution.
 | `result`           | string  | Tool output                          |
 | `isError`          | boolean | `true` if the tool execution failed  |
 | `backgroundTaskId` | string  | Correlates this tool result with an asynchronous task: Bash background task ID or Agent dispatch ID. Additive (`omitempty`): absent for synchronous tool results. Clients may use this to fold a later `engine_background_work_delivered` item onto the originating tool row. |
-| `policyFailure`    | string  | The [Policy Failure](../enterprise/policy-messages.md#identifiers) identifier, when enterprise policy refused the call (optional) |
+| `policyFailure`    | string  | The [Policy Failure](https://github.com/dsswift/ion/blob/main/docs/enterprise/policy-messages.md#identifiers) identifier, when enterprise policy refused the call (optional) |
 
 #### engine_dispatch_activity
 
@@ -536,7 +536,7 @@ reusable. That path is surfaced via the idle `engine_status` only; no
 `engine_dead` is emitted. `engine_dead` is reserved for real deaths a consumer
 must surface (`SIGKILL`, `SIGSEGV`, the watchdog's `cancelled-forced` hard
 kill, or any non-zero exit). See
-[ADR-013](../architecture/adr/013-engine-dead-clean-cancel.md) for the semantic
+[ADR-013](https://github.com/dsswift/ion/blob/main/docs/architecture/adr/013-engine-dead-clean-cancel.md) for the semantic
 rationale and migration impact.
 
 | Field        | Type     | Description                         |
@@ -593,7 +593,7 @@ A **complete replacement snapshot** of every client-tool call the engine is curr
 
 Emitted when an extension calls `ctx.elicit()` (TypeScript SDK) or `ctx.Elicit()` (Go SDK). The engine blocks the extension's call and waits for a matching `elicitation_response` client command. Clients present the schema-driven prompt to the user and reply via `elicitation_response`. The engine forwards the reply to the waiting extension so its `ctx.elicit()` Promise resolves.
 
-The engine never cancels a pending elicitation on its own. If the client disconnects without replying, the waiting extension call eventually times out per the session's configured elicitation timeout. See [`ctx.elicit()`](../extensions/sdk-typescript.md) for the extension-side API.
+The engine never cancels a pending elicitation on its own. If the client disconnects without replying, the waiting extension call eventually times out per the session's configured elicitation timeout. See [`ctx.elicit()`](https://github.com/dsswift/ion/blob/main/docs/extensions/sdk-typescript.md) for the extension-side API.
 
 | Field        | Type   | Description |
 |--------------|--------|-------------|
@@ -619,7 +619,7 @@ Emitted by the engine after it receives and processes an `elicitation_response` 
 Signals a confirmed change in plan mode status. **State transitions only** —
 the model calling `ExitPlanMode` does **not** fire this event, because the
 mode change is deferred to the user-approval chokepoint. See
-[ADR-003](../architecture/adr/003-state-events-vs-workflow-events.md) for
+[ADR-003](https://github.com/dsswift/ion/blob/main/docs/architecture/adr/003-state-events-vs-workflow-events.md) for
 the state-vs-workflow split and [`engine_plan_proposal`](#engine_plan_proposal)
 for the workflow signal that fires when the model proposes an exit.
 
@@ -661,7 +661,7 @@ proposal is a *request* — the actual state change is deferred to the
 consumer's user-approval chokepoint. Distinct from
 [`engine_plan_mode_changed`](#engine_plan_mode_changed), which fires only on
 confirmed state transitions. See
-[ADR-003](../architecture/adr/003-state-events-vs-workflow-events.md) for
+[ADR-003](https://github.com/dsswift/ion/blob/main/docs/architecture/adr/003-state-events-vs-workflow-events.md) for
 the rationale.
 
 The `planProposalKind` field discriminates the proposal type. Consumers must
@@ -703,7 +703,7 @@ merge. An empty `commands: []` array is the authoritative "no extension
 commands live for this session" signal.
 
 Snapshot semantics follow the same rules as `engine_agent_state`; see
-[Agent State Contract](../architecture/agent-state.md) for the canonical
+[Agent State Contract](https://github.com/dsswift/ion/blob/main/docs/architecture/agent-state.md) for the canonical
 example. Consumers using the snapshot as a routing-hint cache (e.g. the
 desktop's prompt pipeline, which short-circuits local `.md` template
 lookups when an extension owns the same slash name) must drop entries
@@ -791,7 +791,7 @@ hook. Emitted when the model has just emitted `end_turn` / `stop` and no
 subprocess extension has already expressed an opinion via the in-process hook. Lets socket-only
 harnesses (e.g. the desktop's `early-stop-policy.ts`) participate in
 the decision without running a subprocess extension. See
-[ADR-002](../architecture/adr/002-engine-vs-harness-early-stop.md) for
+[ADR-002](https://github.com/dsswift/ion/blob/main/docs/architecture/adr/002-engine-vs-harness-early-stop.md) for
 the engine-vs-harness boundary that motivates the request/response
 shape.
 
@@ -1032,7 +1032,7 @@ Incremental confirmation emitted after an `abort` with `abortScope: "all_work"` 
 
 #### engine_active_path_changed
 
-`switch_branch` moved the conversation onto another branch. A snapshot of where the active path now ends; see [`active_path_changed`](normalized-events.md#active_path_changed).
+`switch_branch` moved the conversation onto another branch. A snapshot of where the active path now ends; see [`active_path_changed`](https://github.com/dsswift/ion/blob/main/docs/protocol/normalized-events.md#active_path_changed).
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -1043,7 +1043,7 @@ Incremental confirmation emitted after an `abort` with `abortScope: "all_work"` 
 
 #### engine_background_task_complete
 
-A background bash command started with `Bash(run_in_background: true, notify_on_complete: true)` reached a terminal state. Emitted once per completion, before the engine resolves delivery — the typed event is the engine's complete signaling obligation, and what happens next (start a run, queue the result, do nothing) is the operator's opinion configured with `backgroundTasks.delivery`. See [`docs/tools/task-tools.md`](../tools/task-tools.md) § "Background bash completion" and [ADR-023](../architecture/adr/023-root-session-park-and-wake.md).
+A background bash command started with `Bash(run_in_background: true, notify_on_complete: true)` reached a terminal state. Emitted once per completion, before the engine resolves delivery — the typed event is the engine's complete signaling obligation, and what happens next (start a run, queue the result, do nothing) is the operator's opinion configured with `backgroundTasks.delivery`. See [`docs/tools/task-tools.md`](https://github.com/dsswift/ion/blob/main/docs/tools/task-tools.md) § "Background bash completion" and [ADR-023](https://github.com/dsswift/ion/blob/main/docs/architecture/adr/023-root-session-park-and-wake.md).
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -1059,7 +1059,7 @@ A background bash command started with `Bash(run_in_background: true, notify_on_
 
 #### engine_wiki_links_propagated
 
-The engine rewrote wiki links after one or more documents in the session's working directory were renamed. Emitted once per propagation pass, on the stream of every session watching that workspace, even when no link needed rewriting (`files` is then empty). The payload is the complete record of the pass; it replaces nothing a consumer already holds. See [Wiki-Link Maintenance](../architecture/wiki-links.md).
+The engine rewrote wiki links after one or more documents in the session's working directory were renamed. Emitted once per propagation pass, on the stream of every session watching that workspace, even when no link needed rewriting (`files` is then empty). The payload is the complete record of the pass; it replaces nothing a consumer already holds. See Wiki-Link Maintenance.
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -1134,7 +1134,7 @@ The kinds are enumerated in `engine/internal/types/injection_kind.go`, which is 
 | Kind | Machine-authored | Meaning |
 |------|------------------|---------|
 | `agent_completion` | yes | A dispatch callback — a completed child agent's result routed back to its parent. |
-| `background_task_completion` | yes | A finished background bash command's result, routed back to wake a parked session ([ADR-023](../architecture/adr/023-root-session-park-and-wake.md)). |
+| `background_task_completion` | yes | A finished background bash command's result, routed back to wake a parked session ([ADR-023](https://github.com/dsswift/ion/blob/main/docs/architecture/adr/023-root-session-park-and-wake.md)). |
 | `slash_command` | yes | The expanded body of a slash command whose display turn is persisted separately as the raw invocation. The body is redundant with that display turn. |
 | `checkin` | yes | A scheduled heartbeat delivered to a session that went idle with work still running — a harness asking its own orchestrator to inspect outstanding dispatches. |
 | `revive` | yes | A harness re-entering its own loop after an external signal. Distinct from `agent_completion` so a consumer can tell "here is a child's result" from "keep going". |
@@ -1287,7 +1287,7 @@ Delivery health of one telemetry egress target (`http` or `eventhub`, for the `t
 | `telemetryCritical` | boolean | Durability actually lost |
 | `telemetryLastError` | string | The latest delivery failure |
 
-The Ion Studio Server retains the latest state per target and replays it on the Studio snapshot (`telemetryHealth`), so a client that connects mid-outage sees it without waiting for the next transition. See [Telemetry](../enterprise/telemetry.md) for the thresholds.
+The Ion Studio Server retains the latest state per target and replays it on the Studio snapshot (`telemetryHealth`), so a client that connects mid-outage sees it without waiting for the next transition. See [Telemetry](https://github.com/dsswift/ion/blob/main/docs/enterprise/telemetry.md) for the thresholds.
 
 #### engine_mcp_servers
 
@@ -1328,7 +1328,7 @@ A backend's report of the signed-in account's usage limits, sent during a run. T
 
 #### engine_provider_subscription
 
-Complete Provider Subscription state: the provider key the engine resolved from `subscriptionLookup` for the signed-in identity. **Snapshot-replace semantics:** consumers replace their view with the payload. Broadcast to all clients on every state change (sign-in, a lookup settling, a selection, sign-out) and delivered requester-scoped for each `provider_subscription_*` command. The snapshot never carries a key. See [Subscription Lookup](../configuration/subscription-lookup.md).
+Complete Provider Subscription state: the provider key the engine resolved from `subscriptionLookup` for the signed-in identity. **Snapshot-replace semantics:** consumers replace their view with the payload. Broadcast to all clients on every state change (sign-in, a lookup settling, a selection, sign-out) and delivered requester-scoped for each `provider_subscription_*` command. The snapshot never carries a key. See [Subscription Lookup](https://github.com/dsswift/ion/blob/main/docs/configuration/subscription-lookup.md).
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -1341,7 +1341,7 @@ Complete Provider Subscription state: the provider key the engine resolved from 
 | `providerSubscription.source` | string | `lookup` \| `cache`: where the applied key came from (optional) |
 | `providerSubscription.resolvedAt` | int | Unix milliseconds of the lookup behind the key or options (optional) |
 | `providerSubscription.error` | string | Most recent lookup failure. Can accompany `applied` when a refresh failed and the cached key stayed in effect (optional) |
-| `providerSubscription.policyFailure` | string | The [Policy Failure](../enterprise/policy-messages.md#identifiers) identifier of the state: `subscription_unavailable` for `none`, `subscription_lookup_failed` for `failed` (optional) |
+| `providerSubscription.policyFailure` | string | The [Policy Failure](https://github.com/dsswift/ion/blob/main/docs/enterprise/policy-messages.md#identifiers) identifier of the state: `subscription_unavailable` for `none`, `subscription_lookup_failed` for `failed` (optional) |
 | `providerSubscription.message` | string | The enterprise policy's text for `policyFailure`. Absent when none is configured (optional) |
 
 `none` and `failed` are different situations. `none` is a successful lookup that returned zero subscriptions for this identity. `failed` is a lookup that did not complete, with no cached key to fall back on; any manually configured key is still in use.

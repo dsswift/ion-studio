@@ -7,7 +7,7 @@ sidebar_position: 10
 # Performance
 
 Latency in Ion is measured from spans: one W3C trace per prompt with a timed span at every hop
-([log-schema § Spans](../observability/log-schema.md#spans)). Three tools read them:
+([log-schema § Spans](https://github.com/dsswift/ion/blob/main/docs/observability/log-schema.md#spans)). Three tools read them:
 
 | Tool | Answers | Where |
 |---|---|---|
@@ -96,7 +96,7 @@ reads Tempo's span metrics (`traces_spanmetrics_*`) from Prometheus:
 A panel that is empty for one service means that service shipped no spans in the range: check
 its egress (`logging.egressTargets`) before reading it as "fast". Exemplars on the latency panels
 link to the trace in Tempo. Alerts (p95 `action.handle` and `run.execute`, server event-loop p99,
-host memory) are listed with the dashboard. Queries: [`docs/observability/queries.md`](../observability/queries.md).
+host memory) are listed with the dashboard. Queries: [`docs/observability/queries.md`](https://github.com/dsswift/ion/blob/main/docs/observability/queries.md).
 
 ## What a result is not
 

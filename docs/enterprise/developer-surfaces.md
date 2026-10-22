@@ -98,7 +98,7 @@ branch and status indicators still update.
 
 This setting controls Ion Studio's own surfaces. It does not stop an agent
 from running `git` in a shell. Use permission rules and the sandbox for that:
-see [Sealed config](sealed-config.md).
+see [Sealed config](https://github.com/dsswift/ion/blob/main/docs/enterprise/sealed-config.md).
 
 ## Related settings
 

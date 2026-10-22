@@ -288,9 +288,6 @@ One named actor that runs a prompt loop with its own model, tools, and system pr
 - **Legacy names:** None
 - **Contract:** `public-sdk`
 - **Implementations:**
-  - `engine` / `code` / `go`: `type AgentInfo struct` in `engine/internal/extension/sdk_hook_types.go`
-  - `engine` / `wire` / `go`: `type AgentStateUpdate struct` in `engine/internal/types/types.go`
-  - `sdk` / `code` / `typescript`: `export interface AgentSpec` in `engine/extensions/sdk/ion-sdk/types.ts`
   - `ios` / `ui` / `swift`: `AgentStatusDotStack` in `ios/IonRemote/Views/AgentStatusDotStack.swift`
 - **Notes:** The engine emits a complete agent roster snapshot. Consumers replace local state with the payload.
 
@@ -305,7 +302,6 @@ One continuous thread of user prompts and agent responses, held in a tree that s
 - **Legacy names:** None
 - **Contract:** `public-wire`
 - **Implementations:**
-  - `engine` / `code` / `go`: `type Conversation struct` in `engine/internal/conversation/conversation.go`
   - `desktop` / `wire` / `typescript`: `export interface RemoteTabState` in `server/src/remote/protocol-remote-tab.ts`
 
 #### Engine profile {#term-engine-profile}
@@ -319,7 +315,6 @@ A named set of extensions and defaults that a conversation loads at start. A pro
 - **Legacy names:** None
 - **Contract:** `public-wire`
 - **Implementations:**
-  - `engine` / `wire` / `go`: `type EngineProfile struct` in `engine/internal/types/types.go`
   - `desktop` / `code` / `typescript`: `engineProfileId` in `packages/shared/src/remote-projection-types.ts`
   - `ios` / `code` / `swift`: `EngineProfile` in `ios/IonRemote/Models/EngineProfile.swift`
 
@@ -334,7 +329,6 @@ One entry in a conversation: a user prompt, an assistant reply, a tool call, or 
 - **Legacy names:** None
 - **Contract:** `public-wire`
 - **Implementations:**
-  - `engine` / `code` / `go`: `type MessageData struct` in `engine/internal/conversation/conversation.go`
   - `ios` / `code` / `swift`: `struct Message` in `ios/IonRemote/Models/Message.swift`
 
 #### Resource {#term-resource}
@@ -348,8 +342,6 @@ A durable structured item that an extension publishes. A session-scoped resource
 - **Legacy names:** None
 - **Contract:** `public-wire`
 - **Implementations:**
-  - `engine` / `code` / `go`: `type Broker struct` in `engine/internal/resource/broker.go`
-  - `sdk` / `code` / `typescript`: `export function buildResourcesAPI` in `engine/extensions/sdk/ion-sdk/runtime-resources.ts`
   - `desktop` / `ui` / `typescript`: `ResourceViewer` in `desktop/src/renderer/components/ResourceViewer.tsx`
   - `ios` / `wire` / `swift`: `Resource` in `ios/IonRemote/Models/NormalizedEvent+Resource.swift`
 - **Notes:** The engine stores nothing. The producing extension persists its own items.
@@ -365,8 +357,7 @@ The engine's live run container for one conversation. It holds the session key, 
 - **Legacy names:** None
 - **Contract:** `public-wire`
 - **Implementations:**
-  - `engine` / `code` / `go`: `type Manager struct` in `engine/internal/session/manager.go`
-  - `engine` / `wire` / `go`: `type SessionInfo struct` in `engine/internal/protocol/protocol_server.go`
+  - None
 - **Notes:** A session is the engine-side run container. A conversation is what a client renders. They are not interchangeable words.
 
 #### Turn {#term-turn}
@@ -380,8 +371,7 @@ One user prompt and the agent work that answers it, up to the next user prompt.
 - **Legacy names:** None
 - **Contract:** `public-sdk`
 - **Implementations:**
-  - `engine` / `code` / `go`: `type TurnInfo struct` in `engine/internal/extension/sdk_hook_types.go`
-  - `sdk` / `code` / `typescript`: `export interface TurnInfo` in `engine/extensions/sdk/ion-sdk/types.ts`
+  - None
 
 #### Workspace {#term-workspace}
 
@@ -394,8 +384,6 @@ The filesystem root that scopes tool execution and file access for a conversatio
 - **Legacy names:** None
 - **Contract:** `public-wire`
 - **Implementations:**
-  - `engine` / `code` / `go`: `type Registry struct` in `engine/internal/workspaces/registry.go`
-  - `engine` / `wire` / `go`: `ClientWorkspaceContext` in `engine/internal/protocol/protocol.go`
   - `desktop` / `ui` / `typescript`: `WorkspaceStatusIndicator` in `desktop/src/renderer/components/WorkspaceStatusIndicator.tsx`
 
 ### state
@@ -411,8 +399,7 @@ The branch of a conversation tree the model context is built from: the entries f
 - **Legacy names:** None
 - **Contract:** `public-wire`
 - **Implementations:**
-  - `engine` / `code` / `go`: `func SwitchBranch` in `engine/internal/conversation/branches.go`
-  - `engine` / `wire` / `go`: `EventActivePathChanged` in `engine/internal/types/normalized_event_types.go`
+  - None
 
 ### action
 
@@ -427,8 +414,7 @@ A new path in the conversation tree that starts at an earlier entry. A branch ke
 - **Legacy names:** None
 - **Contract:** `public-wire`
 - **Implementations:**
-  - `engine` / `code` / `go`: `type TreeNode struct` in `engine/internal/conversation/conversation.go`
-  - `engine` / `wire` / `go`: `branch_before` in `engine/internal/protocol/protocol.go`
+  - None
 
 ### runtime-mechanic
 
@@ -443,8 +429,7 @@ The conversation tree entry that records a cancelled run. It names the run, whet
 - **Legacy names:** None
 - **Contract:** `internal`
 - **Implementations:**
-  - `engine` / `code` / `go`: `EntryAborted` in `engine/internal/conversation/conversation.go`
-  - `engine` / `code` / `go`: `func AppendAbortMarker` in `engine/internal/conversation/abort_marker.go`
+  - None
 
 #### Backend {#term-backend}
 
@@ -457,7 +442,7 @@ The pluggable implementation that runs one agent loop. The API backend calls a p
 - **Legacy names:** None
 - **Contract:** `internal`
 - **Implementations:**
-  - `engine` / `code` / `go`: `type RunBackend interface` in `engine/internal/backend/backend.go`
+  - None
 
 #### Compaction {#term-compaction}
 
@@ -470,9 +455,6 @@ The mechanic that shrinks a conversation so it fits the model context. The engin
 - **Legacy names:** None
 - **Contract:** `public-sdk`
 - **Implementations:**
-  - `engine` / `code` / `go`: `func ExtractFacts` in `engine/internal/compaction/compaction.go`
-  - `engine` / `code` / `go`: `type CompactionInfo struct` in `engine/internal/extension/sdk_hook_types.go`
-  - `sdk` / `code` / `typescript`: `export interface CompactionInfo` in `engine/extensions/sdk/ion-sdk/types.ts`
   - `ios` / `ui` / `swift`: `CompactionRowView` in `ios/IonRemote/Views/CompactionRowView.swift`
 
 #### Context {#term-context}
@@ -486,8 +468,6 @@ Everything the engine assembles for one model request: the system prompt, the to
 - **Legacy names:** None
 - **Contract:** `public-sdk`
 - **Implementations:**
-  - `engine` / `code` / `go`: `func WalkContextFiles` in `engine/internal/context/context.go`
-  - `sdk` / `code` / `typescript`: `export interface ContextUsage` in `engine/extensions/sdk/ion-sdk/types.ts`
   - `desktop` / `ui` / `typescript`: `export function ContextIndicator` in `desktop/src/renderer/components/StatusBarContextIndicator.tsx`
   - `ios` / `ui` / `swift`: `ContextUsageRing` in `ios/IonRemote/Views/ContextUsageRing.swift`
 
@@ -502,8 +482,7 @@ The standalone, metadata-only conversation.* telemetry event family (user_messag
 - **Legacy names:** None
 - **Contract:** `internal`
 - **Implementations:**
-  - `engine` / `code` / `go`: `type ConversationEmitter struct` in `engine/internal/telemetry/conversation_emitter.go`
-  - `engine` / `code` / `go`: `type ConversationEventsConfig struct` in `engine/internal/types/config.go`
+  - None
 
 #### Conversation persistence {#term-conversation-persistence}
 
@@ -516,8 +495,7 @@ The on-disk record of a conversation. The engine writes an NDJSON file pair: the
 - **Legacy names:** None
 - **Contract:** `internal`
 - **Implementations:**
-  - `engine` / `code` / `go`: `type SessionEntry struct` in `engine/internal/conversation/conversation.go`
-  - `engine` / `doc` / `markdown`: `.tree.jsonl` in `docs/architecture/conversation-storage.md`
+  - None
 
 #### Cost {#term-cost}
 
@@ -530,7 +508,6 @@ The money value of model use, computed from token counts and image counts for on
 - **Legacy names:** None
 - **Contract:** `internal`
 - **Implementations:**
-  - `engine` / `code` / `go`: `func TurnCost` in `engine/internal/cost/cost.go`
   - `ios` / `ui` / `swift`: `StatusDrawerBreakdown` in `ios/IonRemote/Views/StatusDrawerBreakdown.swift`
 
 #### Custom Provider {#term-custom-provider}
@@ -544,7 +521,6 @@ A provider that exists only because the engine configuration defines it, such as
 - **Legacy names:** None
 - **Contract:** `public-wire`
 - **Implementations:**
-  - `engine` / `code` / `go`: `func (s *Server) dispatchProviderRemove` in `engine/internal/server/dispatch_provider_remove.go`
   - `studio` / `ui` / `typescript`: `CustomProvidersPanel` in `desktop/src/renderer/components/settings/pages/fleet/CustomProvidersPanel.tsx`
   - `ios` / `ui` / `swift`: `struct FleetCustomProvidersSheet` in `ios/IonRemote/Views/Settings/Root/FleetCustomProvidersSheet.swift`
 
@@ -559,8 +535,7 @@ One started sub-agent run, tracked by a dispatch identifier. The engine reports 
 - **Legacy names:** None
 - **Contract:** `public-sdk`
 - **Implementations:**
-  - `engine` / `code` / `go`: `type DispatchStateEntry struct` in `engine/internal/extension/sdk_types.go`
-  - `sdk` / `code` / `typescript`: `export interface DispatchEntry` in `engine/extensions/sdk/ion-sdk/types.ts`
+  - None
 
 #### Dispatch Alias {#term-dispatch-alias}
 
@@ -573,8 +548,7 @@ A consumer-supplied identifier registered as an alternate name for a dispatch's 
 - **Legacy names:** None
 - **Contract:** `public-sdk`
 - **Implementations:**
-  - `engine` / `code` / `go`: `func (r *DispatchRegistry) RegisterAlias` in `engine/internal/session/extcontext/dispatch_registry_alias.go`
-  - `sdk` / `code` / `go`: `ClientDispatchID string` in `sdk/go/context_dispatch.go`
+  - None
 
 #### Dispatch Conversation Read {#term-dispatch-conversation-read}
 
@@ -587,8 +561,7 @@ A bounded, cursor-paged read of the conversation a dispatch wrote, open only to 
 - **Legacy names:** None
 - **Contract:** `public-sdk`
 - **Implementations:**
-  - `engine` / `code` / `go`: `func (r *DispatchRegistry) ResolveOwnedConversation` in `engine/internal/session/extcontext/dispatch_registry_conversation.go`
-  - `sdk` / `code` / `go`: `func (c *Context) ReadDispatchConversation` in `sdk/go/context_dispatch_conversation.go`
+  - None
 
 #### Dispatch History {#term-dispatch-history}
 
@@ -601,8 +574,7 @@ The bounded record of dispatches that have ended, kept by a session's dispatch r
 - **Legacy names:** None
 - **Contract:** `public-sdk`
 - **Implementations:**
-  - `engine` / `code` / `go`: `func (r *DispatchRegistry) OwnedHistory` in `engine/internal/session/extcontext/dispatch_registry_history.go`
-  - `sdk` / `code` / `go`: `func (c *Context) ListDispatchHistory` in `sdk/go/context_dispatch_methods.go`
+  - None
 
 #### Engine host {#term-engine-extension-host}
 
@@ -615,8 +587,7 @@ An extension process owned by the engine rather than by a conversation. Spawned 
 - **Legacy names:** None
 - **Contract:** `public-sdk`
 - **Implementations:**
-  - `engine` / `code` / `go`: `func (m *Manager) StartEngineHosts` in `engine/internal/session/engine_hosts.go`
-  - `engine` / `doc` / `markdown`: `extensionHosts` in `docs/configuration/extension-hosts.md`
+  - None
 
 #### Engine server {#term-engine-server}
 
@@ -629,7 +600,7 @@ The headless process that accepts consumer connections, owns session lifecycle, 
 - **Legacy names:** None
 - **Contract:** `public-wire`
 - **Implementations:**
-  - `engine` / `code` / `go`: `type Server struct` in `engine/internal/server/server.go`
+  - None
 
 #### Event segment {#term-event-segment}
 
@@ -642,8 +613,7 @@ One of the parts a conversation event is delivered as when its size exceeds the 
 - **Legacy names:** None
 - **Contract:** `public-wire`
 - **Implementations:**
-  - `engine` / `code` / `go`: `func segmentEvent` in `engine/internal/telemetry/telemetry_oversize.go`
-  - `engine` / `doc` / `json`: `payload.segment` in `docs/observability/conversation-events.schema.json`
+  - None
 
 #### Headless session {#term-headless-session}
 
@@ -656,8 +626,7 @@ A session the engine mints for an engine host's schedule or webhook fire. A real
 - **Legacy names:** None
 - **Contract:** `public-sdk`
 - **Implementations:**
-  - `engine` / `code` / `go`: `func (m *Manager) mintHeadlessSession` in `engine/internal/session/headless_session.go`
-  - `engine` / `doc` / `markdown`: `What a fire looks like` in `docs/configuration/extension-hosts.md`
+  - None
 
 #### Link Integrity Scan {#term-link-integrity-scan}
 
@@ -670,8 +639,7 @@ A read-only pass over a session's working directory that resolves every wiki lin
 - **Legacy names:** None
 - **Contract:** `public-wire`
 - **Implementations:**
-  - `engine` / `code` / `go`: `func Scan` in `engine/internal/wikilinks/scan.go`
-  - `engine` / `code` / `go`: `type WikiLinkIntegrityReport` in `engine/internal/types/wiki_links.go`
+  - None
 
 #### Managed Config Projection {#term-managed-config-projection}
 
@@ -684,8 +652,6 @@ Enterprise policy naming a managed engine file, a managed models file, or both, 
 - **Legacy names:** None
 - **Contract:** `public-wire`
 - **Implementations:**
-  - `engine` / `code` / `go`: `func resolveManagedProjection` in `engine/internal/config/managed_projection.go`
-  - `engine` / `code` / `go`: `type ManagedConfigStatus` in `engine/internal/types/config_managed.go`
   - `server` / `code` / `typescript`: `managedEngineConfigSource` in `server/src/managed-config.ts`
 
 #### Managed-Mode Marker {#term-managed-mode-marker}
@@ -699,8 +665,7 @@ An administrator-owned file that declares an installation managed, separate from
 - **Legacy names:** None
 - **Contract:** `public-wire`
 - **Implementations:**
-  - `engine` / `code` / `go`: `func readManagedMarker` in `engine/internal/config/managed.go`
-  - `engine` / `code` / `go`: `type ManagedModeStatus` in `engine/internal/types/config_managed.go`
+  - None
 
 #### Model Boundary {#term-model-boundary}
 
@@ -713,9 +678,7 @@ The decision point where a slash command that declares a model tier either appli
 - **Legacy names:** None
 - **Contract:** `public-sdk`
 - **Implementations:**
-  - `engine` / `code` / `go`: `evaluateSlashModelBoundary` in `engine/internal/session/slash_model_boundary.go`
-  - `sdk` / `code` / `typescript`: `SlashModelBoundaryInfo` in `engine/extensions/sdk/ion-sdk/types.ts`
-  - `sdk` / `code` / `go`: `HookBeforeSlashModelBoundary` in `sdk/go/hook_descriptors.go`
+  - None
 - **Notes:** The default retains the serving model after history exists. Consumers can override the policy per configuration, request, or hook.
 
 #### Model Change Marker {#term-model-change-marker}
@@ -729,8 +692,7 @@ The conversation tree entry that records a run serving the conversation on a dif
 - **Legacy names:** None
 - **Contract:** `internal`
 - **Implementations:**
-  - `engine` / `code` / `go`: `EntryModelChange` in `engine/internal/conversation/conversation.go`
-  - `engine` / `code` / `go`: `func SyncModel` in `engine/internal/conversation/model_sync.go`
+  - None
 
 #### Native Session Compaction {#term-native-session-compaction}
 
@@ -743,8 +705,6 @@ A delegated CLI compacting its own native session. Distinct from Compaction: Ion
 - **Legacy names:** None
 - **Contract:** `public-wire`
 - **Implementations:**
-  - `engine` / `code` / `go`: `type NativeCompactionEvent struct` in `engine/internal/types/normalized_event.go`
-  - `engine` / `code` / `go`: `EntryNativeCompaction` in `engine/internal/conversation/conversation.go`
   - `desktop` / `code` / `typescript`: `export function buildNativeCompactionMarkerContent` in `packages/shared/src/compaction-marker.ts`
 
 #### Park Check-In {#term-park-check-in}
@@ -758,9 +718,7 @@ One periodic wake of a dispatch that is parked on work it started. The dispatche
 - **Legacy names:** None
 - **Contract:** `public-sdk`
 - **Implementations:**
-  - `engine` / `code` / `go`: `type DispatchParkCheckInInfo struct` in `engine/internal/extension/sdk_types_dispatch.go`
-  - `sdk` / `code` / `go`: `type DispatchParkCheckInInfo struct` in `sdk/go/context_dispatch.go`
-  - `sdk` / `code` / `typescript`: `export interface DispatchParkCheckInInfo` in `engine/extensions/sdk/ion-sdk/types.ts`
+  - None
 
 #### Permission {#term-permission}
 
@@ -773,8 +731,6 @@ The decision about whether a tool call may run. The engine classifies the call a
 - **Legacy names:** None
 - **Contract:** `public-wire`
 - **Implementations:**
-  - `engine` / `code` / `go`: `type Engine struct` in `engine/internal/permissions/engine.go`
-  - `engine` / `wire` / `go`: `type PermissionRequestEvent struct` in `engine/internal/types/normalized_event.go`
   - `desktop` / `ui` / `typescript`: `PermissionCard` in `desktop/src/renderer/components/PermissionCard.tsx`
   - `ios` / `ui` / `swift`: `struct PermissionCardView` in `ios/IonRemote/Views/PermissionCardView.swift`
 
@@ -789,8 +745,7 @@ A machine-authored user turn the engine appends to a conversation where a run's 
 - **Legacy names:** None
 - **Contract:** `public-wire`
 - **Implementations:**
-  - `engine` / `code` / `go`: `InjectionKindPlanModeEnter` in `engine/internal/types/injection_kind.go`
-  - `engine` / `code` / `go`: `func ReconcilePlanMode` in `engine/internal/conversation/plan_mode_ledger.go`
+  - None
 
 #### Plan Policy {#term-plan-policy}
 
@@ -803,7 +758,7 @@ The single decision of whether one tool call may run while a run is planning. Pl
 - **Legacy names:** None
 - **Contract:** `internal`
 - **Implementations:**
-  - `engine` / `code` / `go`: `PlanPolicy` in `engine/internal/backend/plan_policy.go`
+  - None
 
 #### Policy Failure {#term-policy-failure}
 
@@ -816,8 +771,6 @@ A failure state that results from enterprise policy, named by a stable identifie
 - **Legacy names:** None
 - **Contract:** `public-wire`
 - **Implementations:**
-  - `engine` / `wire` / `go`: `var PolicyFailureIDs` in `engine/internal/types/policy_failure.go`
-  - `engine` / `code` / `go`: `func PolicyMessage` in `engine/internal/config/policy_messages.go`
   - `server` / `code` / `typescript`: `policyMessage` in `packages/shared/src/policy-failure.ts`
   - `ios` / `wire` / `swift`: `func failureText` in `ios/IonRemote/Models/Admin/ProviderSubscriptionStatus.swift`
 
@@ -832,8 +785,7 @@ A bounded engine-owned inference loop. It dispatches check agents, re-arms only 
 - **Legacy names:** None
 - **Contract:** `public-wire`
 - **Implementations:**
-  - `engine` / `code` / `go`: `func PollTool` in `engine/internal/tools/poll.go`
-  - `engine` / `code` / `go`: `func (m *Manager) startPoll` in `engine/internal/session/poll_driver.go`
+  - None
 
 #### Principal Partition {#term-principal-partition}
 
@@ -846,8 +798,7 @@ The subdirectory of the conversations root one principal's conversations live un
 - **Legacy names:** None
 - **Contract:** `internal`
 - **Implementations:**
-  - `engine` / `code` / `go`: `func PartitionConversationsDir` in `engine/internal/conversation/partition.go`
-  - `engine` / `code` / `go`: `func PartitioningEnabled` in `engine/internal/conversation/partition.go`
+  - None
 - **Notes:** StartSessionResult.StorageRoot and ContextIdentity.StorageRoot both carry the resolved partition path so a harness or SDK consumer can locate it without re-deriving the partitioning rule.
 
 #### Provider {#term-provider}
@@ -861,7 +812,7 @@ The LLM vendor integration that streams a model response. The engine calls each 
 - **Legacy names:** None
 - **Contract:** `internal`
 - **Implementations:**
-  - `engine` / `code` / `go`: `type LlmProvider interface` in `engine/internal/providers/provider.go`
+  - None
 - **Notes:** Name providers by name. Never pin a provider count in prose.
 
 #### Provider Subscription {#term-provider-subscription}
@@ -875,8 +826,6 @@ The provider key the engine resolves from a configured subscription lookup endpo
 - **Legacy names:** None
 - **Contract:** `public-wire`
 - **Implementations:**
-  - `engine` / `wire` / `go`: `type ProviderSubscriptionStatus struct` in `engine/internal/types/provider_subscription.go`
-  - `engine` / `code` / `go`: `type Manager struct` in `engine/internal/subscription/manager.go`
   - `server` / `code` / `typescript`: `wireProviderSubscriptionEvents` in `server/src/engine/provider-subscription-api.ts`
   - `desktop` / `wire` / `typescript`: `export interface ProviderSubscriptionStatus` in `packages/shared/src/types-engine-event-model.ts`
   - `studio` / `ui` / `typescript`: `ProviderSubscriptionGroup` in `desktop/src/renderer/components/settings/pages/integrations/ProviderSubscriptionGroup.tsx`
@@ -893,8 +842,7 @@ The session principal every headless session acts as, resolved once at boot from
 - **Legacy names:** None
 - **Contract:** `public-sdk`
 - **Implementations:**
-  - `engine` / `code` / `go`: `func resolveRunAsPrincipal` in `engine/internal/session/run_as_principal.go`
-  - `engine` / `doc` / `markdown`: ``runAs` (optional, object)` in `docs/configuration/extension-hosts.md`
+  - None
 
 #### Schedule {#term-schedule}
 
@@ -907,8 +855,7 @@ A timed trigger that the engine persists and fires. The engine owns the timing. 
 - **Legacy names:** None
 - **Contract:** `public-sdk`
 - **Implementations:**
-  - `engine` / `code` / `go`: `type Scheduler struct` in `engine/internal/scheduling/scheduler.go`
-  - `sdk` / `code` / `typescript`: `export const scheduleApi` in `engine/extensions/sdk/ion-sdk/runtime-async.ts`
+  - None
 
 #### Schedule catch-up group {#term-schedule-catch-up-group}
 
@@ -921,8 +868,7 @@ A named set of daily or weekly Schedules whose latest catch-up policy selects on
 - **Legacy names:** None
 - **Contract:** `public-sdk`
 - **Implementations:**
-  - `engine` / `code` / `go`: `type ScheduleJob` in `engine/internal/extension/sdk_schedules.go`
-  - `sdk` / `code` / `go`: `type ScheduleOpts` in `sdk/go/schedule.go`
+  - None
 
 #### Idle release {#term-session-idle-release}
 
@@ -935,8 +881,7 @@ The engine releasing a quiescent session, one that has no run, no pending work, 
 - **Legacy names:** None
 - **Contract:** `public-sdk`
 - **Implementations:**
-  - `engine` / `code` / `go`: `func (m *Manager) evaluateIdleRelease` in `engine/internal/session/idle_release.go`
-  - `engine` / `doc` / `markdown`: `Idle release` in `docs/sessions/lifecycle.md`
+  - None
 
 #### Skill Grant {#term-skill-grant}
 
@@ -949,8 +894,7 @@ A tool pre-approval from the allowed-tools of a skill the run invoked. It settle
 - **Legacy names:** None
 - **Contract:** `public-sdk`
 - **Implementations:**
-  - `engine` / `code` / `go`: `func MatchGrant` in `engine/internal/permissions/engine.go`
-  - `engine` / `code` / `go`: `func ParseAllowedTools` in `engine/internal/skills/allowed_tools.go`
+  - None
 
 #### Skill Shell Injection {#term-skill-shell-injection}
 
@@ -963,7 +907,7 @@ Shell commands written in a skill body as !`cmd` or a ```! block. The engine run
 - **Legacy names:** None
 - **Contract:** `public-sdk`
 - **Implementations:**
-  - `engine` / `code` / `go`: `func Render` in `engine/internal/skills/render.go`
+  - None
 
 #### Steer {#term-steer}
 
@@ -976,9 +920,7 @@ One instruction delivered into a run that is already in flight. The engine buffe
 - **Legacy names:** None
 - **Contract:** `public-wire`
 - **Implementations:**
-  - `engine` / `code` / `go`: `type steerMessage struct` in `engine/internal/backend/runloop_steer.go`
-  - `engine` / `wire` / `go`: `type SteerInjectedEvent struct` in `engine/internal/types/normalized_event_run_signals.go`
-  - `sdk` / `code` / `go`: `func (c *Context) SteerDispatch` in `sdk/go/context_dispatch_methods.go`
+  - None
 
 #### Steer Drain Checkpoint {#term-steer-drain-checkpoint}
 
@@ -991,7 +933,7 @@ One point in the agent loop where the engine empties the run's steer buffer into
 - **Legacy names:** None
 - **Contract:** `internal`
 - **Implementations:**
-  - `engine` / `code` / `go`: `func (b *ApiBackend) drainSteer` in `engine/internal/backend/runloop_steer.go`
+  - None
 
 #### Steer Stream Interrupt {#term-steer-stream-interrupt}
 
@@ -1004,8 +946,7 @@ The engine ending a provider call early because a steer arrived while the model 
 - **Legacy names:** None
 - **Contract:** `public-wire`
 - **Implementations:**
-  - `engine` / `wire` / `go`: `type SteerInterruptedStreamEvent struct` in `engine/internal/types/normalized_event_run_signals.go`
-  - `engine` / `code` / `go`: `type SteeringConfig struct` in `engine/internal/types/config_steering.go`
+  - None
 
 #### System Metrics {#term-system-metrics}
 
@@ -1018,8 +959,6 @@ How busy an Environment's host is and what Ion itself uses on it: host CPU, memo
 - **Legacy names:** None
 - **Contract:** `public-wire`
 - **Implementations:**
-  - `engine` / `code` / `go`: `type SystemMetricsSample` in `engine/internal/types/system_metrics.go`
-  - `engine` / `code` / `go`: `type Sampler` in `engine/internal/sysmetrics/sampler.go`
   - `desktop` / `code` / `typescript`: `class SystemMetricsPublisher` in `server/src/system-metrics/publisher.ts`
   - `desktop` / `ui` / `typescript`: `HealthPage` in `desktop/src/renderer/components/settings/pages/HealthPage.tsx`
   - `ios` / `code` / `swift`: `struct EnvironmentLoadSummary` in `ios/IonRemote/Models/EnvironmentLoadSummary.swift`
@@ -1036,7 +975,7 @@ The versioned event stream that records engine work. Its compact file frames pre
 - **Legacy names:** None
 - **Contract:** `internal`
 - **Implementations:**
-  - `engine` / `code` / `go`: `type Event = telemetryformat.Event` in `engine/internal/telemetry/telemetry.go`
+  - None
 
 #### Telemetry Health {#term-telemetry-health}
 
@@ -1049,7 +988,6 @@ The delivery health of one telemetry egress target: its on-disk retry backlog, w
 - **Legacy names:** None
 - **Contract:** `public-wire`
 - **Implementations:**
-  - `engine` / `code` / `go`: `type TelemetryHealth` in `engine/internal/telemetry/telemetry_health.go`
   - `desktop` / `code` / `typescript`: `export function installTelemetryHealthConsumer` in `server/src/engine/telemetry-health.ts`
 
 #### Tool Execution Boundary {#term-tool-execution-boundary}
@@ -1063,8 +1001,7 @@ A per-principal backstop that refuses a tool call whose path falls outside the s
 - **Legacy names:** None
 - **Contract:** `internal`
 - **Implementations:**
-  - `engine` / `code` / `go`: `func New` in `engine/internal/principalboundary/checker.go`
-  - `engine` / `code` / `go`: `func IsToolAllowedFor` in `engine/internal/config/policy_checks.go`
+  - None
 
 #### Webhook {#term-webhook}
 
@@ -1077,8 +1014,7 @@ An inbound HTTP route that the engine hosts. The engine owns the listening and t
 - **Legacy names:** None
 - **Contract:** `public-sdk`
 - **Implementations:**
-  - `engine` / `code` / `go`: `type Server struct` in `engine/internal/webhooks/server.go`
-  - `sdk` / `code` / `typescript`: `export const webhooksApi` in `engine/extensions/sdk/ion-sdk/runtime-async.ts`
+  - None
 
 #### Wiki-Link Propagation {#term-wiki-link-propagation}
 
@@ -1091,8 +1027,7 @@ Rewriting wiki links ([[target]], [[target|alias]]) after a Workspace Rename so 
 - **Legacy names:** None
 - **Contract:** `public-wire`
 - **Implementations:**
-  - `engine` / `code` / `go`: `func Propagate` in `engine/internal/wikilinks/propagate.go`
-  - `engine` / `code` / `go`: `type WikiLinkPropagationReport` in `engine/internal/types/wiki_links.go`
+  - None
 
 #### Workspace Rename {#term-workspace-rename}
 
@@ -1105,8 +1040,7 @@ One file moving from one path to another inside a watched working directory, det
 - **Legacy names:** None
 - **Contract:** `public-sdk`
 - **Implementations:**
-  - `engine` / `code` / `go`: `type renameTracker` in `engine/internal/watcher/rename.go`
-  - `engine` / `code` / `go`: `type WorkspaceFileRenamedInfo` in `engine/internal/extension/sdk_hook_types_workspace.go`
+  - None
 
 ### internal-type
 
@@ -1121,7 +1055,7 @@ The engine's listener abstraction. It accepts a connection over a Unix socket or
 - **Legacy names:** None
 - **Contract:** `internal`
 - **Implementations:**
-  - `engine` / `code` / `go`: `type Transport interface` in `engine/internal/transport/transport.go`
+  - None
 
 ### public-contract
 
@@ -1136,7 +1070,7 @@ Enterprise policy an administrator scopes to specific accounts on a host that se
 - **Legacy names:** None
 - **Contract:** `public-wire`
 - **Implementations:**
-  - `engine` / `code` / `go`: `type AccountPolicy struct` in `engine/internal/types/config_account_policy.go`
+  - None
 
 #### Client command {#term-client-command}
 
@@ -1149,7 +1083,7 @@ One inbound NDJSON message from a consumer to the engine. The command field sele
 - **Legacy names:** None
 - **Contract:** `public-wire`
 - **Implementations:**
-  - `engine` / `wire` / `go`: `type ClientCommand struct` in `engine/internal/protocol/protocol.go`
+  - None
 - **Notes:** Published wire contract. Field and command names are additive only.
 
 #### Configuration {#term-configuration}
@@ -1163,7 +1097,7 @@ The merged settings that control one engine session. Layers merge from enterpris
 - **Legacy names:** None
 - **Contract:** `public-wire`
 - **Implementations:**
-  - `engine` / `wire` / `go`: `type EngineConfig struct` in `engine/internal/types/types.go`
+  - None
 
 #### Engine event {#term-engine-event}
 
@@ -1176,7 +1110,6 @@ One outbound event that the engine writes to its socket. Every member of the out
 - **Legacy names:** None
 - **Contract:** `public-wire`
 - **Implementations:**
-  - `engine` / `wire` / `go`: `type EngineEvent struct` in `engine/internal/types/engine_event.go`
   - `desktop` / `wire` / `typescript`: `EngineEvent` in `packages/shared/src/types-engine-event.ts`
   - `ios` / `wire` / `swift`: `engine_status` in `ios/IonRemote/Models/EngineEventSupport.swift`
 - **Notes:** Published wire contract. See ADR-008 for prefix ownership.
@@ -1192,7 +1125,6 @@ Enterprise constraints an engine enforces on itself (allowed models, allowed pro
 - **Legacy names:** None
 - **Contract:** `public-wire`
 - **Implementations:**
-  - `engine` / `code` / `go`: `type EnterpriseConfig struct` in `engine/internal/types/config.go`
   - `desktop` / `code` / `typescript`: `environmentPolicy(environmentId: string): EnterprisePolicy | null` in `desktop/src/renderer/studio/connection/policy-store.ts`
 
 #### Format Version {#term-format-version}
@@ -1206,7 +1138,6 @@ The version of one data format, stored schema, or wire protocol an Ion build rea
 - **Legacy names:** None
 - **Contract:** `public-wire`
 - **Implementations:**
-  - `engine` / `code` / `go`: `type Format` in `engine/internal/compat/compat.go`
   - `server` / `code` / `typescript`: `SERVER_FORMAT_REGISTRY` in `server/src/compat/registry.ts`
   - `server` / `wire` / `typescript`: `interface ServerVersionReport` in `packages/shared/src/format-versions.ts`
   - `desktop` / `ui` / `typescript`: `ServerFactsGroup` in `desktop/src/renderer/components/settings/pages/OverviewPage.tsx`
@@ -1222,9 +1153,7 @@ A named point in the engine lifecycle where an extension can observe, change, or
 - **Legacy names:** None
 - **Contract:** `public-sdk`
 - **Implementations:**
-  - `engine` / `code` / `go`: `type HookHandler` in `engine/internal/extension/sdk_types.go`
-  - `sdk` / `code` / `typescript`: `on(hook: string, handler: HookHandler<any>): void;` in `engine/extensions/sdk/ion-sdk/types.ts`
-  - `engine` / `doc` / `markdown`: `before_prompt` in `docs/hooks/reference.md`
+  - None
 - **Notes:** The engine owns the mechanism. The by-name reference is the authority; never pin a hook count in prose.
 
 #### Injection Kind {#term-injection-kind}
@@ -1238,8 +1167,6 @@ The classification of how a turn was authored: typed at the prompt, synthesized 
 - **Legacy names:** None
 - **Contract:** `public-wire`
 - **Implementations:**
-  - `engine` / `code` / `go`: `type InjectionKind string` in `engine/internal/types/injection_kind.go`
-  - `engine` / `wire` / `go`: `InjectionKind string` in `engine/internal/protocol/protocol.go`
   - `desktop` / `code` / `typescript`: `export function suppressesInjection` in `packages/shared/src/injection-policy.ts`
 
 #### Normalized event {#term-normalized-event}
@@ -1253,7 +1180,6 @@ The engine's typed inner event union. Each variant carries one shape. The engine
 - **Legacy names:** None
 - **Contract:** `public-wire`
 - **Implementations:**
-  - `engine` / `wire` / `go`: `type NormalizedEvent struct` in `engine/internal/types/normalized_event.go`
   - `ios` / `wire` / `swift`: `NormalizedEvent` in `ios/IonRemote/Models/NormalizedEvent.swift`
 - **Notes:** Bare internal names never reach a consumer. Semantics such as snapshot versus incremental are part of the contract.
 
@@ -1268,8 +1194,7 @@ A client's or an extension's plan-mode change that a before_plan_mode_enter or b
 - **Legacy names:** None
 - **Contract:** `public-wire`
 - **Implementations:**
-  - `engine` / `code` / `go`: `type PlanModeChangeRejectedEvent` in `engine/internal/types/normalized_event_plan_mode.go`
-  - `engine` / `code` / `go`: `func (m *Manager) TransitionPlanMode` in `engine/internal/session/plan_mode_transition.go`
+  - None
 
 #### Policy Override Notice {#term-policy-override-notice}
 
@@ -1282,7 +1207,6 @@ A record that enterprise enforcement replaced or removed one user or project con
 - **Legacy names:** None
 - **Contract:** `public-wire`
 - **Implementations:**
-  - `engine` / `code` / `go`: `type PolicyOverride` in `engine/internal/types/config_policy_override.go`
   - `desktop` / `code` / `typescript`: `export function providerOverrides` in `desktop/src/renderer/components/settings/policy-override-notices.ts`
 
 #### Server message {#term-server-message}
@@ -1296,8 +1220,7 @@ One outbound NDJSON message from the engine to a consumer. It is either a broadc
 - **Legacy names:** None
 - **Contract:** `public-wire`
 - **Implementations:**
-  - `engine` / `wire` / `go`: `type ServerEvent struct` in `engine/internal/protocol/protocol_server.go`
-  - `engine` / `wire` / `go`: `type ServerResult struct` in `engine/internal/protocol/protocol_server.go`
+  - None
 
 #### Session Principal {#term-session-principal}
 
@@ -1310,7 +1233,7 @@ A per-session identity attribution stamped on the engine session and, at mint, o
 - **Legacy names:** None
 - **Contract:** `public-wire`
 - **Implementations:**
-  - `engine` / `code` / `go`: `type SessionPrincipal struct` in `engine/internal/types/identity.go`
+  - None
 
 #### Tool {#term-tool}
 
@@ -1323,9 +1246,7 @@ A named callable that an agent can invoke. The engine ships a built-in core set 
 - **Legacy names:** None
 - **Contract:** `public-sdk`
 - **Implementations:**
-  - `engine` / `code` / `go`: `type ToolDef struct` in `engine/internal/types/tools.go`
-  - `engine` / `code` / `go`: `func RegisterTool` in `engine/internal/tools/registry.go`
-  - `sdk` / `code` / `typescript`: `export interface ToolDef` in `engine/extensions/sdk/ion-sdk/types.ts`
+  - None
 - **Notes:** Name tools by name. Never pin a tool count in prose.
 
 
@@ -1344,9 +1265,7 @@ A subprocess that registers hooks, tools, commands, resources, schedules, and we
 - **Legacy names:** None
 - **Contract:** `public-sdk`
 - **Implementations:**
-  - `engine` / `code` / `go`: `type Host struct` in `engine/internal/extension/host.go`
-  - `engine` / `code` / `go`: `type ExtensionConfig struct` in `engine/internal/extension/sdk_types.go`
-  - `sdk` / `code` / `typescript`: `export interface ExtensionConfig` in `engine/extensions/sdk/ion-sdk/types.ts`
+  - None
 
 #### Harness {#term-harness}
 
@@ -1359,7 +1278,7 @@ The extension layer that decides behavior on top of engine mechanics. The engine
 - **Legacy names:** None
 - **Contract:** `none`
 - **Implementations:**
-  - `engine` / `doc` / `markdown`: `Harness` in `docs/getting-started/concepts.md`
+  - None
 
 #### Slash command {#term-slash-command}
 
@@ -1372,8 +1291,6 @@ A named template that a user starts with a forward slash. The engine owns discov
 - **Legacy names:** None
 - **Contract:** `public-wire`
 - **Implementations:**
-  - `engine` / `code` / `go`: `type CommandDefinition struct` in `engine/internal/extension/sdk_types.go`
-  - `sdk` / `code` / `typescript`: `export interface CommandDef` in `engine/extensions/sdk/ion-sdk/types.ts`
   - `desktop` / `ui` / `typescript`: `SlashCommandMenu` in `desktop/src/renderer/components/SlashCommandMenu.tsx`
   - `ios` / `ui` / `swift`: `struct SlashCommandMenu` in `ios/IonRemote/Views/SlashCommandMenu.swift`
 
@@ -1403,8 +1320,7 @@ The path that carries a schedule firing or an inbound webhook into an extension 
 - **Legacy names:** None
 - **Contract:** `public-sdk`
 - **Implementations:**
-  - `sdk` / `code` / `typescript`: `export async function dispatchFireAsync` in `engine/extensions/sdk/ion-sdk/runtime-async.ts`
-  - `engine` / `wire` / `go`: `DeliveryId` in `engine/internal/protocol/protocol.go`
+  - None
 
 #### Conversation record read {#term-conversation-record-read}
 
@@ -1417,9 +1333,7 @@ The extension call that returns a conversation's messages with their timestamps 
 - **Legacy names:** None
 - **Contract:** `public-sdk`
 - **Implementations:**
-  - `engine` / `code` / `go`: `func (h *Host) rpcReadConversation` in `engine/internal/extension/host_rpc_conversation.go`
-  - `sdk` / `code` / `go`: `func (a *ConversationsAPI) Read` in `sdk/go/conversations.go`
-  - `sdk` / `code` / `typescript`: `conversations` in `engine/extensions/sdk/ion-sdk/types.ts`
+  - None
 
 #### Protected operation {#term-protected-operation}
 
@@ -1432,8 +1346,7 @@ An outbound HTTP call the operator declares by name in the global engine.json or
 - **Legacy names:** None
 - **Contract:** `public-sdk`
 - **Implementations:**
-  - `engine` / `code` / `go`: `func DoProtectedOperation` in `engine/internal/extension/protected_operation.go`
-  - `sdk` / `code` / `typescript`: `protectedOperation(` in `engine/extensions/sdk/ion-sdk/types.ts`
+  - None
 
 ### public-contract
 
@@ -1448,9 +1361,7 @@ Configuration scoped to the verified principal. The engine resolves it after tha
 - **Legacy names:** None
 - **Contract:** `public-sdk`
 - **Implementations:**
-  - `engine` / `code` / `go`: `type Snapshot struct` in `engine/internal/appconfig/snapshot.go`
-  - `sdk` / `code` / `typescript`: `export interface ApplicationConfigSnapshot` in `engine/extensions/sdk/ion-sdk/types.ts`
-  - `sdk` / `code` / `go`: `type ApplicationConfigSnapshot struct` in `sdk/go/application_config.go`
+  - None
 
 #### Context Identity {#term-context-identity}
 
@@ -1463,9 +1374,7 @@ Credential-free, verified identity state that the engine gives to one extension 
 - **Legacy names:** None
 - **Contract:** `public-sdk`
 - **Implementations:**
-  - `engine` / `code` / `go`: `type ContextIdentity struct` in `engine/internal/auth/identity_context.go`
-  - `sdk` / `code` / `typescript`: `export interface ContextIdentity` in `engine/extensions/sdk/ion-sdk/types.ts`
-  - `sdk` / `code` / `go`: `type ContextIdentity struct` in `sdk/go/context.go`
+  - None
 
 #### Extension context {#term-extension-context}
 
@@ -1478,8 +1387,7 @@ The object that the SDK gives a hook or tool handler. It carries session identit
 - **Legacy names:** None
 - **Contract:** `public-sdk`
 - **Implementations:**
-  - `sdk` / `code` / `typescript`: `export interface IonContext` in `engine/extensions/sdk/ion-sdk/types.ts`
-  - `engine` / `code` / `go`: `type Context struct` in `engine/internal/extension/sdk_types.go`
+  - None
 
 #### Extension SDK {#term-extension-sdk}
 
@@ -1492,7 +1400,7 @@ The published library that an extension imports to reach the engine. It exposes 
 - **Legacy names:** None
 - **Contract:** `public-sdk`
 - **Implementations:**
-  - `sdk` / `code` / `typescript`: `export function createIon` in `engine/extensions/sdk/ion-sdk/runtime.ts`
+  - None
 - **Notes:** Source of truth is engine/extensions/sdk/ion-sdk/. The installed copy is overwritten at build time.
 
 
@@ -1524,7 +1432,6 @@ A file or image that a user adds to a conversation, or that a tool result carrie
 - **Legacy names:** None
 - **Contract:** `public-wire`
 - **Implementations:**
-  - `engine` / `wire` / `go`: `Attachments []types.ImageAttachment` in `engine/internal/protocol/protocol.go`
   - `desktop` / `ui` / `typescript`: `export function AttachmentChips` in `desktop/src/renderer/components/AttachmentChips.tsx`
   - `ios` / `ui` / `swift`: `struct AttachmentChipsView` in `ios/IonRemote/Views/AttachmentChipsView.swift`
 
@@ -1575,7 +1482,6 @@ The desktop client tool that measures conversation records on disk and returns c
 - **Implementations:**
   - `desktop` / `code` / `typescript`: `conversationTelemetryTool` in `server/src/telemetry/conversation-telemetry-tool.ts`
   - `desktop` / `code` / `typescript`: `selectConversations` in `server/src/telemetry/conversation-telemetry-select.ts`
-  - `desktop` / `doc` / `markdown`: `ConversationTelemetry` in `docs/tools/reference.md`
 
 #### Corpus Index {#term-corpus-index}
 
@@ -1759,7 +1665,6 @@ The credential and author identity a git operation runs as, resolved per connect
 - **Contract:** `internal`
 - **Implementations:**
   - `desktop` / `code` / `typescript`: `export async function resolveGitCredential` in `server/src/git/identity/resolver.ts`
-  - `engine` / `code` / `go`: `func stampToolEnv` in `engine/internal/backend/runloop_git_identity.go`
   - `desktop` / `ui` / `typescript`: `GitAccessPage` in `desktop/src/renderer/components/settings/pages/GitAccessPage.tsx`
   - `ios` / `ui` / `swift`: `struct GitIdentitySummary` in `ios/IonRemote/Models/GitIdentitySummary.swift`
   - `ios` / `ui` / `swift`: `struct AddGitCredentialSheet` in `ios/IonRemote/Views/Settings/Server/GitAccess/AddGitCredentialSheet.swift`
@@ -1832,7 +1737,6 @@ A structured question round that the model opens with the AskUserQuestions clien
 - **Implementations:**
   - `desktop` / `code` / `typescript`: `export class QuestionsCoordinator` in `server/src/questions/questions-coordinator.ts`
   - `desktop` / `wire` / `typescript`: `export type RemoteQuestionsEvent` in `server/src/remote/protocol-questions.ts`
-  - `engine` / `wire` / `go`: `type ClientToolCallState struct` in `engine/internal/types/tool_gate.go`
 
 #### Install worker {#term-install-worker}
 
@@ -2091,7 +1995,6 @@ The identity attributed to one connection's studio-wire session -- subject, disp
 - **Contract:** `internal`
 - **Implementations:**
   - `desktop` / `code` / `typescript`: `principal: StudioPrincipalSummary | null` in `server/src/protocol/connection.ts`
-  - `engine` / `code` / `go`: `type SessionPrincipal struct` in `engine/internal/types/identity.go`
 
 #### Scratch Document {#term-scratch-document}
 
@@ -2740,7 +2643,6 @@ The current run state of a conversation, with its model, permission mode, contex
 - **Legacy names:** None
 - **Contract:** `internal`
 - **Implementations:**
-  - `engine` / `wire` / `go`: `type StatusFields struct` in `engine/internal/types/types.go`
   - `desktop` / `ui` / `typescript`: `StatusDot` in `desktop/src/renderer/components/StatusDot.tsx`
   - `ios` / `code` / `swift`: `TabStatusRollup` in `ios/IonRemote/Views/TabStatusRollup.swift`
 
@@ -2962,7 +2864,6 @@ The Windows-only launcher the Engine Supervisor's Scheduled Task runs instead of
 - **Legacy names:** None
 - **Contract:** `internal`
 - **Implementations:**
-  - `engine` / `code` / `go`: `runHost` in `engine/cmd/ion-engine-host/host_windows.go`
   - `desktop` / `code` / `typescript`: `resolveTaskAction` in `server/src/engine/engine-supervisor-schtasks.ts`
   - `desktop` / `code` / `typescript`: `findBundledHost` in `server/src/engine/engine-binary-install.ts`
 
@@ -3172,7 +3073,6 @@ The one W3C trace that follows a prompt from the client that sent it through the
   - `studio` / `code` / `typescript`: `export function submitWithTrace` in `desktop/src/renderer/lib/action-trace.ts`
   - `server` / `code` / `typescript`: `export function startPromptHandleSpan` in `server/src/tracing/prompt-span.ts`
   - `ios` / `code` / `swift`: `final class ActionTraceBook` in `ios/IonRemote/Utilities/ActionTraceBook.swift`
-  - `engine` / `wire` / `go`: `func ParseTraceparent` in `engine/internal/utils/traceparent.go`
 - **Notes:** Span record shapes and the hop chain: docs/observability/log-schema.md § Spans.
 
 #### Server Admin Session {#term-server-admin-session}
@@ -3599,7 +3499,7 @@ The Desktop client has two presentations, Studio and Overlay. An implementation 
 | Conversation instance | `export interface ProjectedConversationInstance` | `export interface ProjectedConversationInstance` | `export interface ProjectedConversationInstance` | `struct EngineInstanceBar` | None |
 | Conversation status | `StatusDot` | `StatusDot` | `StatusDot` | `TabStatusRollup` | None |
 | Conversation Status Bar | `export function ComposerControls` | `export function ComposerControls` | `export function ComposerControls` | `struct ConversationStatusBar` | None |
-| Conversation Telemetry | `conversationTelemetryTool`, `selectConversations`, `ConversationTelemetry` | `conversationTelemetryTool`, `selectConversations`, `ConversationTelemetry` | `conversationTelemetryTool`, `selectConversations`, `ConversationTelemetry` | None | iOS |
+| Conversation Telemetry | `conversationTelemetryTool`, `selectConversations` | `conversationTelemetryTool`, `selectConversations` | `conversationTelemetryTool`, `selectConversations` | None | iOS |
 | Conversation Terminal Panel | `TerminalPanel` | `TerminalPanel`, `StudioCenter` | `TerminalPanel` | None | iOS |
 | Conversation Timeline Minimap | `TimelineMinimap` | `TimelineMinimap` | `TimelineMinimap` | None | iOS |
 | Conversation View | `export function ConversationView` | `export function ConversationView`, `ConversationView` | `export function ConversationView` | `struct ConversationView` | None |
