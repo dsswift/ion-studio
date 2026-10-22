@@ -3,18 +3,16 @@
 # PVC) between two containers. Used by `make test-linux-server`-adjacent local
 # verification and by `quality.yml`'s `server-compose-smoke` job.
 #
-# The engine listens on `<ION_DATA_DIR>/engine.sock`
-# (engine/internal/utils/iondir.go's `IonDir()`) and the server resolves the
+# The engine listens on `<ION_DATA_DIR>/engine.sock` and the server resolves the
 # SAME engine address the same way (`src/engine/engine-address.ts`'s
 # `resolveEngineAddress`, non-win32 branch: `<ION_DATA_DIR>/engine.sock`) --
 # both containers set `ION_DATA_DIR=/data` and mount the same named volume, so
 # the socket file the engine creates is immediately visible to the server.
 services:
   engine:
-    build:
-      context: ../engine
-      dockerfile: Dockerfile
-    # engine/Dockerfile is `FROM scratch` (no /etc/passwd, so it cannot
+    # The released engine image at the version in engine/VERSION.
+    image: ghcr.io/dsswift/ion/engine:${ION_ENGINE_VERSION:?set ION_ENGINE_VERSION to the version in engine/VERSION}
+    # The engine image is `FROM scratch` (no /etc/passwd, so it cannot
     # declare `USER node` the way server/Dockerfile does) and runs as root
     # by default. Pinned here to the SAME uid:gid as server/Dockerfile's
     # `node` user (1000:1000, the standard uid on the official node images)

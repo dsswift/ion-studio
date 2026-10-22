@@ -4,15 +4,11 @@
  * Two records, two different consumers:
  *
  * 1. `~/.ion/worktree-registry.json` (main/worktree/inventory.ts) is read by
- *    the ENGINE's workspace containment (engine/internal/workspaces). Both
- *    sides fail open on mismatch, so a field rename here would silently
- *    disable the engine's guard — no error, no failing test, just an empty
- *    view and a passed write. The shared fixture
- *    (engine/internal/workspaces/testdata/worktree-registry.fixture.json) is
- *    the single source of truth: the engine asserts it through its real read
- *    path (registry_fixture_test.go) and this test asserts the live writer
- *    still produces every key it declares. A rename on either side fails
- *    exactly one of the two suites and names the drift.
+ *    the ENGINE's workspace containment. Both sides fail open on mismatch, so
+ *    a field rename here would silently disable the engine's guard — no
+ *    error, no failing test, just an empty view and a passed write. The keys
+ *    the engine reads are pinned below as WORKTREE_REGISTRY_KEYS, and this
+ *    test asserts the live writer still produces every one of them.
  *
  * 2. `~/.ion/integration-workspaces.json` (main/integration/bench-store.ts)
  *    is DESKTOP-INTERNAL: the engine no longer reads it (the bench agent
@@ -40,7 +36,16 @@ vi.mock('os', async () => {
 import { registerWorktree, worktreeRegistryFile } from '../../worktree/inventory'
 import { saveWorkspaces, loadWorkspaces, makeWorkspace, makeMember, workspacesFile } from '../bench-store'
 
-const FIXTURE_DIR = join(__dirname, '../../../../engine/internal/workspaces/testdata')
+/** Every key of `~/.ion/worktree-registry.json` the engine's registry reads. */
+const WORKTREE_REGISTRY_KEYS = [
+  'version',
+  'entries',
+  'entries.worktreePath',
+  'entries.repoPath',
+  'entries.branchName',
+  'entries.sourceBranch',
+  'entries.createdAt',
+]
 
 /**
  * Every key the integration-workspaces record must carry for the desktop's
@@ -66,7 +71,7 @@ const INTEGRATION_RECORD_KEYS = [
   'workspaces.members.currentTreeHash',
 ]
 
-/** Every key path present in `fixture`, as dot paths ("entries.worktreePath"). */
+/** Every key path present in `node`, as dot paths ("entries.worktreePath"). */
 function keyPaths(node: unknown, prefix = ''): Set<string> {
   const out = new Set<string>()
   if (Array.isArray(node)) {
@@ -77,7 +82,6 @@ function keyPaths(node: unknown, prefix = ''): Set<string> {
   }
   if (node !== null && typeof node === 'object') {
     for (const [k, v] of Object.entries(node as Record<string, unknown>)) {
-      if (k === '__comment') continue
       const path = prefix ? `${prefix}.${k}` : k
       out.add(path)
       for (const nested of keyPaths(v, path)) out.add(nested)
@@ -98,9 +102,9 @@ afterEach(() => {
   rmSync(home, { recursive: true, force: true })
 })
 
-describe('worktree registry writer matches the engine fixture schema', () => {
+describe('worktree registry writer matches the engine schema', () => {
   it('the live writer produces every key the engine consumes', () => {
-    // Drive the REAL writer with a record shaped like the fixture's entries.
+    // Drive the REAL writer with a registration.
     registerWorktree({
       worktreePath: '/wt/project-aaa',
       repoPath: '/repo/project',
@@ -110,18 +114,8 @@ describe('worktree registry writer matches the engine fixture schema', () => {
     })
 
     const written = JSON.parse(readFileSync(worktreeRegistryFile(), 'utf-8')) as unknown
-    const fixture = JSON.parse(
-      readFileSync(join(FIXTURE_DIR, 'worktree-registry.fixture.json'), 'utf-8'),
-    ) as unknown
-
     const writtenKeys = keyPaths(written)
-    // Optional keys the writer only emits situationally (landedAt is set by
-    // the land verb, not registration) are asserted as KNOWN to the writer's
-    // type instead of demanded from this particular write.
-    const situational = new Set(['entries.landedAt', 'entries.title'])
-    const missing = [...keyPaths(fixture)].filter(
-      (k) => !writtenKeys.has(k) && !situational.has(k),
-    )
+    const missing = WORKTREE_REGISTRY_KEYS.filter((k) => !writtenKeys.has(k))
     expect(missing, `desktop writer no longer produces keys the engine reads: ${missing.join(', ')}`).toEqual([])
   })
 })
