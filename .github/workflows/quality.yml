@@ -185,7 +185,7 @@ jobs:
         # dispatcher chokepoints whitelisted in the script. A failure
         # here is intentional — add your call site to the whitelist
         # only if you have reviewed and approved the engine-vs-client
-        # state-ownership rule documented in CLAUDE.md.
+        # state-ownership rule documented in AGENTS.md.
         run: bash scripts/check-status-writers.sh
 
   server-parity:
