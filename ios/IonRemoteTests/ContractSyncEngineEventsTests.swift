@@ -42,8 +42,8 @@ final class ContractSyncEngineEventsTests: XCTestCase {
         // Try repo-relative paths (Xcode sets cwd to the project root or
         // a DerivedData folder depending on the run mode).
         let candidates = [
-            "../engine/internal/types/testdata/contracts.json",
-            "engine/internal/types/testdata/contracts.json",
+            "../packages/shared/src/__fixtures__/engine-contracts.json",
+            "packages/shared/src/__fixtures__/engine-contracts.json",
         ]
         for candidate in candidates {
             let url = URL(fileURLWithPath: candidate)
@@ -61,7 +61,7 @@ final class ContractSyncEngineEventsTests: XCTestCase {
         for _ in 0..<5 {
             dir = dir.deletingLastPathComponent()
             let candidate = dir
-                .appendingPathComponent("engine/internal/types/testdata/contracts.json")
+                .appendingPathComponent("packages/shared/src/__fixtures__/engine-contracts.json")
             if FileManager.default.fileExists(atPath: candidate.path) {
                 let data = try Data(contentsOf: candidate)
                 return try JSONDecoder().decode(Manifest.self, from: data)
@@ -69,7 +69,7 @@ final class ContractSyncEngineEventsTests: XCTestCase {
         }
 
         throw NSError(domain: "ContractSyncEngineEventsTests", code: 1, userInfo: [
-            NSLocalizedDescriptionKey: "could not locate contracts.json — searched cwd-relative and #file-relative paths"
+            NSLocalizedDescriptionKey: "could not locate engine-contracts.json — searched cwd-relative and #file-relative paths"
         ])
     }
 

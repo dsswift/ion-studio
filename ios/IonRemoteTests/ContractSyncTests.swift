@@ -4,9 +4,10 @@ import XCTest
 @testable import IonRemote
 
 /// Validates that Swift Codable types can decode all fields declared in the
-/// Go contract manifest (engine/internal/types/testdata/contracts.json).
+/// contract manifest of the engine Studio pins (engine/VERSION), vendored at
+/// packages/shared/src/__fixtures__/engine-contracts.json.
 ///
-/// The manifest is copied to the test bundle at build time. If a Go struct
+/// The test reads the manifest from the repository checkout. If a Go struct
 /// gains a field that Swift doesn't handle, JSONDecoder will still succeed
 /// (unknown keys are ignored by default). This test focuses on ensuring the
 /// fields we *do* declare can decode representative values without error.
@@ -69,9 +70,9 @@ final class ContractSyncTests: XCTestCase {
     // a DerivedData folder depending on the run mode).
     let candidates = [
       // Running from ios/ directory
-      "../engine/internal/types/testdata/contracts.json",
+      "../packages/shared/src/__fixtures__/engine-contracts.json",
       // Running from repo root
-      "engine/internal/types/testdata/contracts.json",
+      "packages/shared/src/__fixtures__/engine-contracts.json",
     ]
 
     for candidate in candidates {
@@ -88,7 +89,7 @@ final class ContractSyncTests: XCTestCase {
       dir = dir.deletingLastPathComponent()
       let candidate =
         dir
-        .appendingPathComponent("engine/internal/types/testdata/contracts.json")
+        .appendingPathComponent("packages/shared/src/__fixtures__/engine-contracts.json")
       if FileManager.default.fileExists(atPath: candidate.path) {
         let data = try Data(contentsOf: candidate)
         return try JSONDecoder().decode(Manifest.self, from: data)

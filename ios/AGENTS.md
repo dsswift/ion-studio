@@ -93,4 +93,4 @@ A concept on both clients uses the same canonical term from `docs/vocabulary/ter
 
 ## Resources
 
-`ResourceStore` applies snapshots and deltas (`applySnapshot`, `applyDelta`) for NotificationsView (workspace-scoped) and the attachments panel (session-scoped). Reading an item sends `mark_read` so every client converges. Subsystem rules: [`docs/architecture/resource-subsystem.md`](../docs/architecture/resource-subsystem.md).
+`ResourceStore` applies snapshots and deltas (`applySnapshot`, `applyDelta`) for NotificationsView (workspace-scoped) and the attachments panel (session-scoped). Reading an item sends `mark_read` so every client converges. Subsystem rules: [`docs/architecture/resource-subsystem.md`](https://github.com/dsswift/ion/blob/main/docs/architecture/resource-subsystem.md).

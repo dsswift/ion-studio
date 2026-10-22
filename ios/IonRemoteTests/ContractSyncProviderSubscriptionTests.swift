@@ -12,7 +12,7 @@ final class ContractSyncProviderSubscriptionTests: XCTestCase {
     private func sharedTypes() throws -> [String: [String]] {
         let here = URL(fileURLWithPath: #filePath)
         let url = here.deletingLastPathComponent().deletingLastPathComponent().deletingLastPathComponent()
-            .appendingPathComponent("engine/internal/types/testdata/contracts.json")
+            .appendingPathComponent("packages/shared/src/__fixtures__/engine-contracts.json")
         return try JSONDecoder().decode(Manifest.self, from: Data(contentsOf: url)).sharedTypes
     }
 
