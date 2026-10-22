@@ -98,48 +98,24 @@ run() {
 # whole file's whitespace).
 run "file-size cap" bash scripts/check-file-sizes.sh
 run "no tracked binaries" bash scripts/check-no-binaries.sh
-# The engine lives in dsswift/ion; this archive carries only the Studio-side
-# engine files, so the toolchain and vocabulary gates have nothing to read
-# here and run only when a full engine tree is present.
-if [ -f engine/go.mod ]; then
-  run "Go toolchain alignment" bash scripts/check-go-toolchains.sh
-  run "Go toolchain regression checks" bash scripts/check-go-toolchains.test.sh
-fi
+run "Go toolchain alignment" bash scripts/check-go-toolchains.sh
+run "Go toolchain regression checks" bash scripts/check-go-toolchains.test.sh
 run "Linux parity gate receipt semantics" bash scripts/gate-cache.test.sh
 run "main-moved check" bash scripts/check-main-current.test.sh
 
-# Vocabulary uses Node built-ins with zero install; its registry cites engine
-# files, so it runs only beside a full engine tree.
-if [ -f engine/go.mod ]; then
-  run "vocabulary registry + drift" make check-vocabulary
-fi
+# Vocabulary uses Node built-ins with zero install.
+run "vocabulary registry + drift" make check-vocabulary
 
-# Dashboards-as-code drift + overcount audit. Runs when the query module,
-# recipes, or the committed dashboard JSONs are touched. Cheap (Node native
-# type-stripping, zero install) and catches hand-edited JSON or un-regenerated
-# module changes before CI. See ADR-020.
-if touched "^docs/observability/(dashboards/|grafana/provisioning/dashboards/|queries\.md)"; then
-  run "dashboards drift + overcount audit" make check-dashboards
-fi
-
-# Engine: lint diff vs main. Mirrors CI's --new-from-merge-base flag.
-if touched "^engine/"; then
-  run "engine lint (new vs origin/main)" bash -c \
-    "cd engine && golangci-lint run --new-from-merge-base=origin/main"
-  run "engine build" bash -c "cd engine && go build ./..."
-  # Windows is the one release target the host build cannot approximate: the
-  # setsockopt descriptor type differs there (int vs syscall.Handle), so a
-  # platform-specific compile error passes a native build and only surfaces in
-  # the release workflow after merge. CI's engine-crossbuild job covers all
-  # four release targets; this covers the one that actually broke, cheaply.
-  run "engine cross-build (windows)" bash -c \
-    "cd engine && GOOS=windows GOARCH=amd64 CGO_ENABLED=0 go build ./..."
-fi
-
-# Relay: same.
+# Relay: lint diff vs main.
 if touched "^relay/"; then
   run "relay lint (new vs origin/main)" bash -c \
     "cd relay && golangci-lint run --new-from-merge-base=origin/main"
+fi
+
+# The Studio SDK's Go flavor builds against the engine checkout beside this
+# one (its go.mod replace), so it compiles only when that checkout is there.
+if touched "^packages/studio-sdk/go/" && [ -d ../ion/sdk/go ]; then
+  run "studio-sdk go build" bash -c "cd packages/studio-sdk/go && go build ./..."
 fi
 
 # Desktop: typecheck. The unit suites run in CI's test lane.

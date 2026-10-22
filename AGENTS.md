@@ -4,17 +4,18 @@
 
 | Component | Path | Language |
 |-----------|------|----------|
-| Engine | `engine/` | Go |
+| Engine pin | `engine/VERSION` | The [dsswift/ion](https://github.com/dsswift/ion) engine release Studio bundles and tests against |
 | Server | `server/` (`@ion/server`) | TypeScript, headless |
 | Desktop | `desktop/` | TypeScript (Electron + React) |
 | Relay | `relay/` | Go |
 | iOS | `ios/IonRemote/` | Swift |
 | Shared packages | `packages/shared/`, `packages/studio-sdk/` | TypeScript (+ Go Studio SDK) |
-| Go SDK | `sdk/go/` | Go |
 
-Engine, server, desktop, and iOS each have their own `AGENTS.md`. The relay, the shared packages, and the Go SDK are governed by this file. **Before touching `engine/`, read [`docs/engine-grounding.md`](docs/engine-grounding.md).**
+Server, desktop, and iOS each have their own `AGENTS.md`. The relay and the shared packages are governed by this file.
 
-SDK edits have a source-of-truth split: edit `engine/extensions/sdk/ion-sdk/`, never the installed copy at `~/.ion/extensions/sdk/` (overwritten at build). See [`engine/AGENTS.md`](engine/AGENTS.md) § "Extension SDK source location".
+The engine and its SDKs live in [dsswift/ion](https://github.com/dsswift/ion). Builds, CI, and the Studio SDK's Go module use a clone of that repository at the tag `engine-v<engine/VERSION>` beside this checkout, at `../ion` (`ION_ENGINE_SOURCE` overrides it). The Go files under `engine/` are an archive with no module; nothing builds them. The engine contract manifest the client contract tests read is a snapshot at `packages/shared/src/__fixtures__/engine-contracts.json`; refresh it from the pinned tag whenever `engine/VERSION` moves. **Before touching `engine/`, read [`docs/engine-grounding.md`](https://github.com/dsswift/ion/blob/main/docs/engine-grounding.md).**
+
+SDK edits have a source-of-truth split: edit `engine/extensions/sdk/ion-sdk/`, never the installed copy at `~/.ion/extensions/sdk/` (overwritten at build). See [`engine/AGENTS.md`](https://github.com/dsswift/ion/blob/main/engine/AGENTS.md) § "Extension SDK source location".
 
 ## File-size caps (CI hard-fails above)
 
@@ -49,7 +50,7 @@ For any question about how code is structured or connected, the first call is a 
 - In a worktree, `graphify-out/graph.json` is a link to the primary checkout's graph. It describes the source branch, not this worktree's commits. When a path the graph returns does not exist here, find that symbol with `Grep`.
 - Never run `graphify install`; the skill is tracked at `.ion/skills/graphify/`. `graphify-out/` is gitignored. Git hooks keep the primary checkout's graph current; `make graph` is refused in a worktree.
 
-Worked examples: [`docs/contributing/graph-queries.md`](docs/contributing/graph-queries.md).
+Worked examples: [`docs/contributing/graph-queries.md`](https://github.com/dsswift/ion/blob/main/docs/contributing/graph-queries.md).
 
 ## Local hooks
 
@@ -68,14 +69,11 @@ Only when a Windows CI failure needs Windows-real verification. Run `make sync-w
 | Gate | Command |
 |------|---------|
 | File-size cap | `make check-file-sizes` |
-| Contract sync | `make check-contracts` (when a shared type changes) |
 | Status writers | `make check-status-writers` (when touching code that writes `tab.status` or `statusFields`) |
 | Logging standards | `make check-logging` |
 | Server parity | `make check-server-parity` (when touching `desktop/src/main`) |
 | Studio wire | `make check-studio-wire` (when a fixture under `packages/shared/src/studio-wire/__fixtures__` changes) |
 | Vocabulary | `make check-vocabulary` (when `docs/vocabulary/terms.json` changes) |
-| Engine lint | `cd engine && golangci-lint run ./internal/<pkg>/...` |
-| Engine tests | `cd engine && go test ./internal/<pkg>/...` (`-race` for concurrency). `internal/server` takes ~150s; scope with `-run <TestPrefix>` |
 | Server typecheck, lint | `npm -w server run typecheck`, `npm -w server run lint` |
 | Server tests | `npm -w server run test -- <pattern>`, then `cd desktop && npm test -- <pattern>`: many tests of server modules still live under `desktop/src/main/__tests__/` |
 | Shared package | `npm -w @ion/shared run typecheck`, `npm -w @ion/shared test -- <pattern>` |
@@ -89,16 +87,16 @@ Batch related edits, then run the narrowest test that could disprove the change.
 
 ### Heavy gates — never run during development
 
-`make test-linux` (and its `-engine`, `-desktop`, and `-server` parts), `go test -race ./...`, `go test -race -tags integration ./tests/integration/...`, `govulncheck ./...`, relay `go test -race ./...`, `npm audit`, full `npm test`, `npm -w server run test:integration`, `make ios-check`. Run one only when `/create-pr` says to or the user asks. CI's test lane (`.github/workflows/quality.yml`, on every push to `main`) is authoritative; a failure there is filed as an issue and keeps the releases it gates as drafts; it never blocks a push. A new engine, desktop, or server test job in `quality.yml` must be mirrored into `make test-linux`. Rationale: [`docs/contributing/quality-gates.md`](docs/contributing/quality-gates.md).
+`make test-linux` (and its `-desktop` and `-server` parts), `govulncheck ./...`, relay `go test -race ./...`, `npm audit`, full `npm test`, `npm -w server run test:integration`, `make ios-check`. Run one only when `/create-pr` says to or the user asks. CI's test lane (`.github/workflows/quality.yml`, on every push to `main`) is authoritative; a failure there is filed as an issue and keeps the releases it gates as drafts; it never blocks a push. A new desktop or server test job in `quality.yml` must be mirrored into `make test-linux`. Rationale: [`docs/contributing/quality-gates.md`](https://github.com/dsswift/ion/blob/main/docs/contributing/quality-gates.md).
 
 ## Branch workflow
 
-Work happens on `main`. Never create or switch branches unless the task is branch work. Every push to `main` is versioned and built by the delivery pipeline, which publishes each release once its tests pass ([`docs/contributing/delivery-pipeline.md`](docs/contributing/delivery-pipeline.md)). Land finished work yourself, once the whole request is done and every gate is green: `make land` (`release-damnit land`). It rebases your commits onto the remote `main`, checks every commit, pushes, and retries when the pipeline's version commit moved `main`. Never force push. In a worktree the operator created, commit only; the operator lands it with `release-damnit land <branch>`.
+Work happens on `main`. Never create or switch branches unless the task is branch work. Every push to `main` is versioned and built by the delivery pipeline, which publishes each release once its tests pass ([`docs/contributing/delivery-pipeline.md`](https://github.com/dsswift/ion/blob/main/docs/contributing/delivery-pipeline.md)). Land finished work yourself, once the whole request is done and every gate is green: `make land` (`release-damnit land`). It rebases your commits onto the remote `main`, checks every commit, pushes, and retries when the pipeline's version commit moved `main`. Never force push. In a worktree the operator created, commit only; the operator lands it with `release-damnit land <branch>`.
 
 ## Commits
 
 - `type(scope): subject`. Types: `feat`, `fix`, `chore`, `docs`, `feat!`. Subject lowercase, imperative, no period, ≤ 65 chars.
-- One package per commit. The packages are in `release-please-config.json`: `engine` (`engine/`, incl. the TS SDK), `desktop`, `server`, `relay`, `ios`, and `sdk/go` (scope `sdk`). The scope is the package's `commit-scope`, else its `component`. Files outside every package may ride along.
+- One package per commit. The packages are in `release-please-config.json`: `desktop`, `server`, `relay`, and `ios`. The scope is the package's `commit-scope`, else its `component`. Files outside every package may ride along.
 - A commit that touches no package uses a repo-level scope from `release-please-config.json` `scopes`: `repo` (root, `packages/`, `scripts/`, cross-cutting), `docs`, `ci` (`.github/`), `deps`.
 - The `commit-msg` hook (`release-damnit check-commit`) enforces all of this and names which files belong to which package. Stage one package at a time; `git diff --cached --name-only` shows what a commit carries.
 - Work from a GitHub issue: subject ends ` (#N)` **and** a commit or PR body carries `Fixes #N` / `Closes #N`. `make check-issue-closure` fails the PR otherwise.
@@ -121,11 +119,11 @@ The vocabulary registry has four domains (`engine`, `harness-sdk`, `clients`, `r
 
 ## Opinionless mechanics, extensible opinions
 
-The engine owns the mechanism (discovery, parsing, scheduling, transport, persistence) and ships one generic default. Every opinion a consumer might want differently must be a config field **and** reachable through a hook/SDK seam. A hardcoded opinion with no override is a defect. Examples: the scheduler fires, the extension decides what firing does; the engine expands slash commands, a resolution hook decides special handling; tool instructions carry mechanics only, style comes from `AGENTS.md` or harness overrides ([ADR-017](docs/architecture/adr/017-opinionless-tool-instructions.md)).
+The engine owns the mechanism (discovery, parsing, scheduling, transport, persistence) and ships one generic default. Every opinion a consumer might want differently must be a config field **and** reachable through a hook/SDK seam. A hardcoded opinion with no override is a defect. Examples: the scheduler fires, the extension decides what firing does; the engine expands slash commands, a resolution hook decides special handling; tool instructions carry mechanics only, style comes from `AGENTS.md` or harness overrides ([ADR-017](https://github.com/dsswift/ion/blob/main/docs/architecture/adr/017-opinionless-tool-instructions.md)).
 
 ## Engine consumers
 
-The engine is the product; the server, desktop, iOS, and relay are reference implementations. "No in-repo caller" is the expected state for new engine surface, never a reason to reject or delete it. Judge an engine change by whether it breaks a hypothetical external consumer: a new optional field or event is fine; a changed decode or signature is a break. Full framing: [`docs/architecture/engine-consumers.md`](docs/architecture/engine-consumers.md).
+The engine is the product; the server, desktop, iOS, and relay are reference implementations. "No in-repo caller" is the expected state for new engine surface, never a reason to reject or delete it. Judge an engine change by whether it breaks a hypothetical external consumer: a new optional field or event is fine; a changed decode or signature is a break. Full framing: [`docs/architecture/engine-consumers.md`](https://github.com/dsswift/ion/blob/main/docs/architecture/engine-consumers.md).
 
 ### The typed-event corollary
 
@@ -174,7 +172,7 @@ When a change touches a feature that exists on both desktop and iOS, update iOS 
 
 ## Resource subsystem
 
-Session-scoped resources (`conversationId` set) belong to one conversation's attachments. Workspace-scoped ones go to the global notifications inbox. The engine stores nothing: producing extensions persist their own data and answer queries. `mark_read` and `delete` travel as deltas through the engine to every client. Reference: [`docs/architecture/resource-subsystem.md`](docs/architecture/resource-subsystem.md).
+Session-scoped resources (`conversationId` set) belong to one conversation's attachments. Workspace-scoped ones go to the global notifications inbox. The engine stores nothing: producing extensions persist their own data and answer queries. `mark_read` and `delete` travel as deltas through the engine to every client. Reference: [`docs/architecture/resource-subsystem.md`](https://github.com/dsswift/ion/blob/main/docs/architecture/resource-subsystem.md).
 
 ## Contract stability
 
@@ -184,18 +182,17 @@ Session-scoped resources (`conversationId` set) belong to one conversation's att
 
 **Prefix by owner (ADR 008):** engine `engine_`, server-derived Studio-wire payloads `desktop_`, Studio SDK `ion-studio.`. Internal `NormalizedEvent` names are bare; `translateToEngineEvent()` adds `engine_`.
 
-Full rules: [`docs/architecture/contract-stability.md`](docs/architecture/contract-stability.md).
+Full rules: [`docs/architecture/contract-stability.md`](https://github.com/dsswift/ion/blob/main/docs/architecture/contract-stability.md).
 
 ### Cross-language contract sync
 
-Go is the source of truth. When a shared type changes:
+The engine's Go types are the source of truth. When `engine/VERSION` moves:
 
-1. Change Go in `engine/internal/types/`.
-2. `cd engine && go test ./internal/types/ -run TestContractManifest -update`
-3. Update the field map in `packages/shared/src/__tests__/contract-sync.test.ts`.
-4. Update the TS type (`types-engine.ts`, `types-events.ts`, or `types-engine-event.ts` under `packages/shared/src/`).
-5. Update the Swift type in `ios/IonRemote/Models/` and its contract test.
-6. `make check-contracts`.
+1. Copy `engine/internal/types/testdata/contracts.json` from the new tag over `packages/shared/src/__fixtures__/engine-contracts.json`.
+2. Update the field map in `packages/shared/src/__tests__/contract-sync-fields.ts`.
+3. Update the TS type (`types-engine.ts`, `types-events.ts`, or `types-engine-event.ts` under `packages/shared/src/`).
+4. Update the Swift type in `ios/IonRemote/Models/` and its contract test.
+5. `npm -w @ion/shared test -- contract-sync`.
 
 ## Logging policy
 
@@ -218,7 +215,7 @@ Reading logs:
 - A log line missing across every covering rotation means that code path did not run.
 - `logLevel` is read once at daemon start from the global `~/.ion/engine.json` only. A project config cannot raise it. Bootstrapped clones run `debug`, consumer installs `info`. If the level hides what you need, say so.
 
-`jq` and LogQL recipes: [`docs/observability/consuming-logs.md`](docs/observability/consuming-logs.md). Schema: [`docs/observability/log-schema.md`](docs/observability/log-schema.md).
+`jq` and LogQL recipes: [`docs/observability/consuming-logs.md`](https://github.com/dsswift/ion/blob/main/docs/observability/consuming-logs.md). Schema: [`docs/observability/log-schema.md`](https://github.com/dsswift/ion/blob/main/docs/observability/log-schema.md).
 
 ### No silent failures
 
@@ -268,4 +265,4 @@ Land, Retire, transfer, and provisioning: [`docs/architecture/worktrees-and-benc
 
 ## Conversation storage
 
-Conversations persist as NDJSON pairs under `~/.ion/conversations/`. With principal partitioning on, each principal's conversations are under `~/.ion/principals/<dir>/conversations/` ([ADR-034](docs/architecture/adr/034-principal-isolation-and-tenancy.md)). Reference: [`docs/architecture/conversation-storage.md`](docs/architecture/conversation-storage.md).
+Conversations persist as NDJSON pairs under `~/.ion/conversations/`. With principal partitioning on, each principal's conversations are under `~/.ion/principals/<dir>/conversations/` ([ADR-034](https://github.com/dsswift/ion/blob/main/docs/architecture/adr/034-principal-isolation-and-tenancy.md)). Reference: [`docs/architecture/conversation-storage.md`](https://github.com/dsswift/ion/blob/main/docs/architecture/conversation-storage.md).

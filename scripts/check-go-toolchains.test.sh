@@ -8,10 +8,8 @@ CHECK="$REPO_ROOT/scripts/check-go-toolchains.sh"
 TMP_ROOT="$(mktemp -d -t go-toolchain-check.XXXXXX)"
 trap 'rm -rf "$TMP_ROOT"' EXIT
 
-mkdir -p "$TMP_ROOT/engine" "$TMP_ROOT/relay"
+mkdir -p "$TMP_ROOT/relay" "$TMP_ROOT/packages/studio-sdk/go"
 cp "$REPO_ROOT/Makefile" "$TMP_ROOT/Makefile"
-cp "$REPO_ROOT/engine/go.mod" "$TMP_ROOT/engine/go.mod"
-cp "$REPO_ROOT/engine/Dockerfile" "$TMP_ROOT/engine/Dockerfile"
 cp "$REPO_ROOT/relay/go.mod" "$TMP_ROOT/relay/go.mod"
 cp "$REPO_ROOT/relay/Dockerfile" "$TMP_ROOT/relay/Dockerfile"
 
@@ -31,9 +29,9 @@ run_check
 
 # The stale version is derived from the pinned one, so a toolchain bump never
 # turns these substitutions into no-ops.
-CURRENT="$(awk '/^toolchain go/ {sub(/^toolchain go/, ""); print; exit}' "$REPO_ROOT/engine/go.mod")"
+CURRENT="$(awk '/^toolchain go/ {sub(/^toolchain go/, ""); print; exit}' "$REPO_ROOT/relay/go.mod")"
 [[ "$CURRENT" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]] || {
-  echo "go-toolchain regression: cannot read the pinned toolchain from engine/go.mod" >&2
+  echo "go-toolchain regression: cannot read the pinned toolchain from relay/go.mod" >&2
   exit 1
 }
 STALE="${CURRENT%.*}.$(( ${CURRENT##*.} + 1 ))"
@@ -64,5 +62,12 @@ cp "$REPO_ROOT/relay/Dockerfile" "$TMP_ROOT/relay/Dockerfile"
 make_stale "stale Linux parity image" "$TMP_ROOT/Makefile" \
   "s|^GO_VERSION := .*|GO_VERSION := ${STALE}|"
 expect_failure "stale Linux parity image"
+
+cp "$REPO_ROOT/Makefile" "$TMP_ROOT/Makefile"
+printf 'module example.com/studio\n\ngo 1.25.0\n\ntoolchain go%s\n' "$STALE" > "$TMP_ROOT/packages/studio-sdk/go/go.mod"
+expect_failure "stale studio-sdk module"
+
+printf 'module example.com/studio\n\ngo 1.25.0\n\ntoolchain go%s\n' "$CURRENT" > "$TMP_ROOT/packages/studio-sdk/go/go.mod"
+run_check || { echo "go-toolchain regression: aligned studio-sdk module failed" >&2; exit 1; }
 
 echo "go-toolchain regression checks: OK"

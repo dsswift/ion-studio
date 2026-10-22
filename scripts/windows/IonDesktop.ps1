@@ -23,30 +23,24 @@ function Build-IonEngine {
   $engineOut = Join-Path $engineDir 'ion.exe'
   New-Item -ItemType Directory -Path $engineDir -Force | Out-Null
 
-  # The sync stamp answers first, for the same reason it does in
-  # Resolve-IonDesktopVersion: a synced tree carries stale .git metadata that
-  # describes a commit nobody synced, and an engine stamped from it reports a
-  # version in every log line and telemetry frame that its source never had.
+  # The engine is built from a clone of dsswift/ion at the tag for
+  # engine/VERSION: ION_ENGINE_SOURCE, else a sibling directory called `ion`.
+  $engineSource = if ($env:ION_ENGINE_SOURCE) { $env:ION_ENGINE_SOURCE } else { Join-Path (Split-Path $Root -Parent) 'ion' }
+  if (-not (Test-Path -LiteralPath (Join-Path $engineSource 'engine\cmd\ion\main.go'))) {
+    throw "no engine checkout at $engineSource (set ION_ENGINE_SOURCE to a clone of dsswift/ion)"
+  }
   $version = 'dev'
-  $stampPath = Join-Path $Root '.ion-sync-stamp.json'
-  if (Test-Path -LiteralPath $stampPath) {
-    $stamp = Get-Content -LiteralPath $stampPath -Raw | ConvertFrom-Json
-    if (-not $stamp.commit) { throw "$stampPath carries no commit; re-run ``make sync-windows-vm``" }
-    $version = "dev-$($stamp.commit.Substring(0, 12))$(if ($stamp.dirty) { '.dirty' } else { '' })"
-    Write-IonInfo "engine version from the sync stamp: $version"
-  } else {
-    try {
-      $described = & git -C $Root describe --tags --always --dirty 2>$null
-      if ($LASTEXITCODE -eq 0 -and $described) { $version = "dev-$($described.Trim())" }
-    } catch {
-      Write-IonWarn "git describe failed, stamping version=dev: $($_.Exception.Message)"
-    }
+  try {
+    $described = & git -C $engineSource describe --tags --always --dirty 2>$null
+    if ($LASTEXITCODE -eq 0 -and $described) { $version = $described.Trim() }
+  } catch {
+    Write-IonWarn "git describe failed, stamping version=dev: $($_.Exception.Message)"
   }
 
   # CGO off: the only cgo in the engine is the darwin Local Network probe.
   $env:CGO_ENABLED = '0'; $env:GOOS = 'windows'; $env:GOARCH = $GoArch
   Invoke-IonNative 'go' @('build', '-ldflags', "-s -w -X main.version=$version", '-o', $engineOut, './cmd/ion') `
-    -WorkingDirectory (Join-Path $Root 'engine') | Out-Null
+    -WorkingDirectory (Join-Path $engineSource 'engine') | Out-Null
   Write-IonInfo "ion.exe stamped $version"
 
   # The engine host launcher. -H windowsgui links it for the GUI subsystem so
@@ -56,7 +50,7 @@ function Build-IonEngine {
   Write-IonStep "building ion-engine-host.exe (windows/$GoArch)"
   $hostOut = Join-Path $engineDir 'ion-engine-host.exe'
   Invoke-IonNative 'go' @('build', '-ldflags', "-s -w -H windowsgui", '-o', $hostOut, './cmd/ion-engine-host') `
-    -WorkingDirectory (Join-Path $Root 'engine') | Out-Null
+    -WorkingDirectory (Join-Path $engineSource 'engine') | Out-Null
   Write-IonInfo 'ion-engine-host.exe'
 
   Write-IonStep 'staging engine resources'
@@ -70,8 +64,8 @@ function Build-IonEngine {
   $extDir = Join-Path $engineDir 'extensions'
   New-Item -ItemType Directory -Path $extDir -Force | Out-Null
   foreach ($pair in @(
-    @{ From = (Join-Path $Root 'engine\extensions\sdk'); To = (Join-Path $extDir 'sdk') },
-    @{ From = (Join-Path $Root 'sdk\go');                To = (Join-Path $extDir 'sdk-go') }
+    @{ From = (Join-Path $engineSource 'engine\extensions\sdk'); To = (Join-Path $extDir 'sdk') },
+    @{ From = (Join-Path $engineSource 'sdk\go');                To = (Join-Path $extDir 'sdk-go') }
   )) {
     if (-not (Test-Path $pair.From)) {
       Write-IonWarn "SDK source missing, not staged: $($pair.From)"

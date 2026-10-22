@@ -1,8 +1,11 @@
 /**
  * Cross-Language Contract Sync Tests
  *
- * Validates that TypeScript type definitions stay in sync with the Go engine's
- * contract manifest (engine/internal/types/testdata/contracts.json).
+ * Validates that TypeScript type definitions stay in sync with the contract
+ * manifest of the engine Studio pins (engine/VERSION). The manifest is a
+ * snapshot of that engine's generated contracts.json, vendored at
+ * packages/shared/src/__fixtures__/engine-contracts.json and refreshed from
+ * dsswift/ion whenever engine/VERSION moves.
  *
  * The Go manifest is auto-generated via reflection. This test maintains an
  * explicit field-name map for each TS type (since TS types are erased at
@@ -34,7 +37,7 @@ interface ContractManifest {
 
 const manifestPath = resolve(
   __dirname,
-  "../../../../engine/internal/types/testdata/contracts.json",
+  "../__fixtures__/engine-contracts.json",
 );
 const manifest: ContractManifest = JSON.parse(
   readFileSync(manifestPath, "utf-8"),

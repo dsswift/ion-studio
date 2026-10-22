@@ -710,10 +710,10 @@ try {
 $ionDesktop = Get-Content -LiteralPath (Join-Path $PSScriptRoot 'IonDesktop.ps1') -Raw
 Assert-Equal $true ($ionDesktop -match 'Resolve-IonDesktopVersion') `
   'Build-IonInstaller resolves the version rather than letting the tools guess'
-# The engine binary is stamped from the same stamp, ahead of git, or a synced
-# tree's stale .git metadata names a commit nobody synced in every log line.
-Assert-Equal $true ($ionDesktop -match "(?s)function Build-IonEngine.*?\.ion-sync-stamp\.json.*?git -C \`$Root describe") `
-  'Build-IonEngine stamps the engine from the sync stamp before consulting git'
+# The engine is built and stamped from the pinned engine checkout, never from
+# this tree, which carries no engine module.
+Assert-Equal $true ($ionDesktop -match "(?s)function Build-IonEngine.*?ION_ENGINE_SOURCE.*?git -C \`$engineSource describe") `
+  'Build-IonEngine builds and stamps the engine from the engine checkout'
 Assert-Equal $true ($ionDesktop -match [regex]::Escape('-c.extraMetadata.version=$version')) `
   'the resolved version is passed to electron-builder instead of editing package.json'
 Assert-Equal $true ($ionDesktop -match [regex]::Escape('$env:ION_DESKTOP_VERSION = $version')) `

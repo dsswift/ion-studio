@@ -60,7 +60,7 @@ Ion ships with no default model. That is a deliberate choice. You bring the opin
 }
 ```
 
-The example above runs `qwen2.5:14b` locally on Ollama with no API key required. Other supported models work the same way: `gpt-4o` for OpenAI, `claude-sonnet-4-6` for Anthropic, `mistral-large-latest` for Mistral. Set `defaultModel` to whichever model you want and configure its provider block. See the [Model and Provider Configuration](#model-and-provider-configuration) section below or the [Provider Setup](docs/providers/index.md) docs for the full catalog.
+The example above runs `qwen2.5:14b` locally on Ollama with no API key required. Other supported models work the same way: `gpt-4o` for OpenAI, `claude-sonnet-4-6` for Anthropic, `mistral-large-latest` for Mistral. Set `defaultModel` to whichever model you want and configure its provider block. See the [Model and Provider Configuration](#model-and-provider-configuration) section below or the [Provider Setup](https://github.com/dsswift/ion/blob/main/docs/providers/index.md) docs for the full catalog.
 
 For hosted providers, export the matching credential before running:
 
@@ -159,20 +159,20 @@ Why daemon mode:
 
 One-shot mode runs a fresh engine per invocation. Daemon mode runs one engine that serves everything. Use one-shot for scripts and automation. Use daemon mode for applications and interactive workflows. Both load the same config, run the extensions you specify (passed with `--extension` or listed in `~/.ion/settings.json` profiles), and run the same agent loop.
 
-See the [engine docs](engine/README.md) for Linux, Windows, and Docker install instructions.
+See the [engine docs](https://github.com/dsswift/ion/blob/main/engine/README.md) for Linux, Windows, and Docker install instructions.
 
 ## Documentation
 
-Full technical documentation lives in [`docs/`](docs/index.md). Start here based on what you're building:
+Full technical documentation lives in [`docs/`](https://github.com/dsswift/ion/blob/main/docs/index.md). Start here based on what you're building:
 
 | Audience | Start with |
 |----------|-----------|
-| **Harness engineer** building extensions | [Quick Start](docs/getting-started/quickstart.md), [Extension Guide](docs/extensions/getting-started.md), [Hooks Reference](docs/hooks/reference.md) |
-| **IT admin** deploying Ion | [Configuration](docs/configuration/index.md), [Security](docs/security/index.md), [Enterprise](docs/enterprise/index.md) |
+| **Harness engineer** building extensions | [Quick Start](https://github.com/dsswift/ion/blob/main/docs/getting-started/quickstart.md), [Extension Guide](https://github.com/dsswift/ion/blob/main/docs/extensions/getting-started.md), [Hooks Reference](https://github.com/dsswift/ion/blob/main/docs/hooks/reference.md) |
+| **IT admin** deploying Ion | [Configuration](https://github.com/dsswift/ion/blob/main/docs/configuration/index.md), [Security](https://github.com/dsswift/ion/blob/main/docs/security/index.md), [Enterprise](https://github.com/dsswift/ion/blob/main/docs/enterprise/index.md) |
 | **Contributor** working on the desktop | [Desktop Architecture](docs/architecture/desktop.md), [Embedded Browser Surface](docs/architecture/adr/030-embedded-browser-surface.md) |
-| **Contributor** working on the engine | [Architecture](docs/architecture/engine.md), [Contributing](docs/contributing/index.md) |
+| **Contributor** working on the engine | [Architecture](https://github.com/dsswift/ion/blob/main/docs/architecture/engine.md), [Contributing](https://github.com/dsswift/ion/blob/main/docs/contributing/index.md) |
 
-Key references: [Socket Protocol](docs/protocol/index.md) | [CLI Reference](docs/cli/reference.md) | [Tools Reference](docs/tools/reference.md) | [Provider Setup](docs/providers/index.md) | [MCP Integration](docs/mcp/index.md)
+Key references: [Socket Protocol](https://github.com/dsswift/ion/blob/main/docs/protocol/index.md) | [CLI Reference](https://github.com/dsswift/ion/blob/main/docs/cli/reference.md) | [Tools Reference](https://github.com/dsswift/ion/blob/main/docs/tools/reference.md) | [Provider Setup](https://github.com/dsswift/ion/blob/main/docs/providers/index.md) | [MCP Integration](https://github.com/dsswift/ion/blob/main/docs/mcp/index.md)
 
 ## Model and Provider Configuration
 
@@ -219,7 +219,7 @@ Need a custom name (a finetune, an OpenRouter route, a tier alias)? Register it 
 
 Need to mix cloud and local models in one workflow? See the [Workflows: Model Routing](#workflows-model-routing) example below.
 
-For the full picture, see the [models.json reference](docs/configuration/models.md), the [engine.json reference](docs/configuration/engine-json.md), and the [provider catalog](docs/providers/index.md).
+For the full picture, see the [models.json reference](https://github.com/dsswift/ion/blob/main/docs/configuration/models.md), the [engine.json reference](https://github.com/dsswift/ion/blob/main/docs/configuration/engine-json.md), and the [provider catalog](https://github.com/dsswift/ion/blob/main/docs/providers/index.md).
 
 ## One Engine, Many Shapes
 
@@ -336,7 +336,7 @@ ion prompt --model claude-sonnet-4-6 \
   "Using this plan, write the final response. Plan: $analysis"
 ```
 
-Three models, three providers, one shell script. The engine resolves each model via prefix match (`qwen*` to Ollama, `gpt-*` to OpenAI, `claude-*` to Anthropic), pulls the matching credential from the environment or config, and runs each step in turn. See the [models.json reference](docs/configuration/models.md) for tier aliases that let you write `--model fast` instead of pinning a specific model name.
+Three models, three providers, one shell script. The engine resolves each model via prefix match (`qwen*` to Ollama, `gpt-*` to OpenAI, `claude-*` to Anthropic), pulls the matching credential from the environment or config, and runs each step in turn. See the [models.json reference](https://github.com/dsswift/ion/blob/main/docs/configuration/models.md) for tier aliases that let you write `--model fast` instead of pinning a specific model name.
 
 ### A web API with an engine sidecar
 
@@ -581,7 +581,7 @@ A **department operations** harness with agents that triage inbound requests, dr
 
 The engine handles the agent loop, tool execution, streaming, and multi-provider abstraction. Your harness owns the domain, your agents own the expertise, your extensions own the integrations, and your hooks own the policy.
 
-For tier aliases like `fast` or `smart` that resolve per-agent, see the [models.json reference](docs/configuration/models.md).
+For tier aliases like `fast` or `smart` that resolve per-agent, see the [models.json reference](https://github.com/dsswift/ion/blob/main/docs/configuration/models.md).
 
 ### Fork it
 
@@ -909,7 +909,7 @@ Both do the same thing. Set `ION_WEBHOOK_URL` and every session sends live updat
 | **Async-Trigger Registration** | `webhook_registered`, `webhook_deregistered`, `schedule_registered`, `schedule_deregistered` |
 | **Cross-Session** | `session_message` |
 
-See the full [extension reference](docs/extensions/index.md) for init handshake format, hook data shapes, and protocol details. The [hook reference](docs/hooks/reference.md) is the complete, authoritative catalog.
+See the full [extension reference](https://github.com/dsswift/ion/blob/main/docs/extensions/index.md) for init handshake format, hook data shapes, and protocol details. The [hook reference](https://github.com/dsswift/ion/blob/main/docs/hooks/reference.md) is the complete, authoritative catalog.
 
 ## Security You Control
 
@@ -994,7 +994,7 @@ Flags override config for a single invocation:
 ion prompt --model gpt-4.1-mini --max-turns 5 --max-budget 0.50 "Quick question"
 ```
 
-See the [configuration reference](docs/configuration/engine-json.md) for the full config schema. To register custom models or tier aliases, see the [models.json reference](docs/configuration/models.md).
+See the [configuration reference](https://github.com/dsswift/ion/blob/main/docs/configuration/engine-json.md) for the full config schema. To register custom models or tier aliases, see the [models.json reference](https://github.com/dsswift/ion/blob/main/docs/configuration/models.md).
 
 ## Architecture
 

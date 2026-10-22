@@ -30,7 +30,7 @@ The engine ships opt-in security primitives rather than a fixed policy: a permis
 dangerous-command detection, OS-level sandboxing (Seatbelt on macOS, bwrap on Linux), secret
 redaction, audit logging, and an enterprise configuration layer that seals security floors so they
 cannot be loosened from below. The full model, including defaults and configuration, is documented
-in [docs/security/](docs/security/index.md) and [docs/enterprise/](docs/enterprise/index.md).
+in [docs/security/](https://github.com/dsswift/ion/blob/main/docs/security/index.md) and [docs/enterprise/](https://github.com/dsswift/ion/blob/main/docs/enterprise/index.md).
 
 Two properties worth knowing before you report:
 

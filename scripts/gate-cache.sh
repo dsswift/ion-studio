@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Result receipt for the Linux parity gates (`make test-linux-engine`,
+# Result receipt for the Linux parity gates (`make test-linux-server`,
 # `make test-linux-desktop`).
 #
 # The gates already cache their *inputs*: prebaked images plus named volumes
