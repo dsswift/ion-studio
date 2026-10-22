@@ -562,7 +562,7 @@ export type EngineEventVariant =
   // small ⚠ glyph on the affected engine instance pill via the
   // engineModelFallbacks store map; iOS receives the fact through the
   // snapshot path (RemoteTabState.conversationInstances[i].modelFallback)
-  // rather than as a live RemoteEvent. See CLAUDE.md §
+  // rather than as a live RemoteEvent. See AGENTS.md §
   // "The typed-event corollary" for the broader rule.
   | {
       type: "engine_model_fallback";

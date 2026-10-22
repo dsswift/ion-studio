@@ -881,34 +881,6 @@ function Initialize-IonEnvironment {
 # ── Repository steps (the `make bootstrap` equivalents) ──────────────────────
 
 <#
-  CLAUDE.md is a local-only pointer at the sibling AGENTS.md. Windows can only
-  create a symbolic link with Developer Mode on or from an elevated shell, so
-  fall back to a copy -- which is why this writes a warning rather than
-  pretending the link exists.
-#>
-function New-IonClaudeSymlinks {
-  param([Parameter(Mandatory)][string] $Root)
-  $agents = Get-ChildItem -Path $Root -Filter 'AGENTS.md' -Recurse -File -ErrorAction SilentlyContinue |
-    Where-Object { $_.FullName -notmatch '\\(node_modules|\.git|graphify-out)\\' }
-  $linked = 0; $copied = 0
-  foreach ($a in $agents) {
-    $target = Join-Path $a.DirectoryName 'CLAUDE.md'
-    if (Test-Path $target) { continue }
-    try {
-      New-Item -ItemType SymbolicLink -Path $target -Value $a.Name -ErrorAction Stop | Out-Null
-      $linked++
-    } catch {
-      Copy-Item $a.FullName $target
-      $copied++
-    }
-  }
-  Write-IonInfo "CLAUDE.md: $linked linked, $copied copied, $($agents.Count) AGENTS.md found"
-  if ($copied -gt 0) {
-    Write-IonWarn 'Copies drift from their AGENTS.md. Enable Developer Mode (Settings > System > For developers) and delete the copies to get real links.'
-  }
-}
-
-<#
   Whoever runs this is developing Ion, so their engine is a dev build and DEBUG
   is the level it needs. Preserve every other key, and refuse rather than guess
   when the file does not parse -- overwriting an operator's engine config to

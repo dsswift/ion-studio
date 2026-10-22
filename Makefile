@@ -1,4 +1,4 @@
-.PHONY: land sync-windows-vm default demo desktop desktop-pkg engine generate-dashboards relay relay-local ios ios-check ios-test desktop-test engine-test sdk-test shared-test server-test test test-all test-linux test-linux-engine test-linux-engine-run test-linux-engine-summary test-linux-desktop test-linux-desktop-run test-linux-server test-linux-server-run clean check-file-sizes check-contracts check-status-writers check-server-parity check-studio-wire check-logging check-admx check-windows-scripts check-swiftlint check-dashboards check-vocabulary check-issue-closure check-doc-links generate-vocabulary claude-symlinks bootstrap graph graph-ensure graph-refresh hooks lint-desktop log-level-debug
+.PHONY: land sync-windows-vm default demo desktop desktop-pkg engine generate-dashboards relay relay-local ios ios-check ios-test desktop-test engine-test sdk-test shared-test server-test test test-all test-linux test-linux-engine test-linux-engine-run test-linux-engine-summary test-linux-desktop test-linux-desktop-run test-linux-server test-linux-server-run clean check-file-sizes check-contracts check-status-writers check-server-parity check-studio-wire check-logging check-admx check-windows-scripts check-swiftlint check-dashboards check-vocabulary check-issue-closure check-doc-links generate-vocabulary bootstrap graph graph-ensure graph-refresh hooks lint-desktop log-level-debug
 
 # Homebrew installs node/npm under /opt/homebrew/bin on Apple Silicon.
 # Make runs recipes with /bin/sh which only has /usr/bin:/bin in PATH,
@@ -506,11 +506,6 @@ check-swiftlint:
 	fi
 	@swiftlint lint --config ios/.swiftlint.yml ios/IonRemote
 
-# Create CLAUDE.md symlinks pointing at sibling AGENTS.md files. Idempotent.
-# CLAUDE.md is gitignored; AGENTS.md is committed as the canonical context file.
-claude-symlinks:
-	@bash scripts/setup-claude-symlinks.sh
-
 # One-command setup for a fresh clone. Idempotent — safe to re-run.
 #
 # Two things a clone cannot carry:
@@ -527,7 +522,6 @@ claude-symlinks:
 bootstrap:
 	@echo "▶ npm install (husky hooks)"
 	@npm install --silent
-	@$(MAKE) --no-print-directory claude-symlinks
 	@$(MAKE) --no-print-directory log-level-debug
 	@$(MAKE) --no-print-directory graph-ensure
 	@echo "✅ bootstrap complete"

@@ -8,8 +8,8 @@
   so re-running it after a partial failure costs only the steps still missing.
 
   It does everything `make bootstrap` does on macOS -- npm install (which
-  activates the husky git hooks), the CLAUDE.md symlinks, the engine debug log
-  level, and the graph build when graphify is present -- and additionally
+  activates the husky git hooks), the engine debug log level,
+  and the graph build when graphify is present -- and additionally
   installs the toolchain, because a Windows machine does not arrive with one.
 
   Toolchain, all via winget, which ships with Windows 11 and resolves the host
@@ -70,9 +70,6 @@ try {
 
   Write-IonStep 'npm install (activates husky git hooks)'
   Invoke-IonNative 'npm' @('install', '--no-audit', '--no-fund') -WorkingDirectory $Root
-
-  Write-IonStep 'CLAUDE.md symlinks'
-  New-IonClaudeSymlinks -Root $Root
 
   Write-IonStep 'engine log level'
   Set-IonEngineLogLevel -Level 'debug'

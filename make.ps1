@@ -107,7 +107,7 @@ Partial targets, for when you do not want the whole path:
   .\make.ps1 installer         Build the installer, install nothing
   .\make.ps1 clean             Remove build output
   .\bootstrap.ps1              Machine setup on its own (also does the git
-                               hooks, CLAUDE.md links and engine log level,
+                               hooks and engine log level,
                                which building does not need)
 
   -Arch x64|arm64              Override the host architecture (default: auto)
