@@ -4,7 +4,7 @@ name: Rebuild Windows Desktop
 # for the current desktop version, no new release." This exists for the case
 # where the desktop version did not change (a CI/test fix, a re-run after a
 # transient failure) but a fresh Windows build is still needed: the automatic
-# Release workflow only fires on a change under desktop/**, engine/**, etc.,
+# Release workflow only fires on a change under desktop/**, server/**, etc.,
 # and only produces a new build when release-please actually bumps a version.
 #
 # This does not create a new release or bump any version. It rebuilds the

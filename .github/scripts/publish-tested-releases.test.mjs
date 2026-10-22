@@ -139,7 +139,7 @@ test('a job skipped on the commit takes the nearest ancestor verdict', () => {
   release(w, 'relay-v1.0.0', B);
   built(w, B, 'relay', 'relay-v1.0.0');
   quality(w, A, 1, { ...allPass('relay'), 'relay-test': 'failure' });
-  quality(w, B, 2, { 'engine-lint': 'success' }); // relay-test skipped on B
+  quality(w, B, 2, { 'go-lint': 'success' }); // relay-test skipped on B
   sweeper(w)();
   assert.deepEqual(edits(w), [], 'an untouched failing test must not pass by being skipped');
 
@@ -147,44 +147,20 @@ test('a job skipped on the commit takes the nearest ancestor verdict', () => {
   release(ok, 'relay-v1.0.0', B);
   built(ok, B, 'relay', 'relay-v1.0.0');
   quality(ok, A, 1, allPass('relay'));
-  quality(ok, B, 2, { 'engine-lint': 'success' });
+  quality(ok, B, 2, { 'go-lint': 'success' });
   sweeper(ok)();
   assert.equal(edits(ok).length, 1);
 });
 
-test('a server release waits for the engine it bundles, and both go out in one sweep', () => {
-  const w = world();
-  release(w, 'server-v2.0.0', B);
-  release(w, 'engine-v1.5.0', B);
-  built(w, B, 'server', 'server-v2.0.0 with engine-v1.5.0');
-  built(w, B, 'engine', 'engine-v1.5.0');
-  quality(w, B, 1, { ...allPass('server'), ...allPass('engine') });
-  sweeper(w)();
-  assert.deepEqual(edits(w), [
-    `release edit engine-v1.5.0 --draft=false --latest -R ${REPO}`,
-    `release edit server-v2.0.0 --draft=false --latest=false -R ${REPO}`,
-  ]);
-
-  const held = world();
-  release(held, 'server-v2.0.0', B);
-  release(held, 'engine-v1.5.0', B);
-  built(held, B, 'server', 'server-v2.0.0 with engine-v1.5.0');
-  built(held, B, 'engine', 'engine-v1.5.0');
-  quality(held, B, 1, { ...allPass('server'), ...allPass('engine'), 'engine-test': 'failure' });
-  sweeper(held)();
-  assert.deepEqual(edits(held), []);
-  assert.match(held.logs.join('\n'), /held server-v2\.0\.0: it bundles engine-v1\.5\.0, which is not public/);
-});
-
 test('an older version passing late goes public without taking latest back', () => {
   const w = world();
-  w.releases['engine-v1.6.0'] = { tag_name: 'engine-v1.6.0', target_commitish: A, draft: false };
-  release(w, 'engine-v1.5.0', B);
-  built(w, B, 'engine', 'engine-v1.5.0');
-  quality(w, B, 1, allPass('engine'));
+  w.releases['server-v1.6.0'] = { tag_name: 'server-v1.6.0', target_commitish: A, draft: false };
+  release(w, 'server-v1.5.0', B);
+  built(w, B, 'server', 'server-v1.5.0');
+  quality(w, B, 1, allPass('server'));
   sweeper(w)();
-  assert.deepEqual(edits(w), [`release edit engine-v1.5.0 --draft=false --latest=false -R ${REPO}`]);
-  assert.ok(!w.calls.some((c) => c.startsWith('docker')), 'engine:latest must stay on v1.6.0');
+  assert.deepEqual(edits(w), [`release edit server-v1.5.0 --draft=false --latest=false -R ${REPO}`]);
+  assert.ok(!w.calls.some((c) => c.startsWith('docker')), 'studio-server:latest must stay on v1.6.0');
 });
 
 test('publishing the newest version moves its :latest image tag', () => {

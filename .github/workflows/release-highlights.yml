@@ -19,21 +19,31 @@ jobs:
           ref: main
           fetch-depth: 0
 
-      - name: Check for recent activity
+      # The summary needs an engine config, a system prompt, and a Discord
+      # webhook. Without all three there is nothing to post, so the run ends
+      # with a notice instead of failing every night.
+      - name: Check for recent activity and configuration
         id: check-activity
+        env:
+          HAS_CONFIG: ${{ secrets.ION_ENGINE_CONFIG_B64 != '' && secrets.ION_SYSTEM_PROMPT__RELEASE_HIGHLIGHTS_NOTIFICATION != '' && secrets.DISCORD_WEBHOOK_URL__RELEASE_HIGHLIGHTS != '' }}
         run: |
           set -euo pipefail
+          if [ "$HAS_CONFIG" != "true" ]; then
+            echo "run=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::Release highlights are not configured: set ION_ENGINE_CONFIG_B64, ION_SYSTEM_PROMPT__RELEASE_HIGHLIGHTS_NOTIFICATION, and DISCORD_WEBHOOK_URL__RELEASE_HIGHLIGHTS to turn them on."
+            exit 0
+          fi
           COMMIT_COUNT=$(git log --since="24 hours ago" --oneline origin/main | wc -l | tr -d ' ' || true)
           echo "commit_count=$COMMIT_COUNT"
           if [ "$COMMIT_COUNT" -gt 0 ]; then
-            echo "has_commits=true" >> "$GITHUB_OUTPUT"
+            echo "run=true" >> "$GITHUB_OUTPUT"
           else
-            echo "has_commits=false" >> "$GITHUB_OUTPUT"
+            echo "run=false" >> "$GITHUB_OUTPUT"
             echo "No commits in the last 24 hours — skipping highlights."
           fi
 
       - name: Login to GHCR
-        if: steps.check-activity.outputs.has_commits == 'true'
+        if: steps.check-activity.outputs.run == 'true'
         uses: docker/login-action@v4
         with:
           registry: ghcr.io
@@ -41,11 +51,11 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Pull ion engine image
-        if: steps.check-activity.outputs.has_commits == 'true'
-        run: docker pull ghcr.io/${{ github.repository }}/engine:latest
+        if: steps.check-activity.outputs.run == 'true'
+        run: docker pull ghcr.io/dsswift/ion/engine:latest
 
       - name: Build highlights context document
-        if: steps.check-activity.outputs.has_commits == 'true'
+        if: steps.check-activity.outputs.run == 'true'
         env:
           REPOSITORY_URL: ${{ github.server_url }}/${{ github.repository }}
         run: |
@@ -72,7 +82,7 @@ jobs:
           echo "Context document size: $(wc -c < "$CTX") bytes"
 
       - name: Compose final prompt
-        if: steps.check-activity.outputs.has_commits == 'true'
+        if: steps.check-activity.outputs.run == 'true'
         env:
           ION_SYSTEM_PROMPT__RELEASE_HIGHLIGHTS_NOTIFICATION: ${{ secrets.ION_SYSTEM_PROMPT__RELEASE_HIGHLIGHTS_NOTIFICATION }}
         run: |
@@ -86,13 +96,13 @@ jobs:
           echo "Prompt size: $(wc -c < /tmp/ion-prompt.txt) bytes"
 
       - name: Generate summary with ion
-        if: steps.check-activity.outputs.has_commits == 'true'
+        if: steps.check-activity.outputs.run == 'true'
         env:
           ION_ENGINE_CONFIG_B64: ${{ secrets.ION_ENGINE_CONFIG_B64 }}
-        run: bash .github/scripts/run-ion-prompt.sh ghcr.io/${{ github.repository }}/engine:latest /tmp/ion-prompt.txt /tmp/summary.md
+        run: bash .github/scripts/run-ion-prompt.sh ghcr.io/dsswift/ion/engine:latest /tmp/ion-prompt.txt /tmp/summary.md
 
       - name: Post to Discord
-        if: steps.check-activity.outputs.has_commits == 'true'
+        if: steps.check-activity.outputs.run == 'true'
         env:
           DISCORD_WEBHOOK_URL: ${{ secrets.DISCORD_WEBHOOK_URL__RELEASE_HIGHLIGHTS }}
         run: |

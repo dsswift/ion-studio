@@ -5,11 +5,9 @@ on:
     branches:
       - main
     paths:
-      - 'engine/**'
       - 'desktop/**'
       - 'relay/**'
       - 'ios/**'
-      - 'sdk/**'
       # `server` is its own release unit -- release-please-config.json gives it
       # a component, a CHANGELOG and a VERSION, its commits carry the `server`
       # scope, and build.yml's build-server job is gated only on the release
@@ -121,7 +119,7 @@ jobs:
           ION_ENGINE_CONFIG_B64: ${{ secrets.ION_ENGINE_CONFIG_B64 }}
         run: |
           node .github/scripts/write-whats-new.mjs \
-            bash .github/scripts/run-ion-prompt.sh ghcr.io/${{ github.repository }}/engine:latest
+            bash .github/scripts/run-ion-prompt.sh ghcr.io/dsswift/ion/engine:latest
 
       - name: Commit version updates
         if: steps.check-skip.outputs.skip == 'false' && steps.release.outputs.releases_created == 'true' && inputs.dry_run != true
@@ -144,7 +142,7 @@ jobs:
       # until every asset is attached and this push's Quality jobs for it have
       # passed (publish-tested-releases.mjs). A build or test that fails leaves
       # a draft, never a published release that is missing files or failed its
-      # tests. Components with no build job (ios, sdk) have nothing to wait
+      # tests. Components with no build job (ios) have nothing to wait
       # for and publish now.
       - name: Hold built releases as drafts, publish the rest
         if: steps.check-skip.outputs.skip == 'false' && steps.release.outputs.releases_created == 'true' && inputs.dry_run != true

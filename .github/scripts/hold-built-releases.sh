@@ -12,13 +12,11 @@
 #   RELEASE_REPORT='<release-damnit json>' hold-built-releases.sh
 #
 # BUILT_COMPONENTS names the components build.yml has a ready job for. A
-# component not listed here is published immediately, marked non-latest: the
-# engine release is the one the README install command resolves through
-# /releases/latest, and publish-tested-releases.mjs is what marks it latest.
+# component not listed here is published immediately, marked non-latest.
 
 set -euo pipefail
 
-BUILT_COMPONENTS="${BUILT_COMPONENTS:-engine server desktop relay}"
+BUILT_COMPONENTS="${BUILT_COMPONENTS:-server desktop relay}"
 
 is_built() {
   local c

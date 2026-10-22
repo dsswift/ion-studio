@@ -1,13 +1,8 @@
 # Shared changed-path scopes for the Quality workflow and local regression
 # checks. Product jobs consume these on pull requests and on pushes to main;
 # scheduled and manual Quality runs deliberately validate every scope.
-engine:
-  - 'engine/**'
 sdk:
-  - 'sdk/go/**'
   - 'packages/studio-sdk/**'
-  - 'engine/extensions/sdk/**'
-  - 'engine/internal/extension/**'
 relay:
   - 'relay/**'
 desktop:
@@ -27,8 +22,6 @@ ios:
   - 'ios/.swiftlint.yml'
   - 'ios/commands/install.command'
 logging:
-  - 'engine/**'
-  - 'sdk/go/**'
   - 'relay/**'
   - 'desktop/**'
   - 'packages/shared/**'
@@ -36,16 +29,6 @@ logging:
   - 'ios/**'
   - 'scripts/check-logging*'
   - 'scripts/test-quality-path-scopes.sh'
-dashboards:
-  - 'docs/observability/dashboards/**'
-  - 'docs/observability/grafana/provisioning/dashboards/**'
-  - 'docs/observability/queries.md'
-  # The collector-source gate reads these two and log-schema.md: a log file the
-  # schema documents and the collector does not tail is invisible in Loki, with
-  # nothing failing to say so. That is how server.jsonl went uncollected.
-  - 'docs/observability/alloy-config.alloy'
-  - 'docs/observability/docker-compose.yml'
-  - 'docs/observability/log-schema.md'
 workflows:
   - '.github/workflows/**'
   - '.github/scripts/**'

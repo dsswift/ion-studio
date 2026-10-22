@@ -21,9 +21,8 @@
 // that verdict still describes this commit's code.
 //
 // Publishing a component's newest version also moves its `:latest` image tag
-// (build.yml pushes only version tags), and for the engine marks the GitHub
-// release latest. An older version passing its tests after a newer one goes
-// public without taking `latest` back.
+// (build.yml pushes only version tags). An older version passing its tests
+// after a newer one goes public without taking `latest` back.
 //
 // When every release a push cut is public, the sweep dispatches the release
 // summary for that push.
@@ -38,11 +37,10 @@ import path from 'node:path';
 
 // The Quality jobs whose pass a component's release waits for: the tests,
 // lints, and builds of the code that ships inside it. A component that bundles
-// another one's source (desktop builds the engine and the server from the
+// another one's source (desktop bundles the server and the Studio SDK from the
 // same commit) waits for that code's jobs too.
 export const GATES = {
-  engine: ['engine-test', 'engine-lint', 'engine-crossbuild', 'sdk-test', 'docker-build'],
-  relay: ['relay-test', 'engine-lint'],
+  relay: ['relay-test', 'go-lint'],
   server: [
     'server-test', 'server-typecheck', 'server-lint', 'shared-test', 'studio-wire',
     'status-writers', 'desktop-build', 'server-compose-smoke',
@@ -50,24 +48,22 @@ export const GATES = {
   desktop: [
     'desktop-test', 'desktop-test-windows', 'desktop-lint', 'desktop-build', 'server-parity',
     'studio-wire', 'status-writers', 'shared-test', 'server-test', 'server-typecheck',
-    'server-lint', 'engine-test', 'engine-lint', 'engine-crossbuild', 'sdk-test',
+    'server-lint', 'sdk-test',
   ],
 };
 
-// Publish order. The server bundle downloads a released engine binary, so a
-// server release also waits for that engine release to be public; sweeping the
-// engine first lets both go out in one sweep.
-const ORDER = ['engine', 'relay', 'server', 'desktop'];
+// Publish order.
+const ORDER = ['relay', 'server', 'desktop'];
 
 // The ghcr.io image each component pushes under ghcr.io/<repo>/<image>.
-export const IMAGES = { engine: 'engine', relay: 'relay', server: 'studio-server' };
+export const IMAGES = { relay: 'relay', server: 'studio-server' };
 
 const QUALITY_EVENTS = new Set(['push', 'schedule', 'workflow_dispatch']);
 const FAILED = new Set(['failure', 'timed_out', 'action_required', 'startup_failure', 'stale']);
 const LOOKBACK_COMMITS = 2000;
 const QUALITY_RUN_PAGES = 3;
 
-const TAG_RE = /^(engine|server|desktop|relay)-v(\d+\.\d+\.\d+)$/;
+const TAG_RE = /^(server|desktop|relay)-v(\d+\.\d+\.\d+)$/;
 
 export function parseTag(tag) {
   const m = TAG_RE.exec(tag);
@@ -160,14 +156,13 @@ export function makeSweeper({ api, apiLines, gh, git, docker, log, repo }) {
     return { ok: true };
   }
 
-  // The `release/<component>` status the build left on the commit, if its
-  // description names this tag.
-  function builtStatus(component, sha, tag) {
+  // Whether the `release/<component>` status the build left on the commit
+  // names this tag.
+  function isBuilt(component, sha, tag) {
     const statuses = api(`repos/${repo}/commits/${sha}/statuses?per_page=100`);
     const latest = statuses.find((s) => s.context === `release/${component}`);
-    if (!latest || latest.state !== 'success') return null;
-    const words = (latest.description ?? '').split(' ');
-    return words[0] === tag ? { bundles: /(?:^| )with (\S+)/.exec(latest.description)?.[1] ?? null } : null;
+    if (!latest || latest.state !== 'success') return false;
+    return (latest.description ?? '').split(' ')[0] === tag;
   }
 
   function isPublic(tag) {
@@ -191,10 +186,7 @@ export function makeSweeper({ api, apiLines, gh, git, docker, log, repo }) {
 
   function publish(rel, newest) {
     const isNewest = !newest[rel.component] || compareVersions(rel.version, newest[rel.component]) > 0;
-    // /releases/latest is what the README install command resolves, and only
-    // the engine release is ever marked latest.
-    const latest = rel.component === 'engine' && isNewest;
-    gh(['release', 'edit', rel.tag, '--draft=false', latest ? '--latest' : '--latest=false', '-R', repo]);
+    gh(['release', 'edit', rel.tag, '--draft=false', '--latest=false', '-R', repo]);
     if (isNewest) {
       newest[rel.component] = rel.version;
       const image = IMAGES[rel.component];
@@ -248,13 +240,8 @@ export function makeSweeper({ api, apiLines, gh, git, docker, log, repo }) {
         log(`held ${rel.tag}: its target ${rel.sha} is not a commit, so it has no test verdict`);
         continue;
       }
-      const built = builtStatus(rel.component, rel.sha, rel.tag);
-      if (!built) {
+      if (!isBuilt(rel.component, rel.sha, rel.tag)) {
         log(`held ${rel.tag}: build not finished for ${rel.sha.slice(0, 9)}`);
-        continue;
-      }
-      if (built.bundles && !isPublic(built.bundles)) {
-        log(`held ${rel.tag}: it bundles ${built.bundles}, which is not public`);
         continue;
       }
       const tests = testVerdict(rel.component, rel.sha);

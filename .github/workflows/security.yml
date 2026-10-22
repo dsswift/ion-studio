@@ -15,27 +15,28 @@ permissions:
   issues: write
 
 jobs:
-  engine-vuln:
+  go-vuln:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
       - name: Setup Go
         uses: actions/setup-go@v7
         with:
-          go-version-file: engine/go.mod
+          go-version-file: relay/go.mod
       - name: Install govulncheck
         run: go install golang.org/x/vuln/cmd/govulncheck@latest
-      - name: govulncheck (engine)
-        run: govulncheck ./...
-        working-directory: engine
       - name: govulncheck (relay)
-        if: always()
         run: govulncheck ./...
         working-directory: relay
-      - name: govulncheck (sdk)
+      # The Studio SDK's Go flavor builds against the engine's Go SDK from the
+      # pinned engine checkout beside this one.
+      - name: Check out the pinned engine
+        if: always()
+        run: git clone --quiet --depth 1 --branch "engine-v$(tr -d '[:space:]' < engine/VERSION)" https://github.com/dsswift/ion ../ion
+      - name: govulncheck (studio sdk)
         if: always()
         run: govulncheck ./...
-        working-directory: sdk/go
+        working-directory: packages/studio-sdk/go
 
   desktop-audit:
     runs-on: ubuntu-latest
@@ -52,7 +53,7 @@ jobs:
         run: npm audit --audit-level=high --omit=dev
 
   report:
-    needs: [engine-vuln, desktop-audit]
+    needs: [go-vuln, desktop-audit]
     if: always()
     runs-on: ubuntu-latest
     steps:

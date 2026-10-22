@@ -52,11 +52,14 @@ jobs:
           fetch-depth: 0
           token: ${{ steps.app-token.outputs.token }}
 
+      - name: Check out the pinned engine
+        run: git clone --quiet --depth 1 --branch "engine-v$(tr -d '[:space:]' < engine/VERSION)" https://github.com/dsswift/ion ../ion
+
       - name: Setup Go
         uses: actions/setup-go@v7
         with:
-          go-version-file: engine/go.mod
-          cache-dependency-path: engine/go.sum
+          go-version-file: ../ion/engine/go.mod
+          cache: false
 
       - name: Setup Node
         uses: actions/setup-node@v7
