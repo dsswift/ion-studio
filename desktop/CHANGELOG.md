@@ -10,6 +10,12 @@ Demonstrates the engine's daemon architecture and multi-client broadcast.
 
 Subsequent versions will be auto-generated from conventional commit messages.
 
+## [2.20.5](https://github.com/dsswift/ion-studio/compare/desktop-v2.20.4...desktop-v2.20.5) (2026-10-23)
+
+### Bug Fixes
+
+* **desktop:** start the engine without awaiting permission prompts ([a75fb57](https://github.com/dsswift/ion-studio/commit/a75fb574ec45f3f694ea8f72871b92285b790dbe))
+
 ## [2.20.4](https://github.com/dsswift/ion-studio/compare/desktop-v2.20.3...desktop-v2.20.4) (2026-10-22)
 
 ### Bug Fixes
