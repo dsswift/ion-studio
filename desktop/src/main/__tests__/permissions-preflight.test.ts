@@ -5,6 +5,7 @@
  * whenever the prompt went unanswered behind a locked screen.
  */
 
+import { join } from 'path'
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
 
 const readdirMock = vi.fn((_dir: string) => Promise.resolve([] as string[]))
@@ -36,11 +37,10 @@ describe('requestPermissions', () => {
     await requestPermissions()
 
     expect(readdirSyncMock).not.toHaveBeenCalled()
-    expect(readdirMock.mock.calls.map(([dir]) => dir)).toEqual([
-      '/Users/testuser/Desktop',
-      '/Users/testuser/Documents',
-      '/Users/testuser/Downloads',
-    ])
+    // Built with the host's own separators, as the code under test builds them.
+    expect(readdirMock.mock.calls.map(([dir]) => dir)).toEqual(
+      ['Desktop', 'Documents', 'Downloads'].map((name) => join('/Users/testuser', name)),
+    )
   })
 
   it('keeps going past a folder it was refused', async () => {
