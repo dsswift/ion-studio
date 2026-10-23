@@ -5,6 +5,7 @@
  * sequence of steps.
  */
 import { existsSync, readFileSync, mkdirSync, copyFileSync, chmodSync, renameSync } from 'fs'
+import { execFileSync } from 'child_process'
 import { createHash } from 'crypto'
 import { join } from 'path'
 import { log as _log } from '../logger'
@@ -88,6 +89,21 @@ export function hashBinary(binaryPath: string): string | null {
     return createHash('sha256').update(readFileSync(binaryPath)).digest('hex')
   } catch (err) {
     log('engine_bootstrap: hashBinary failed', { path: binaryPath, error: err instanceof Error ? err.message : String(err) })
+    return null
+  }
+}
+
+/**
+ * The build version an engine binary reports through `ion version`
+ * (`ion-engine engine-v3.1.1-4-g778945267`), or null when it cannot be run.
+ * Used only to order two binaries already known to differ by hash; identity
+ * stays the content hash above.
+ */
+export function readBinaryVersion(binaryPath: string): string | null {
+  try {
+    return execFileSync(binaryPath, ['version'], { encoding: 'utf-8', timeout: 5000 }).trim()
+  } catch (err) {
+    log('engine_bootstrap: readBinaryVersion failed', { path: binaryPath, error: err instanceof Error ? err.message : String(err) })
     return null
   }
 }

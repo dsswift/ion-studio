@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { checkEngineVersion, meetsMinVersion } from '../version-check'
+import { checkEngineVersion, compareEngineBuilds, meetsMinVersion } from '../version-check'
 
 describe('checkEngineVersion', () => {
   it('reads the semver core out of a release tag as git describe prints it', () => {
@@ -21,5 +21,18 @@ describe('checkEngineVersion', () => {
     expect(checkEngineVersion('dev-d11ef7d05eeb', '0.0.0')).toMatchObject({ ok: true })
     expect(meetsMinVersion('dev-d11ef7d05eeb', '0.0.0')).toBe(true)
     expect(meetsMinVersion('dev-d11ef7d05eeb', '1.0.0')).toBe(false)
+  })
+})
+
+describe('compareEngineBuilds', () => {
+  it('orders builds by semver core, then by commits past the tag', () => {
+    expect(compareEngineBuilds('ion-engine engine-v2.1.1-1-g62ccb1713', 'ion-engine engine-v3.1.1-1-g778945267')).toBe(-1)
+    expect(compareEngineBuilds('ion-engine engine-v3.1.1-4-gabc1234', 'ion-engine engine-v3.1.1-1-g778945267')).toBe(1)
+    expect(compareEngineBuilds('ion-engine engine-v3.1.1', 'ion-engine engine-v3.1.1-1-g778945267')).toBe(-1)
+    expect(compareEngineBuilds('ion-engine engine-v3.1.1-1-g778945267', 'ion-engine engine-v3.1.1-1-g778945267')).toBe(0)
+  })
+
+  it('cannot order a build that carries no version', () => {
+    expect(compareEngineBuilds('ion-engine dev', 'ion-engine engine-v3.1.1')).toBeNull()
   })
 })

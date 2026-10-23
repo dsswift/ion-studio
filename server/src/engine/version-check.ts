@@ -50,6 +50,33 @@ function compareVersions(a: [number, number, number], b: [number, number, number
 }
 
 /**
+ * Parses an engine build version as `git describe` stamps it
+ * (`engine-v3.1.1-4-g778945267`): the first `major.minor.patch`, then the
+ * commit distance past that tag (0 for a bare tag). Null when there is no
+ * `major.minor.patch`, e.g. a `dev` build.
+ */
+function parseBuildVersion(raw: string): [number, number, number, number] | null {
+  const match = /(\d+)\.(\d+)\.(\d+)(?:-(\d+)-g[0-9a-f]+)?/.exec(raw.trim())
+  if (!match) return null
+  return [Number(match[1]), Number(match[2]), Number(match[3]), Number(match[4] ?? 0)]
+}
+
+/**
+ * Orders two engine build versions: -1 when `a` is older than `b`, 0 when
+ * they are the same build version, 1 when `a` is newer. Null when either
+ * carries no version to order by.
+ */
+export function compareEngineBuilds(a: string, b: string): number | null {
+  const pa = parseBuildVersion(a)
+  const pb = parseBuildVersion(b)
+  if (!pa || !pb) return null
+  for (let i = 0; i < 4; i++) {
+    if (pa[i] !== pb[i]) return pa[i] < pb[i] ? -1 : 1
+  }
+  return 0
+}
+
+/**
  * Compares an engine's reported version against `server.json`'s
  * `engine.minVersion` (manifest C5/C14). `minVersion: "0.0.0"` (the C5
  * default) always passes -- it means "no constraint". An unparseable

@@ -11,8 +11,11 @@
  *   1. Locate the bundled engine binary and hash its content (sha256).
  *   2. On a Windows supervisor with a changed hash, stop the task first —
  *      a running .exe cannot be overwritten.
- *   3. Copy the binary to its installed path if missing or content-changed.
- *   4. Run `ion install-assets` to install the extension SDK.
+ *   3. Copy the binary to its installed path if missing or content-changed,
+ *      unless the installed engine reports a newer build version: an older
+ *      app never downgrades an engine installed after it was packaged.
+ *   4. Run `ion install-assets` to install the extension SDK, unless step 3
+ *      kept a newer installed engine, whose own assets stay in place.
  *   5. Register/refresh the supervisor definition.
  *   6. Start (or force-restart) the engine under supervision.
  *   7. Verify the daemon actually came up via a real connect probe.
@@ -30,7 +33,8 @@ import { resolveEngineAddress, describeEngineAddress, probeEngine } from './engi
 import { enableSupervisorReassert } from './engine-bridge-connection'
 import { supervisorFor, type SupervisorOpts } from './engine-supervisor'
 import { findPlistTemplate, PLIST_LABEL, PLIST_FILENAME } from './engine-supervisor-launchd'
-import { ENGINE_HOST_NAME, binaryName, findBundledBinary, findBundledHost, hashBinary, installBinary } from './engine-binary-install'
+import { ENGINE_HOST_NAME, binaryName, findBundledBinary, findBundledHost, hashBinary, installBinary, readBinaryVersion } from './engine-binary-install'
+import { compareEngineBuilds } from './version-check'
 
 function log(msg: string, fields?: Record<string, unknown>): void {
   _log('bootstrap', msg, fields)
@@ -147,6 +151,9 @@ export async function ensureEngineDaemon(readiness: DaemonReadinessOpts = {}, en
   const srcBinary = findBundledBinary()
 
   let binaryUpdated = false
+  // The installed engine is a newer build than the bundled one. The bundled
+  // engine, its host launcher, and its assets all stay out of the way.
+  let keepInstalled = false
 
   if (!srcBinary) {
     log('WARNING: bundled engine binary not found, skipping binary install')
@@ -157,8 +164,17 @@ export async function ensureEngineDaemon(readiness: DaemonReadinessOpts = {}, en
     const destHash = existsSync(destBinary) ? hashBinary(destBinary) : null
     const changed = !(destHash && srcHash && destHash === srcHash)
 
+    const srcVersion = changed && destHash ? readBinaryVersion(srcBinary) : null
+    const destVersion = srcVersion ? readBinaryVersion(destBinary) : null
+    const order = srcVersion && destVersion ? compareEngineBuilds(srcVersion, destVersion) : null
+
     if (!changed) {
       log('engine_bootstrap: binary hash match, skipping copy', { hash: srcHash!.slice(0, 12) })
+    } else if (order !== null && order < 0) {
+      keepInstalled = true
+      warn('engine_bootstrap: installed engine is newer than bundled, keeping it', {
+        bundled_version: srcVersion, installed_version: destVersion, src: srcBinary,
+      })
     } else {
       // A running .exe cannot be overwritten on Windows — the supervisor
       // must be stopped before the copy. On darwin the staging+rename copy
@@ -170,6 +186,7 @@ export async function ensureEngineDaemon(readiness: DaemonReadinessOpts = {}, en
       }
       log('engine_bootstrap: binary content differs, copying', {
         reason: destHash ? 'hash_mismatch' : 'missing',
+        bundled_version: srcVersion, installed_version: destVersion,
         src_hash: srcHash ? srcHash.slice(0, 12) : null,
         dest_hash: destHash ? destHash.slice(0, 12) : null,
         src: srcBinary,
@@ -185,7 +202,9 @@ export async function ensureEngineDaemon(readiness: DaemonReadinessOpts = {}, en
   // replaced, and its absence is never fatal — the supervisor falls back to
   // running the engine directly and says so.
   const srcHost = findBundledHost()
-  if (srcHost) {
+  if (srcHost && keepInstalled) {
+    log('engine_bootstrap: keeping installed host launcher beside the newer engine')
+  } else if (srcHost) {
     const destHost = join(ionBinDir, ENGINE_HOST_NAME)
     const srcHostHash = hashBinary(srcHost)
     const destHostHash = existsSync(destHost) ? hashBinary(destHost) : null
@@ -215,12 +234,14 @@ export async function ensureEngineDaemon(readiness: DaemonReadinessOpts = {}, en
   // destBinary.
   if (!srcBinary) {
     log('WARNING: bundled engine binary not found, skipping install-assets')
+  } else if (keepInstalled) {
+    log('engine_bootstrap: skipping install-assets, the newer installed engine owns its assets')
   } else {
     try {
       const output = execFileSync(srcBinary, ['install-assets'], { encoding: 'utf-8', timeout: 30000 })
       log('engine_bootstrap: install-assets done', { msg: output.trim().split('\n').pop() || 'done' })
-    } catch (err: any) {
-      log('engine_bootstrap: install-assets failed (non-fatal)', { error: err.message })
+    } catch (err) {
+      log('engine_bootstrap: install-assets failed (non-fatal)', { error: err instanceof Error ? err.message : String(err) })
     }
   }
 
@@ -287,7 +308,7 @@ export async function stopEngineDaemon(): Promise<boolean> {
     await sup.stop(toSupervisorOpts(READINESS_DEFAULTS))
     log('stopEngineDaemon: engine stopped', { supervisor: sup.name })
     return true
-  } catch (err: any) {
+  } catch (err) {
     error('stopEngineDaemon: stop failed; the daemon may outlive the desktop', {
       supervisor: sup.name,
       error: err instanceof Error ? err.message : String(err),
@@ -327,8 +348,8 @@ export async function restartEngineDaemon(): Promise<boolean> {
     await waitForEngineSocket(READINESS_DEFAULTS)
     log('restartEngineDaemon: engine recycled (re-reading engine.json)', { supervisor: sup.name })
     return true
-  } catch (err: any) {
-    log('restartEngineDaemon: restart failed', { supervisor: sup.name, error: err.message })
+  } catch (err) {
+    log('restartEngineDaemon: restart failed', { supervisor: sup.name, error: err instanceof Error ? err.message : String(err) })
     return false
   }
 }
