@@ -234,7 +234,9 @@ export function setupAppLifecycle(): void {
       renewRemoteEnvironmentsAfterWake()
     })
 
-    await requestPermissions()
+    // Not awaited: a permission prompt waits for an answer, and the engine
+    // must not wait with it.
+    requestPermissions().catch((err) => error('permissions_preflight: failed', { error: String(err) }))
     reportStartup({ source: 'main', sequence: 1, status: 'Checking system permissions…' })
 
     // Claim engine-log egress for the desktop before bootstrapping the daemon.
