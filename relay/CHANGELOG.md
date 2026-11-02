@@ -10,6 +10,12 @@ clients to Ion Engine instances.
 
 Subsequent versions will be auto-generated from conventional commit messages.
 
+## [1.11.3](https://github.com/dsswift/ion-studio/compare/relay-v1.11.2...relay-v1.11.3) (2026-11-02)
+
+### Bug Fixes
+
+* **relay:** update the prometheus client libraries ([47a4f51](https://github.com/dsswift/ion-studio/commit/47a4f516a562e5f19a217b08024f386afd5e54e5))
+
 ## [1.11.2](https://github.com/dsswift/ion-studio/compare/relay-v1.11.1...relay-v1.11.2) (2026-10-22)
 
 ### Bug Fixes
