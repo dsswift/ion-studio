@@ -11,8 +11,9 @@ name: Build
 # this file, the Windows install smoke, records its failure as an issue and
 # the installer still ships.
 #
-# Images push only their version tags here. `:latest` moves when the release
-# goes public.
+# Images push only their version tags here, each signed with cosign keyless
+# as this workflow's GitHub identity, with a syft SBOM attested to it.
+# `:latest` moves when the release goes public.
 #
 # A dry run builds and verifies everything a release would (signing, the
 # Windows smoke test, bundle checks) from any ref, and publishes nothing: no
@@ -202,6 +203,11 @@ jobs:
   build-relay:
     if: contains(fromJSON(inputs.release_report).components, 'relay')
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      # Needed to get an OIDC token for keyless signing.
+      id-token: write
     steps:
       - uses: actions/checkout@v7
         with:
@@ -226,6 +232,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push
+        id: push
         uses: docker/build-push-action@v7
         with:
           context: relay
@@ -235,6 +242,38 @@ jobs:
           cache-to: type=gha,mode=max
           tags: |
             ghcr.io/${{ github.repository }}/relay:${{ steps.version.outputs.version }}
+
+      - uses: sigstore/cosign-installer@v3
+        if: ${{ !inputs.dry_run }}
+      - uses: anchore/sbom-action/download-syft@v0
+        if: ${{ !inputs.dry_run }}
+      # Sign and attest by digest, never by tag: a tag can move.
+      - name: Sign the image
+        if: ${{ !inputs.dry_run }}
+        env:
+          IMAGE: ghcr.io/${{ github.repository }}/relay
+          DIGEST: ${{ steps.push.outputs.digest }}
+        run: cosign sign --yes "${IMAGE}@${DIGEST}"
+      - name: Attest the SBOM
+        if: ${{ !inputs.dry_run }}
+        env:
+          IMAGE: ghcr.io/${{ github.repository }}/relay
+          DIGEST: ${{ steps.push.outputs.digest }}
+        run: |
+          syft "${IMAGE}@${DIGEST}" -o spdx-json > sbom.spdx.json
+          cosign attest --yes --predicate sbom.spdx.json --type spdxjson "${IMAGE}@${DIGEST}"
+      - name: Verify what was published
+        if: ${{ !inputs.dry_run }}
+        env:
+          IMAGE: ghcr.io/${{ github.repository }}/relay
+          DIGEST: ${{ steps.push.outputs.digest }}
+        run: |
+          cosign verify "${IMAGE}@${DIGEST}" \
+            --certificate-oidc-issuer https://token.actions.githubusercontent.com \
+            --certificate-identity-regexp '^https://github.com/${{ github.repository }}/'
+          cosign verify-attestation "${IMAGE}@${DIGEST}" --type spdxjson \
+            --certificate-oidc-issuer https://token.actions.githubusercontent.com \
+            --certificate-identity-regexp '^https://github.com/${{ github.repository }}/' > /dev/null
 
   build-desktop:
     if: contains(fromJSON(inputs.release_report).components, 'desktop')
@@ -717,6 +756,11 @@ jobs:
   build-server:
     if: contains(fromJSON(inputs.release_report).components, 'server')
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      # Needed to get an OIDC token for keyless signing.
+      id-token: write
     steps:
       - uses: actions/checkout@v7
         with:
@@ -745,6 +789,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Build and push
+        id: push
         uses: docker/build-push-action@v7
         with:
           context: .
@@ -756,6 +801,38 @@ jobs:
           tags: |
             ghcr.io/${{ github.repository }}/studio-server:${{ steps.version.outputs.version }}
             ghcr.io/${{ github.repository }}/studio-server:sha-${{ steps.sha.outputs.short }}
+
+      - uses: sigstore/cosign-installer@v3
+        if: ${{ !inputs.dry_run }}
+      - uses: anchore/sbom-action/download-syft@v0
+        if: ${{ !inputs.dry_run }}
+      # Sign and attest by digest, never by tag: a tag can move.
+      - name: Sign the image
+        if: ${{ !inputs.dry_run }}
+        env:
+          IMAGE: ghcr.io/${{ github.repository }}/studio-server
+          DIGEST: ${{ steps.push.outputs.digest }}
+        run: cosign sign --yes "${IMAGE}@${DIGEST}"
+      - name: Attest the SBOM
+        if: ${{ !inputs.dry_run }}
+        env:
+          IMAGE: ghcr.io/${{ github.repository }}/studio-server
+          DIGEST: ${{ steps.push.outputs.digest }}
+        run: |
+          syft "${IMAGE}@${DIGEST}" -o spdx-json > sbom.spdx.json
+          cosign attest --yes --predicate sbom.spdx.json --type spdxjson "${IMAGE}@${DIGEST}"
+      - name: Verify what was published
+        if: ${{ !inputs.dry_run }}
+        env:
+          IMAGE: ghcr.io/${{ github.repository }}/studio-server
+          DIGEST: ${{ steps.push.outputs.digest }}
+        run: |
+          cosign verify "${IMAGE}@${DIGEST}" \
+            --certificate-oidc-issuer https://token.actions.githubusercontent.com \
+            --certificate-identity-regexp '^https://github.com/${{ github.repository }}/'
+          cosign verify-attestation "${IMAGE}@${DIGEST}" --type spdxjson \
+            --certificate-oidc-issuer https://token.actions.githubusercontent.com \
+            --certificate-identity-regexp '^https://github.com/${{ github.repository }}/' > /dev/null
 
   # ---------------------------------------------------------------------------
   # Ready, then publish. Each ready-* job marks the gate commit

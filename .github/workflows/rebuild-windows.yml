@@ -23,6 +23,8 @@ permissions:
   issues: write
   statuses: write
   actions: write
+  # build.yml's image jobs ask for it to sign keyless; it must be grantable.
+  id-token: write
 
 jobs:
   rebuild:
